@@ -4121,6 +4121,11 @@ vue-loader@^16.0.0-alpha.3:
     merge-source-map "^1.1.0"
     source-map "^0.6.1"
 
+vue-router@^4.0.0-alpha.5:
+  version "4.0.0-alpha.5"
+  resolved "https://registry.npmjs.org/vue-router/-/vue-router-4.0.0-alpha.5.tgz#7b7d00ca090a03aec0ba4e1b582bfce12aa3bdaf"
+  integrity sha512-TQgV6dCkEboU/bLVvFlur0jlP0oDSvD0zwLw3vgWv5l6xBV5JhuXzRUDIMVflan2r/LrfRN3I/Q1+2IIOq0dzA==
+
 vue@^3.0.0-alpha.10:
   version "3.0.0-alpha.12"
   resolved "https://registry.npmjs.org/vue/-/vue-3.0.0-alpha.12.tgz#b8eb8dd47822e8d4479bd2d4155a28f7b2c72689"

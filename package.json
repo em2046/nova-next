@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server",
-    "build": "webpack --env.prod"
+    "build": "webpack --env.prod",
+    "prettier": "prettier --write src/**/*.{ts,css}"
   },
   "dependencies": {
     "vue": "^3.0.0-alpha.10"
@@ -17,6 +18,7 @@
     "typescript": "^3.8.3",
     "url-loader": "^4.0.0",
     "vue-loader": "^16.0.0-alpha.3",
+    "vue-router": "^4.0.0-alpha.5",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
