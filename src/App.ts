@@ -1,16 +1,20 @@
 import { View } from 'vue-router'
-import { h } from 'vue'
+import { defineComponent, h } from 'vue'
 
-export default {
+export default defineComponent({
   setup() {
     return () => [
-      h('header', [
-        h('ul', [
-          h('li', [h('a', { href: '/' }, ['Home'])]),
-          h('li', [h('a', { href: '/about' }, ['About'])]),
+      h('header', { id: 'header' }, [
+        h('nav', { id: 'nav' }, [
+          h('ul', [
+            h('li', [h('a', { href: '/' }, ['Home'])]),
+            h('li', [h('a', { href: '/button' }, ['Button'])]),
+            h('li', [h('a', { href: '/input' }, ['Input'])]),
+            h('li', [h('a', { href: '/about' }, ['About'])]),
+          ]),
         ]),
       ]),
-      h(View),
+      h('main', { id: 'main' }, [h(View)]),
     ]
   },
-}
+})

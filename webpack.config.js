@@ -59,7 +59,7 @@ module.exports = (env = {}) => ({
     inline: true,
     hot: true,
     stats: 'minimal',
-    contentBase: __dirname,
+    contentBase: path.resolve(__dirname, './public'),
     overlay: true,
     historyApiFallback: {
       index: 'index.html',
