@@ -1,0 +1,11 @@
+.img {
+  width: 200px;
+  height: 200px;
+  background-image: url(../assets/logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+}
