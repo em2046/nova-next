@@ -1,9 +1,9 @@
 import { View } from 'vue-router'
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, VNode } from 'vue'
 
 export default defineComponent({
   setup() {
-    return () => [
+    return (): VNode[] => [
       h('header', { id: 'header' }, [
         h('nav', { id: 'nav' }, [
           h('ul', [

@@ -1,9 +1,9 @@
-import { h } from 'vue'
+import { h, VNode } from 'vue'
 import { NovaButton } from '../../index'
 
 export default {
   setup() {
-    return () => [
+    return (): VNode[] => [
       h('section', [
         h(NovaButton, () => 'Primary'),
         h(NovaButton, () => 'Secondary'),

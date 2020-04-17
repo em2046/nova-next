@@ -1,10 +1,10 @@
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, VNode } from 'vue'
 
 export default defineComponent({
   setup(props, context) {
     const { slots } = context
 
-    return () => {
+    return (): VNode => {
       const children = slots.default && slots.default()
       return h(
         'button',
