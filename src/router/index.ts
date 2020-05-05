@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home'
-import About from '../views/About'
-import ButtonDemo from '../views/demos/ButtonDemo'
-import InputDemo from '../views/demos/InputDemo'
-import ColorPickerDemo from '../views/demos/ColorPickerDemo'
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '../views/Home';
+import About from '../views/About';
+import ButtonDemo from '../views/demos/ButtonDemo';
+import InputDemo from '../views/demos/InputDemo';
+import ColorPickerDemo from '../views/demos/ColorPickerDemo';
 
 const routes = [
   {
@@ -31,11 +31,11 @@ const routes = [
     component: InputDemo,
     name: 'Input',
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-})
+});
 
-export default router
+export default router;

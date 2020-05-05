@@ -1,5 +1,5 @@
-import { RouterView, RouterLink } from 'vue-router'
-import { defineComponent, h, VNode } from 'vue'
+import { RouterView, RouterLink } from 'vue-router';
+import { defineComponent, h, VNode } from 'vue';
 
 export default defineComponent({
   setup() {
@@ -18,6 +18,6 @@ export default defineComponent({
         ]),
       ]),
       h('main', { id: 'main' }, [h(RouterView)]),
-    ]
+    ];
   },
-})
+});

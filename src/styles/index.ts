@@ -1,1 +1,1 @@
-import '../components/color-picker/styles/index.ts'
+import '../components/color-picker/styles/index.ts';

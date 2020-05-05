@@ -1,5 +1,5 @@
-import { h, VNode } from 'vue'
-import { NovaButton } from '../../index'
+import { h, VNode } from 'vue';
+import { NovaButton } from '../../index';
 
 export default {
   setup() {
@@ -9,6 +9,6 @@ export default {
         h(NovaButton, () => 'Secondary'),
         h(NovaButton, () => 'Link'),
       ]),
-    ]
+    ];
   },
-}
+};

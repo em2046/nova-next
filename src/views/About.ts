@@ -1,7 +1,7 @@
-import { h, VNode } from 'vue'
+import { h, VNode } from 'vue';
 
 export default {
   setup() {
-    return (): VNode[] => [h('h1', ['About page!'])]
+    return (): VNode[] => [h('h1', ['About page!'])];
   },
-}
+};

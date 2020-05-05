@@ -1,4 +1,4 @@
-import { defineComponent, h, VNode } from 'vue'
+import { defineComponent, h, VNode } from 'vue';
 
 export default defineComponent({
   setup() {
@@ -7,7 +7,7 @@ export default defineComponent({
         'div',
         { class: 'nova-input-wrap' },
         h('input', { class: 'nova-input', type: 'text' })
-      )
-    }
+      );
+    };
   },
-})
+});

@@ -1,3 +1,3 @@
-import NovaInput from './NovaInput'
+import NovaInput from './NovaInput';
 
-export { NovaInput }
+export { NovaInput };

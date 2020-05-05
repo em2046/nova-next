@@ -1,3 +1,3 @@
-import NovaColorPicker from './NovaColorPicker'
+import NovaColorPicker from './NovaColorPicker';
 
-export { NovaColorPicker }
+export { NovaColorPicker };

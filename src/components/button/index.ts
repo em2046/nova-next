@@ -1,3 +1,3 @@
-import NovaButton from './NovaButton'
+import NovaButton from './NovaButton';
 
-export { NovaButton }
+export { NovaButton };

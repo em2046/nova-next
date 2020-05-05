@@ -1,11 +1,11 @@
-import { defineComponent, h, VNode } from 'vue'
+import { defineComponent, h, VNode } from 'vue';
 
 export default defineComponent({
   setup(props, context) {
-    const { slots } = context
+    const { slots } = context;
 
     return (): VNode => {
-      const children = slots.default && slots.default()
+      const children = slots.default && slots.default();
       return h(
         'button',
         {
@@ -13,7 +13,7 @@ export default defineComponent({
           type: 'button',
         },
         children
-      )
-    }
+      );
+    };
   },
-})
+});
