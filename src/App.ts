@@ -1,4 +1,4 @@
-import { View } from 'vue-router'
+import { RouterView, RouterLink } from 'vue-router'
 import { defineComponent, h, VNode } from 'vue'
 
 export default defineComponent({
@@ -7,14 +7,14 @@ export default defineComponent({
       h('header', { id: 'header' }, [
         h('nav', { id: 'nav' }, [
           h('ul', [
-            h('li', [h('a', { href: '/' }, ['Home'])]),
-            h('li', [h('a', { href: '/button' }, ['Button'])]),
-            h('li', [h('a', { href: '/input' }, ['Input'])]),
-            h('li', [h('a', { href: '/about' }, ['About'])]),
+            h('li', [h(RouterLink, { to: '/' }, () => 'Home')]),
+            h('li', [h(RouterLink, { to: '/button' }, () => 'Button')]),
+            h('li', [h(RouterLink, { to: '/input' }, () => 'Input')]),
+            h('li', [h(RouterLink, { to: '/about' }, () => 'About')]),
           ]),
         ]),
       ]),
-      h('main', { id: 'main' }, [h(View)]),
+      h('main', { id: 'main' }, [h(RouterView)]),
     ]
   },
 })
