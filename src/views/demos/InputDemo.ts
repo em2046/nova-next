@@ -3,6 +3,6 @@ import { NovaInput } from '../../index'
 
 export default {
   setup() {
-    return (): VNode[] => [h('section', [h(NovaInput)])]
+    return (): VNode[] => [h('section', [h(NovaInput), h(NovaInput)])]
   },
 }

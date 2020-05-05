@@ -9,8 +9,8 @@ export default {
 
     return (): VNode[] => [
       h('div', { class: 'img' }),
-      h('h1', ['Hello Vue 3!']),
-      h('button', { onClick: inc }, [`Clicked ${count.value} times.`]),
+      h('h1', 'Hello Vue 3!'),
+      h('button', { onClick: inc }, `Clicked ${count.value} times.`),
     ]
   },
 }

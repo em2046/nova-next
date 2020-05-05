@@ -12,7 +12,7 @@ export default defineComponent({
           class: 'nova-button',
           type: 'button',
         },
-        [children]
+        children
       )
     }
   },
