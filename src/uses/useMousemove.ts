@@ -1,6 +1,6 @@
 import { onBeforeUnmount, onMounted, Ref } from 'vue';
 
-interface Position {
+export interface MousePosition {
   x: number;
   y: number;
 }
@@ -8,7 +8,7 @@ interface Position {
 interface UseMousemoveParams {
   ref: Ref<null>;
   start?: () => void;
-  move?: (position: Position) => void;
+  move?: (position: MousePosition) => void;
   finish?: () => void;
 }
 

@@ -11,7 +11,11 @@ import {
 } from 'vue';
 import Rgba from './rgba';
 import Utils from '../../utils/utils';
-import useMousemove from '../../uses/useMousemove';
+import { MousePosition } from '../../uses/useMousemove';
+import HsvPanel from './parts/HsvPanel';
+import HueSlide from './parts/HueSlide';
+import AlphaSlide from './parts/AlphaSlide';
+import Preview from './parts/Preview';
 
 export default defineComponent({
   model: {
@@ -26,9 +30,6 @@ export default defineComponent({
   setup: function (props, context) {
     const emit = context.emit;
 
-    const hsvRef = ref(null);
-    const hueSlideRef = ref(null);
-    const alphaSlideRef = ref(null);
     const rRef = ref(null);
     const gRef = ref(null);
     const bRef = ref(null);
@@ -43,32 +44,8 @@ export default defineComponent({
       },
     });
 
-    const cursorStyle = computed(() => {
-      return {
-        transform: `translate(${state.position.saturation}px, ${state.position.value}px)`,
-      };
-    });
-
-    const hueThumbStyle = computed(() => {
-      return {
-        transform: `translate(0, ${state.position.hue}px)`,
-      };
-    });
-
     const hueReg = computed(() => {
       return Math.round((state.position.hue / 200) * 360) % 360;
-    });
-
-    const hsvStyle = computed(() => {
-      return {
-        backgroundColor: `hsl(${hueReg.value} ,100%, 50%)`,
-      };
-    });
-
-    const alphaThumbStyle = computed(() => {
-      return {
-        transform: `translate(0, ${state.position.alpha}px)`,
-      };
     });
 
     const color = computed(() => {
@@ -93,37 +70,6 @@ export default defineComponent({
     function updateColor(): void {
       emit('update', `#${color.value.toHex()}`);
     }
-
-    useMousemove({
-      ref: hsvRef,
-      move: (position) => {
-        state.position.saturation = Utils.limit(position.x, 0, 200);
-        state.position.value = Utils.limit(position.y, 0, 200);
-      },
-      finish: () => {
-        updateColor();
-      },
-    });
-
-    useMousemove({
-      ref: hueSlideRef,
-      move: (position) => {
-        state.position.hue = Utils.limit(position.y, 0, 200);
-      },
-      finish: () => {
-        updateColor();
-      },
-    });
-
-    useMousemove({
-      ref: alphaSlideRef,
-      move: (position) => {
-        state.position.alpha = Utils.limit(position.y, 0, 200);
-      },
-      finish: () => {
-        updateColor();
-      },
-    });
 
     function getRgbValue(domRef: Ref<null>): number {
       const dom = (domRef.value as unknown) as HTMLInputElement;
@@ -175,63 +121,44 @@ export default defineComponent({
 
     return (): VNode => {
       const cssRgba = color.value.toCss();
-      const alphaRgb = `${cssRgba.r}, ${cssRgba.g}, ${cssRgba.b}`;
-      const currColor = `rgba(${alphaRgb}, ${cssRgba.a})`;
-      const alphaBarBg = `linear-gradient(180deg, rgba(${alphaRgb}, 1), rgba(${alphaRgb}, 0))`;
 
-      const hsvNode = h(
-        'div',
-        {
-          class: 'nova-color-picker-hsv',
-          style: hsvStyle.value,
-          ref: hsvRef,
+      const hsvNode = h(HsvPanel, {
+        hueReg: hueReg.value,
+        saturation: state.position.saturation,
+        value: state.position.value,
+        onMove: (position: MousePosition) => {
+          state.position.saturation = Utils.limit(position.x, 0, 200);
+          state.position.value = Utils.limit(position.y, 0, 200);
         },
-        [
-          h('div', { class: 'nova-color-picker-saturation' }),
-          h('div', { class: 'nova-color-picker-value' }),
-          h('div', {
-            class: 'nova-color-picker-cursor',
-            style: cursorStyle.value,
-          }),
-        ]
-      );
+        onFinish: () => {
+          updateColor();
+        },
+      });
+
+      const hueSlideNode = h(HueSlide, {
+        hue: state.position.hue,
+        onMove: (position: MousePosition) => {
+          state.position.hue = Utils.limit(position.y, 0, 200);
+        },
+        onFinish: () => {
+          updateColor();
+        },
+      });
+
+      const alphaSlideNode = h(AlphaSlide, {
+        alpha: state.position.alpha,
+        color: color.value,
+        onMove: (position: MousePosition) => {
+          state.position.alpha = Utils.limit(position.y, 0, 200);
+        },
+        onFinish: () => {
+          updateColor();
+        },
+      });
 
       const slidesNode = h('div', { class: 'nova-color-picker-slides' }, [
-        h(
-          'div',
-          {
-            class: 'nova-color-picker-hue-slide',
-            ref: hueSlideRef,
-          },
-          [
-            h('div', {
-              class: 'nova-color-picker-hue-bar',
-            }),
-            h('div', {
-              class: 'nova-color-picker-hue-thumb',
-              style: hueThumbStyle.value,
-            }),
-          ]
-        ),
-        h(
-          'div',
-          {
-            class: 'nova-color-picker-alpha-slide',
-            ref: alphaSlideRef,
-          },
-          [
-            h('div', {
-              class: 'nova-color-picker-alpha-bar',
-              style: {
-                backgroundImage: alphaBarBg,
-              },
-            }),
-            h('div', {
-              class: 'nova-color-picker-alpha-thumb',
-              style: alphaThumbStyle.value,
-            }),
-          ]
-        ),
+        hueSlideNode,
+        alphaSlideNode,
       ]);
 
       const formNode = h('div', { class: 'nova-color-picker-form' }, [
@@ -301,17 +228,9 @@ export default defineComponent({
         ),
       ]);
 
-      const previewNode = h('div', { class: 'nova-color-picker-preview' }, [
-        h('div', { class: 'nova-color-picker-preview-prev' }),
-        h('div', {
-          class: 'nova-color-picker-preview-curr',
-          style: {
-            backgroundColor: currColor,
-          },
-        }),
-        h('div', { class: 'nova-color-picker-preview-fill-right' }),
-        h('div', { class: 'nova-color-picker-preview-fill-left' }),
-      ]);
+      const previewNode = h(Preview, {
+        color: color.value,
+      });
 
       return h(
         'div',
