@@ -1,6 +1,6 @@
-import { ref, h, VNode, RenderFunction } from 'vue';
+import { ref, h, VNode, RenderFunction, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   setup(): RenderFunction {
     const count = ref(0);
     const inc = (): void => {
@@ -13,4 +13,4 @@ export default {
       h('button', { onClick: inc }, `Clicked ${count.value} times.`),
     ];
   },
-};
+});

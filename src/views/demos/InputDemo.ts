@@ -1,8 +1,8 @@
-import { h, VNode } from 'vue';
+import { h, VNode, defineComponent } from 'vue';
 import { NovaInput } from '../../index';
 
-export default {
+export default defineComponent({
   setup() {
     return (): VNode[] => [h('section', [h(NovaInput), h(NovaInput)])];
   },
-};
+});

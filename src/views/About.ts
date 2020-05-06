@@ -1,7 +1,7 @@
-import { h, VNode } from 'vue';
+import { h, VNode, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   setup() {
     return (): VNode[] => [h('h1', ['About page!'])];
   },
-};
+});
