@@ -3,11 +3,9 @@ import {
   defineComponent,
   h,
   reactive,
-  ref,
   VNode,
   watch,
   onMounted,
-  Ref,
 } from 'vue';
 import Rgba from './rgba';
 import Utils from '../../utils/utils';
@@ -16,6 +14,8 @@ import HsvPanel from './parts/HsvPanel';
 import HueSlide from './parts/HueSlide';
 import AlphaSlide from './parts/AlphaSlide';
 import Preview from './parts/Preview';
+import RgbaLabels from './parts/RgbaLabels';
+import HexLabel from './parts/HexLabel';
 
 export default defineComponent({
   model: {
@@ -29,11 +29,6 @@ export default defineComponent({
   },
   setup: function (props, context) {
     const emit = context.emit;
-
-    const rRef = ref(null);
-    const gRef = ref(null);
-    const bRef = ref(null);
-    const aRef = ref(null);
 
     const state = reactive({
       position: {
@@ -71,39 +66,6 @@ export default defineComponent({
       emit('update', `#${color.value.toHex()}`);
     }
 
-    function getRgbValue(domRef: Ref<null>): number {
-      const dom = (domRef.value as unknown) as HTMLInputElement;
-      const value = dom.value.trim();
-      return parseInt(value, 10);
-    }
-
-    function getAlphaValue(domRef: Ref<null>): number {
-      const dom = (domRef.value as unknown) as HTMLInputElement;
-      const value = dom.value.trim();
-      return parseFloat(value);
-    }
-
-    function onRgbaInput(): void {
-      const r = getRgbValue(rRef);
-      const g = getRgbValue(gRef);
-      const b = getRgbValue(bRef);
-      const a = getAlphaValue(aRef);
-
-      setColor(Rgba.fromCss(r, g, b, a));
-    }
-
-    function onHexInput(e: InputEvent): void {
-      if (e.target) {
-        const target = e.target as HTMLInputElement;
-        const value = target.value.trim();
-
-        const color = Rgba.fromHex(value);
-        if (/^#?(([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)$/.test(value)) {
-          setColor(color);
-        }
-      }
-    }
-
     watch(
       () => props.value,
       (value, prevValue) => {
@@ -120,8 +82,6 @@ export default defineComponent({
     });
 
     return (): VNode => {
-      const cssRgba = color.value.toCss();
-
       const hsvNode = h(HsvPanel, {
         hueReg: hueReg.value,
         saturation: state.position.saturation,
@@ -162,70 +122,18 @@ export default defineComponent({
       ]);
 
       const formNode = h('div', { class: 'nova-color-picker-form' }, [
-        h('div', { class: 'nova-color-picker-labels' }, [
-          h('label', { class: 'nova-color-picker-label-primary' }, [
-            h('div', { class: 'nova-color-picker-label-text' }, 'R'),
-            h(
-              'div',
-              { class: 'nova-color-picker-number-primary' },
-              h('input', {
-                value: cssRgba.r,
-                ref: rRef,
-                onInput: onRgbaInput,
-              })
-            ),
-          ]),
-          h('label', { class: 'nova-color-picker-label-secondary' }, [
-            h('div', { class: 'nova-color-picker-label-text' }, 'G'),
-            h(
-              'div',
-              { class: 'nova-color-picker-number-secondary' },
-              h('input', {
-                value: cssRgba.g,
-                ref: gRef,
-                onInput: onRgbaInput,
-              })
-            ),
-          ]),
-          h('label', { class: 'nova-color-picker-label-tertiary' }, [
-            h('div', { class: 'nova-color-picker-label-text' }, 'B'),
-            h(
-              'div',
-              { class: 'nova-color-picker-number-tertiary' },
-              h('input', {
-                value: cssRgba.b,
-                ref: bRef,
-                onInput: onRgbaInput,
-              })
-            ),
-          ]),
-          h('label', { class: 'nova-color-picker-label-quaternary' }, [
-            h('div', { class: 'nova-color-picker-label-text' }, 'A'),
-            h(
-              'div',
-              { class: 'nova-color-picker-number-quaternary' },
-              h('input', {
-                value: cssRgba.a,
-                ref: aRef,
-                onInput: onRgbaInput,
-              })
-            ),
-          ]),
-        ]),
-        h(
-          'div',
-          { class: 'nova-color-picker-rgb' },
-          h(
-            'div',
-            {
-              class: 'nova-color-picker-hex',
-            },
-            h('input', {
-              value: `#${color.value.toHex()}`,
-              onInput: onHexInput,
-            })
-          )
-        ),
+        h(RgbaLabels, {
+          color: color.value,
+          onSetColor: (rgba: Rgba) => {
+            setColor(rgba);
+          },
+        }),
+        h(HexLabel, {
+          color: color.value,
+          onSetColor: (rgba: Rgba) => {
+            setColor(rgba);
+          },
+        }),
       ]);
 
       const previewNode = h(Preview, {

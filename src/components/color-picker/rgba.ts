@@ -130,7 +130,9 @@ export default class Rgba {
   }
 
   toHex(): string {
-    const { r, g, b, a } = this.toCss();
+    const { r, g, b } = this.toCss();
+    const a = this.a;
+
     const hexR = r.toString(16).padStart(2, '0');
     const hexG = g.toString(16).padStart(2, '0');
     const hexB = b.toString(16).padStart(2, '0');
