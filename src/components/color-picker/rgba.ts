@@ -5,6 +5,13 @@ interface CssRgba {
   a: number;
 }
 
+interface CssLikeHsva {
+  h: number;
+  s: number;
+  v: number;
+  a: number;
+}
+
 export default class Rgba {
   r: number;
   g: number;
@@ -89,6 +96,30 @@ export default class Rgba {
     return Rgba.fromHsva(h, s / 100, v / 100, a);
   }
 
+  static fromHex(hashHex: string): Rgba {
+    let hex = hashHex.replace('#', '');
+
+    if (hex.length === 3) {
+      hex = hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+    }
+
+    const hexRed = hex.substr(0, 2);
+    const hexGreen = hex.substr(2, 2);
+    const hexBlue = hex.substr(4, 2);
+
+    const cssRed = parseInt(hexRed, 16);
+    const cssGreen = parseInt(hexGreen, 16);
+    const cssBlue = parseInt(hexBlue, 16);
+
+    let cssAlpha = 1;
+    if (hex.length === 8) {
+      const hexAlpha = hex.substr(6, 2);
+      cssAlpha = parseInt(hexAlpha, 16) / 255;
+    }
+
+    return this.fromCss(cssRed, cssGreen, cssBlue, cssAlpha);
+  }
+
   toCss(): CssRgba {
     const r = Math.round(this.r * 255);
     const g = Math.round(this.g * 255);
@@ -112,5 +143,44 @@ export default class Rgba {
     }
 
     return `${hexR}${hexG}${hexB}${hexA}`;
+  }
+
+  toHsva(): CssLikeHsva {
+    const r = this.r;
+    const g = this.g;
+    const b = this.b;
+    const a = this.a;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+
+    let h = 0;
+    if (max === min) {
+      h = 0;
+    } else if (max === r && g >= b) {
+      h = 60 * ((g - b) / (max - min));
+    } else if (max === r && g < b) {
+      h = 60 * ((g - b) / (max - min)) + 360;
+    } else if (max === g) {
+      h = 60 * ((b - r) / (max - min)) + 120;
+    } else if (max === b) {
+      h = 60 * ((r - g) / (max - min)) + 240;
+    }
+
+    let s;
+    if (max === 0) {
+      s = 0;
+    } else {
+      s = 1 - min / max;
+    }
+
+    const v = max;
+
+    return {
+      h,
+      s,
+      v,
+      a,
+    };
   }
 }

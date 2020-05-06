@@ -6,6 +6,8 @@ import {
   reactive,
   ref,
   VNode,
+  watch,
+  onMounted,
 } from 'vue';
 import Rgba from './rgba';
 
@@ -19,10 +21,20 @@ function limit(n: number, low = 0, high = Infinity): number {
 }
 
 export default defineComponent({
-  setup() {
+  props: {
+    value: {
+      type: String,
+      default: '#ff0000',
+    },
+  },
+  setup: function (props) {
     const hsvRef = ref(null);
     const hueSlideRef = ref(null);
     const alphaSlideRef = ref(null);
+    const rRef = ref(null);
+    const gRef = ref(null);
+    const bRef = ref(null);
+    const aRef = ref(null);
 
     const state = reactive({
       position: {
@@ -81,6 +93,13 @@ export default defineComponent({
         (200 - state.position.alpha) / 200
       );
     });
+
+    watch(
+      () => props.value,
+      (value, prevValue) => {
+        console.log(value, prevValue);
+      }
+    );
 
     function onHsvMousemove(e: MouseEvent): void {
       state.position.saturation = limit(
@@ -185,6 +204,53 @@ export default defineComponent({
       document.addEventListener('mouseup', onMouseup);
     }
 
+    function setColor(rgba: Rgba): void {
+      const hsva = rgba.toHsva();
+      const { h, s, v, a } = hsva;
+
+      state.position.hue = limit((h / 360) * 200, 0, 200);
+      state.position.saturation = limit(s * 200, 0, 200);
+      state.position.value = limit(200 - 200 * v, 0, 200);
+      state.position.alpha = limit(200 - 200 * a, 0, 200);
+    }
+
+    function onRgbaInput(): void {
+      const rDom = (rRef.value as unknown) as HTMLInputElement;
+      const rValue = rDom.value.trim();
+      const r = parseInt(rValue, 10);
+
+      const gDom = (gRef.value as unknown) as HTMLInputElement;
+      const gValue = gDom.value.trim();
+      const g = parseInt(gValue, 10);
+
+      const bDom = (bRef.value as unknown) as HTMLInputElement;
+      const bValue = bDom.value.trim();
+      const b = parseInt(bValue, 10);
+
+      const aDom = (aRef.value as unknown) as HTMLInputElement;
+      const aValue = aDom.value.trim();
+      const a = parseFloat(aValue);
+
+      setColor(Rgba.fromCss(r, g, b, a));
+    }
+
+    function onHexInput(e: InputEvent): void {
+      if (e.target) {
+        const target = e.target as HTMLInputElement;
+        const value = target.value.trim();
+
+        const color = Rgba.fromHex(value);
+        if (/^#?(([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)$/.test(value)) {
+          setColor(color);
+        }
+      }
+    }
+
+    onMounted(() => {
+      const color = Rgba.fromHex(props.value);
+      setColor(color);
+    });
+
     onBeforeUnmount(() => {
       document.removeEventListener('mousemove', onMousemove);
       document.removeEventListener('mouseup', onMouseup);
@@ -263,7 +329,11 @@ export default defineComponent({
                 h(
                   'div',
                   { class: 'nova-color-picker-number-primary' },
-                  h('input', { value: cssRgba.r })
+                  h('input', {
+                    value: cssRgba.r,
+                    ref: rRef,
+                    onInput: onRgbaInput,
+                  })
                 ),
               ]),
               h('label', { class: 'nova-color-picker-label-secondary' }, [
@@ -271,7 +341,11 @@ export default defineComponent({
                 h(
                   'div',
                   { class: 'nova-color-picker-number-secondary' },
-                  h('input', { value: cssRgba.g })
+                  h('input', {
+                    value: cssRgba.g,
+                    ref: gRef,
+                    onInput: onRgbaInput,
+                  })
                 ),
               ]),
               h('label', { class: 'nova-color-picker-label-tertiary' }, [
@@ -279,7 +353,11 @@ export default defineComponent({
                 h(
                   'div',
                   { class: 'nova-color-picker-number-tertiary' },
-                  h('input', { value: cssRgba.b })
+                  h('input', {
+                    value: cssRgba.b,
+                    ref: bRef,
+                    onInput: onRgbaInput,
+                  })
                 ),
               ]),
               h('label', { class: 'nova-color-picker-label-quaternary' }, [
@@ -289,6 +367,8 @@ export default defineComponent({
                   { class: 'nova-color-picker-number-quaternary' },
                   h('input', {
                     value: cssRgba.a,
+                    ref: aRef,
+                    onInput: onRgbaInput,
                   })
                 ),
               ]),
@@ -298,8 +378,13 @@ export default defineComponent({
               { class: 'nova-color-picker-rgb' },
               h(
                 'div',
-                { class: 'nova-color-picker-hex' },
-                h('input', { value: `#${color.value.toHex()}` })
+                {
+                  class: 'nova-color-picker-hex',
+                },
+                h('input', {
+                  value: `#${color.value.toHex()}`,
+                  onInput: onHexInput,
+                })
               )
             ),
           ]),
