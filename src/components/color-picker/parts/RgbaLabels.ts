@@ -93,11 +93,11 @@ export default defineComponent({
     return (): VNode | null => {
       const cssRgba = props.color.toCss();
 
-      const rNode = h('label', { class: 'nova-color-picker-label-primary' }, [
+      const rNode = h('label', { class: 'nova-color-picker-label' }, [
         h('div', { class: 'nova-color-picker-label-text' }, 'R'),
         h(
           'div',
-          { class: 'nova-color-picker-number-primary' },
+          { class: 'nova-color-picker-number' },
           h('input', {
             value: cssRgba.r,
             ref: rRef,
@@ -107,11 +107,11 @@ export default defineComponent({
         ),
       ]);
 
-      const gNode = h('label', { class: 'nova-color-picker-label-secondary' }, [
+      const gNode = h('label', { class: 'nova-color-picker-label' }, [
         h('div', { class: 'nova-color-picker-label-text' }, 'G'),
         h(
           'div',
-          { class: 'nova-color-picker-number-secondary' },
+          { class: 'nova-color-picker-number' },
           h('input', {
             value: cssRgba.g,
             ref: gRef,
@@ -121,11 +121,11 @@ export default defineComponent({
         ),
       ]);
 
-      const bNode = h('label', { class: 'nova-color-picker-label-tertiary' }, [
+      const bNode = h('label', { class: 'nova-color-picker-label' }, [
         h('div', { class: 'nova-color-picker-label-text' }, 'B'),
         h(
           'div',
-          { class: 'nova-color-picker-number-tertiary' },
+          { class: 'nova-color-picker-number' },
           h('input', {
             value: cssRgba.b,
             ref: bRef,
@@ -135,23 +135,19 @@ export default defineComponent({
         ),
       ]);
 
-      const aNode = h(
-        'label',
-        { class: 'nova-color-picker-label-quaternary' },
-        [
-          h('div', { class: 'nova-color-picker-label-text' }, 'A'),
-          h(
-            'div',
-            { class: 'nova-color-picker-number-quaternary' },
-            h('input', {
-              value: cssRgba.a,
-              ref: aRef,
-              onInput: onRgbaInput,
-              onBlur: onRgbaBlur,
-            })
-          ),
-        ]
-      );
+      const aNode = h('label', { class: 'nova-color-picker-label' }, [
+        h('div', { class: 'nova-color-picker-label-text' }, 'A'),
+        h(
+          'div',
+          { class: 'nova-color-picker-number' },
+          h('input', {
+            value: cssRgba.a,
+            ref: aRef,
+            onInput: onRgbaInput,
+            onBlur: onRgbaBlur,
+          })
+        ),
+      ]);
 
       return h('div', { class: 'nova-color-picker-labels' }, [
         rNode,

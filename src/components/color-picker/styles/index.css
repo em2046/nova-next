@@ -118,10 +118,7 @@
   color: #cccccc;
 }
 
-.nova-color-picker-label-primary,
-.nova-color-picker-label-secondary,
-.nova-color-picker-label-tertiary,
-.nova-color-picker-label-quaternary {
+.nova-color-picker-label {
   box-sizing: border-box;
   width: 40px;
   height: 50px;
@@ -136,20 +133,14 @@
   text-align: center;
 }
 
-.nova-color-picker-number-primary,
-.nova-color-picker-number-secondary,
-.nova-color-picker-number-tertiary,
-.nova-color-picker-number-quaternary,
+.nova-color-picker-number,
 .nova-color-picker-hex {
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   height: 25px;
 }
 
-.nova-color-picker-number-primary input,
-.nova-color-picker-number-secondary input,
-.nova-color-picker-number-tertiary input,
-.nova-color-picker-number-quaternary input,
+.nova-color-picker-number input,
 .nova-color-picker-hex input {
   color: #cccccc;
   border: none;
@@ -164,19 +155,13 @@
     monospace;
 }
 
-.nova-color-picker-number-primary input:focus,
-.nova-color-picker-number-secondary input:focus,
-.nova-color-picker-number-tertiary input:focus,
-.nova-color-picker-number-quaternary input:focus,
+.nova-color-picker-number input:focus,
 .nova-color-picker-hex input:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-.nova-color-picker-number-primary,
-.nova-color-picker-number-secondary,
-.nova-color-picker-number-tertiary,
-.nova-color-picker-number-quaternary {
+.nova-color-picker-number {
   width: 40px;
 }
 
