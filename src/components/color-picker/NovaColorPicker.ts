@@ -11,11 +11,11 @@ import Color from './color';
 import Utils from '../../utils/utils';
 import { MousePosition } from '../../uses/useMousemove';
 import HsvPanel from './parts/HsvPanel';
-import HueSlide from './parts/HueSlide';
-import AlphaSlide from './parts/AlphaSlide';
+import HueSlide from './parts/slides/HueSlide';
+import AlphaSlide from './parts/slides/AlphaSlide';
 import Preview from './parts/Preview';
-import RgbaLabels from './parts/RgbaLabels';
-import HexLabel from './parts/HexLabel';
+import RgbaLabels from './parts/labels/RgbaLabels';
+import HexLabel from './parts/labels/HexLabel';
 
 export default defineComponent({
   model: {

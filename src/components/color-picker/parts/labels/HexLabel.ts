@@ -1,6 +1,6 @@
 import { defineComponent, h, VNode } from 'vue';
-import Color from '../color';
-import DomHelper from '../../../utils/dom-helper';
+import Color from '../../color';
+import DomHelper from '../../../../utils/dom-helper';
 
 export default defineComponent({
   props: {

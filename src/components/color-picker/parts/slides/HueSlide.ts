@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, ref, VNode } from 'vue';
-import useMousemove from '../../../uses/useMousemove';
+import useMousemove from '../../../../uses/useMousemove';
 
 export default defineComponent({
   props: {

@@ -1,6 +1,6 @@
 import { defineComponent, h, Ref, ref, VNode } from 'vue';
-import Color from '../color';
-import Utils from '../../../utils/utils';
+import Color from '../../color';
+import Utils from '../../../../utils/utils';
 
 export default defineComponent({
   props: {
