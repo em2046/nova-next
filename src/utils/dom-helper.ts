@@ -3,7 +3,7 @@ export default class DomHelper {
     return target.value.trim();
   }
 
-  static setInputValue(target: HTMLInputElement, value: string): void {
-    target.value = value;
+  static setInputValue(target: HTMLInputElement, value: string | number): void {
+    target.value = value.toString();
   }
 }

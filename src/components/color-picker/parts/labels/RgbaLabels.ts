@@ -1,6 +1,14 @@
 import { defineComponent, h, Ref, ref, VNode } from 'vue';
 import Color from '../../color';
 import Utils from '../../../../utils/utils';
+import DomHelper from '../../../../utils/dom-helper';
+
+interface ChannelParams {
+  channelRef: Ref<null>;
+  label: string;
+  value: number;
+  onInput: (e: InputEvent) => void;
+}
 
 export default defineComponent({
   props: {
@@ -17,46 +25,45 @@ export default defineComponent({
     const bRef = ref(null);
     const aRef = ref(null);
 
-    function getRgbValue(domRef: Ref<null>): number {
-      const dom = (domRef.value as unknown) as HTMLInputElement;
-      const value = dom.value.trim();
+    function rgbNormalize(value: string): number {
+      value = value.replace(/[^\d]/g, '');
       let number = parseInt(value, 10);
 
       if (Number.isNaN(number)) {
         number = 0;
       }
       number = Utils.numberLimit(number, 0, 255);
-      dom.value = number.toString();
+      return number;
+    }
+
+    function getRgbValue(domRef: Ref<null>): number {
+      const input = (domRef.value as unknown) as HTMLInputElement;
+      const value = DomHelper.getInputValue(input);
+      const number = rgbNormalize(value);
+      DomHelper.setInputValue(input, number);
 
       return number;
     }
 
-    function getAlphaValue(domRef: Ref<null>): number {
-      const dom = (domRef.value as unknown) as HTMLInputElement;
-      const value = dom.value.trim();
+    function alphaNormalize(value: string): number {
+      value = value.replace(/[^\d.]/g, '');
       let number = parseFloat(parseFloat(value).toFixed(2));
-      let needUpdate = false;
 
       if (Number.isNaN(number)) {
         number = 1;
-        needUpdate = true;
       }
 
-      if (number < 0 || number > 1) {
-        number = Utils.numberLimit(number, 0, 1);
-        needUpdate = true;
-      }
+      number = Utils.numberLimit(number, 0, 1);
+      return number;
+    }
 
-      if (/[^\d.]/.test(value)) {
-        needUpdate = true;
-      }
+    function getAlphaValue(domRef: Ref<null>): number {
+      const input = (domRef.value as unknown) as HTMLInputElement;
+      const value = DomHelper.getInputValue(input);
+      const number = alphaNormalize(value);
 
-      if (!/^\d{1,3}\.\d{1,2}$/.test(value)) {
-        needUpdate = true;
-      }
-
-      if (needUpdate) {
-        dom.value = number.toString();
+      if (number.toString() !== value) {
+        DomHelper.setInputValue(input, number);
       }
 
       return number;
@@ -71,83 +78,84 @@ export default defineComponent({
       emit(eventName, rgba);
     }
 
-    function onRgbaInput(e: InputEvent): void {
-      const target = e.target as HTMLInputElement;
-      const value = target.value.trim();
+    function onRgbInput(e: InputEvent): void {
+      const input = e.target as HTMLInputElement;
+      const value = DomHelper.getInputValue(input);
 
       if (value === '') {
         return;
       }
 
-      if (value[value.length - 1] === '.' || value.substr(-2, 2) === '.0') {
+      if (/^\d+$/.test(value)) {
+        updateColor('colorInput');
+      }
+    }
+
+    function onAlphaInput(e: InputEvent): void {
+      const input = e.target as HTMLInputElement;
+      const value = DomHelper.getInputValue(input);
+
+      if (value === '') {
         return;
       }
 
-      updateColor('colorInput');
+      if (/^((0)|(1)|(\d\.\d{1,2}))$/.test(value)) {
+        updateColor('colorInput');
+      }
     }
 
     function onRgbaBlur(): void {
       updateColor('colorBlur');
     }
 
+    function createChannelNode(options: ChannelParams): VNode {
+      const { channelRef, label, value, onInput } = options;
+
+      return h('label', { class: 'nova-color-picker-label' }, [
+        h('div', { class: 'nova-color-picker-label-text' }, label),
+        h(
+          'div',
+          { class: 'nova-color-picker-number' },
+          h('input', {
+            value,
+            ref: channelRef,
+            onInput: onInput,
+            onBlur: onRgbaBlur,
+          })
+        ),
+      ]);
+    }
+
     return (): VNode | null => {
-      const cssRgba = props.color.toCss();
+      const { r, g, b, a } = props.color.toCss();
 
-      const rNode = h('label', { class: 'nova-color-picker-label' }, [
-        h('div', { class: 'nova-color-picker-label-text' }, 'R'),
-        h(
-          'div',
-          { class: 'nova-color-picker-number' },
-          h('input', {
-            value: cssRgba.r,
-            ref: rRef,
-            onInput: onRgbaInput,
-            onBlur: onRgbaBlur,
-          })
-        ),
-      ]);
+      const rNode = createChannelNode({
+        channelRef: rRef,
+        label: 'R',
+        value: r,
+        onInput: onRgbInput,
+      });
 
-      const gNode = h('label', { class: 'nova-color-picker-label' }, [
-        h('div', { class: 'nova-color-picker-label-text' }, 'G'),
-        h(
-          'div',
-          { class: 'nova-color-picker-number' },
-          h('input', {
-            value: cssRgba.g,
-            ref: gRef,
-            onInput: onRgbaInput,
-            onBlur: onRgbaBlur,
-          })
-        ),
-      ]);
+      const gNode = createChannelNode({
+        channelRef: gRef,
+        label: 'G',
+        value: g,
+        onInput: onRgbInput,
+      });
 
-      const bNode = h('label', { class: 'nova-color-picker-label' }, [
-        h('div', { class: 'nova-color-picker-label-text' }, 'B'),
-        h(
-          'div',
-          { class: 'nova-color-picker-number' },
-          h('input', {
-            value: cssRgba.b,
-            ref: bRef,
-            onInput: onRgbaInput,
-            onBlur: onRgbaBlur,
-          })
-        ),
-      ]);
+      const bNode = createChannelNode({
+        channelRef: bRef,
+        label: 'B',
+        value: b,
+        onInput: onRgbInput,
+      });
 
-      const aNode = h('label', { class: 'nova-color-picker-label' }, [
-        h('div', { class: 'nova-color-picker-label-text' }, 'A'),
-        h(
-          'div',
-          { class: 'nova-color-picker-number' },
-          h('input', {
-            value: cssRgba.a,
-            ref: aRef,
-            onInput: onRgbaInput,
-            onBlur: onRgbaBlur,
-          })
-        ),
-      ]);
+      const aNode = createChannelNode({
+        channelRef: aRef,
+        label: 'A',
+        value: a,
+        onInput: onAlphaInput,
+      });
 
       return h('div', { class: 'nova-color-picker-labels' }, [
         rNode,
