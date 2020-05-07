@@ -12,7 +12,13 @@ interface CssLikeHsva {
   a: number;
 }
 
-export default class Rgba {
+/**
+ * @property r [0, 1]
+ * @property g [0, 1]
+ * @property b [0, 1]
+ * @property a [0, 1]
+ */
+export default class Color {
   r: number;
   g: number;
   b: number;
@@ -39,8 +45,8 @@ export default class Rgba {
    * @param b [0, 255]
    * @param a [0, 1]
    */
-  static fromCss(r = 0, g = 0, b = 0, a = 1): Rgba {
-    return new Rgba(r / 255, g / 255, b / 255, a);
+  static fromCss(r = 0, g = 0, b = 0, a = 1): Color {
+    return new Color(r / 255, g / 255, b / 255, a);
   }
 
   /**
@@ -50,7 +56,7 @@ export default class Rgba {
    * @param v [0, 1]
    * @param a [0, 1]
    */
-  static fromHsva(h = 0, s = 0, v = 0, a = 1): Rgba {
+  static fromHsva(h = 0, s = 0, v = 0, a = 1): Color {
     const hI = Math.floor(h / 60) % 6;
     const f = h / 60 - hI;
     const p = v * (1 - s);
@@ -82,7 +88,7 @@ export default class Rgba {
         break;
     }
 
-    return new Rgba(r, g, b, a);
+    return new Color(r, g, b, a);
   }
 
   /**
@@ -92,11 +98,11 @@ export default class Rgba {
    * @param v [0, 100]
    * @param a [0, 1]
    */
-  static fromCssLikeHsva(h = 0, s = 0, v = 0, a = 1): Rgba {
-    return Rgba.fromHsva(h, s / 100, v / 100, a);
+  static fromCssLikeHsva(h = 0, s = 0, v = 0, a = 1): Color {
+    return Color.fromHsva(h, s / 100, v / 100, a);
   }
 
-  static fromHex(hashHex: string): Rgba {
+  static fromHex(hashHex: string): Color {
     let hex = hashHex.replace('#', '');
 
     if (hex.length === 3) {
@@ -129,6 +135,9 @@ export default class Rgba {
     return { r, g, b, a };
   }
 
+  /**
+   * @return hex like ff0000
+   */
   toHex(): string {
     const { r, g, b } = this.toCss();
     const a = this.a;

@@ -1,5 +1,5 @@
 import { defineComponent, h, VNode } from 'vue';
-import Rgba from '../rgba';
+import Color from '../color';
 
 export default defineComponent({
   props: {
@@ -11,7 +11,7 @@ export default defineComponent({
     const emit = context.emit;
 
     function updateColor(value: string, eventName: string): void {
-      const rgba = Rgba.fromHex(value);
+      const rgba = Color.fromHex(value);
       if (/^#?(([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)$/.test(value)) {
         emit(eventName, rgba);
       }
@@ -22,7 +22,7 @@ export default defineComponent({
         const target = e.target as HTMLInputElement;
         const value = target.value.trim();
 
-        updateColor(value, 'customInput');
+        updateColor(value, 'colorInput');
       }
     }
 
@@ -49,7 +49,7 @@ export default defineComponent({
         target.value = '#' + value;
       }
 
-      updateColor(value, 'customBlur');
+      updateColor(value, 'colorBlur');
     }
 
     return (): VNode | null => {

@@ -5,7 +5,7 @@ export default class Utils {
    * @param low Min limit
    * @param high Max limit
    */
-  static limit(n: number, low = 0, high = Infinity): number {
+  static numberLimit(n: number, low = 0, high = Infinity): number {
     if (n < low) {
       return low;
     } else if (n > high) {

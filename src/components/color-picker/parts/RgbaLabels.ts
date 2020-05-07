@@ -1,5 +1,5 @@
 import { defineComponent, h, Ref, ref, VNode } from 'vue';
-import Rgba from '../rgba';
+import Color from '../color';
 import Utils from '../../../utils/utils';
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
       if (Number.isNaN(number)) {
         number = 0;
       }
-      number = Utils.limit(number, 0, 255);
+      number = Utils.numberLimit(number, 0, 255);
       dom.value = number.toString();
 
       return number;
@@ -42,7 +42,7 @@ export default defineComponent({
       }
 
       if (number < 0 || number > 1) {
-        number = Utils.limit(number, 0, 1);
+        number = Utils.numberLimit(number, 0, 1);
         needUpdate = true;
       }
 
@@ -66,7 +66,7 @@ export default defineComponent({
       const g = getRgbValue(gRef);
       const b = getRgbValue(bRef);
       const a = getAlphaValue(aRef);
-      const rgba = Rgba.fromCss(r, g, b, a);
+      const rgba = Color.fromCss(r, g, b, a);
       emit(eventName, rgba);
     }
 
@@ -82,11 +82,11 @@ export default defineComponent({
         return;
       }
 
-      updateColor('customInput');
+      updateColor('colorInput');
     }
 
     function onRgbaBlur(): void {
-      updateColor('customBlur');
+      updateColor('colorBlur');
     }
 
     return (): VNode | null => {
