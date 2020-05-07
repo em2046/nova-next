@@ -5,9 +5,11 @@ export default defineComponent({
   props: {
     alpha: {
       type: Number,
+      required: true,
     },
     color: {
       type: Object,
+      required: true,
     },
   },
   setup(props, context) {
@@ -32,13 +34,9 @@ export default defineComponent({
     });
 
     return (): VNode | null => {
-      if (!props.color) {
-        return null;
-      }
-
-      const cssRgba = props.color.toCss();
-      const alphaRgb = `${cssRgba.r}, ${cssRgba.g}, ${cssRgba.b}`;
-      const alphaBarBg = `linear-gradient(180deg, rgba(${alphaRgb}, 1), rgba(${alphaRgb}, 0))`;
+      const { r, g, b } = props.color.toCss();
+      const currColorRgb = `${r}, ${g}, ${b}`;
+      const currColorLinearGradient = `linear-gradient(180deg, rgba(${currColorRgb}, 1), rgba(${currColorRgb}, 0))`;
 
       return h(
         'div',
@@ -50,7 +48,7 @@ export default defineComponent({
           h('div', {
             class: 'nova-color-picker-alpha-bar',
             style: {
-              backgroundImage: alphaBarBg,
+              backgroundImage: currColorLinearGradient,
             },
           }),
           h('div', {

@@ -1,3 +1,9 @@
+/**
+ * @property r [0, 255]
+ * @property g [0, 255]
+ * @property b [0, 255]
+ * @property a [0, 1]
+ */
 interface CssRgba {
   r: number;
   g: number;
@@ -5,6 +11,12 @@ interface CssRgba {
   a: number;
 }
 
+/**
+ * @property r [0, 360)
+ * @property g [0, 100]
+ * @property b [0, 100]
+ * @property a [0, 1]
+ */
 interface CssLikeHsva {
   h: number;
   s: number;

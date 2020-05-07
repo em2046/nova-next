@@ -5,6 +5,7 @@ export default defineComponent({
   props: {
     hue: {
       type: Number,
+      required: true,
     },
   },
   setup(props, context) {

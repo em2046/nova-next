@@ -5,12 +5,15 @@ export default defineComponent({
   props: {
     hueReg: {
       type: Number,
+      required: true,
     },
     saturation: {
       type: Number,
+      required: true,
     },
     value: {
       type: Number,
+      required: true,
     },
   },
   setup(props, context) {

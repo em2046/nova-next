@@ -71,17 +71,21 @@ export default defineComponent({
       state.position.alpha = alpha;
     }
 
+    function setColor(color: Color): void {
+      state.color = color;
+    }
+
     function setColorAndPosition(color: Color): void {
       const panelColor = getColorFromPosition();
 
       if (panelColor.toHex() !== color.toHex()) {
         setPositionFromColor(color);
-        state.color = color;
+        setColor(color);
       }
     }
 
     function setColorFromPosition(): void {
-      state.color = getColorFromPosition();
+      setColor(getColorFromPosition());
     }
 
     function updatePropsValue(color: Color): void {

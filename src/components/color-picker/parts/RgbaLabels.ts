@@ -6,6 +6,7 @@ export default defineComponent({
   props: {
     color: {
       type: Object,
+      required: true,
     },
   },
   setup(props, context) {
@@ -90,10 +91,6 @@ export default defineComponent({
     }
 
     return (): VNode | null => {
-      if (!props.color) {
-        return null;
-      }
-
       const cssRgba = props.color.toCss();
 
       const rNode = h('label', { class: 'nova-color-picker-label-primary' }, [

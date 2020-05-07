@@ -4,16 +4,13 @@ export default defineComponent({
   props: {
     color: {
       type: Object,
+      required: true,
     },
   },
   setup(props) {
     return (): VNode | null => {
-      if (!props.color) {
-        return null;
-      }
-
-      const cssRgba = props.color.toCss();
-      const currColor = `rgba(${cssRgba.r}, ${cssRgba.g}, ${cssRgba.b}, ${cssRgba.a})`;
+      const { r, g, b, a } = props.color.toCss();
+      const currColor = `rgba(${r}, ${g}, ${b}, ${a})`;
 
       return h('div', { class: 'nova-color-picker-preview' }, [
         h('div', { class: 'nova-color-picker-preview-prev' }),
