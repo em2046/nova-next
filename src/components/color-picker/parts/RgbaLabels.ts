@@ -1,5 +1,6 @@
 import { defineComponent, h, Ref, ref, VNode } from 'vue';
 import Rgba from '../rgba';
+import Utils from '../../../utils/utils';
 
 export default defineComponent({
   props: {
@@ -18,23 +19,74 @@ export default defineComponent({
     function getRgbValue(domRef: Ref<null>): number {
       const dom = (domRef.value as unknown) as HTMLInputElement;
       const value = dom.value.trim();
-      return parseInt(value, 10);
+      let number = parseInt(value, 10);
+
+      if (Number.isNaN(number)) {
+        number = 0;
+      }
+      number = Utils.limit(number, 0, 255);
+      dom.value = number.toString();
+
+      return number;
     }
 
     function getAlphaValue(domRef: Ref<null>): number {
       const dom = (domRef.value as unknown) as HTMLInputElement;
       const value = dom.value.trim();
-      return parseFloat(value);
+      let number = parseFloat(parseFloat(value).toFixed(2));
+      let needUpdate = false;
+
+      if (Number.isNaN(number)) {
+        number = 1;
+        needUpdate = true;
+      }
+
+      if (number < 0 || number > 1) {
+        number = Utils.limit(number, 0, 1);
+        needUpdate = true;
+      }
+
+      if (/[^\d.]/.test(value)) {
+        needUpdate = true;
+      }
+
+      if (!/^\d{1,3}\.\d{1,2}$/.test(value)) {
+        needUpdate = true;
+      }
+
+      if (needUpdate) {
+        dom.value = number.toString();
+      }
+
+      return number;
     }
 
-    function onRgbaInput(): void {
+    function updateColor(eventName: string): void {
       const r = getRgbValue(rRef);
       const g = getRgbValue(gRef);
       const b = getRgbValue(bRef);
       const a = getAlphaValue(aRef);
-
       const rgba = Rgba.fromCss(r, g, b, a);
-      emit('setColor', rgba);
+      emit(eventName, rgba);
+    }
+
+    function onRgbaInput(e: InputEvent): void {
+      const target = e.target as HTMLInputElement;
+      const value = target.value.trim();
+
+      if (value === '') {
+        return;
+      }
+
+      if (value[value.length - 1] === '.' || value.substr(-2, 2) === '.0') {
+        return;
+      }
+
+      updateColor('customInput');
+    }
+
+    function onRgbaBlur(): void {
+      updateColor('customBlur');
     }
 
     return (): VNode | null => {
@@ -53,6 +105,7 @@ export default defineComponent({
             value: cssRgba.r,
             ref: rRef,
             onInput: onRgbaInput,
+            onBlur: onRgbaBlur,
           })
         ),
       ]);
@@ -66,6 +119,7 @@ export default defineComponent({
             value: cssRgba.g,
             ref: gRef,
             onInput: onRgbaInput,
+            onBlur: onRgbaBlur,
           })
         ),
       ]);
@@ -79,6 +133,7 @@ export default defineComponent({
             value: cssRgba.b,
             ref: bRef,
             onInput: onRgbaInput,
+            onBlur: onRgbaBlur,
           })
         ),
       ]);
@@ -95,6 +150,7 @@ export default defineComponent({
               value: cssRgba.a,
               ref: aRef,
               onInput: onRgbaInput,
+              onBlur: onRgbaBlur,
             })
           ),
         ]

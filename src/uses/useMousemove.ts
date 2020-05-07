@@ -44,8 +44,8 @@ export default function useMousemove(options: UseMousemoveParams): void {
     const target: HTMLElement = (ref.value as unknown) as HTMLElement;
     rect = target.getBoundingClientRect();
 
-    const x = e.offsetX;
-    const y = e.offsetY;
+    const x = e.pageX - rect.x - window.pageXOffset;
+    const y = e.pageY - rect.y - window.pageYOffset;
 
     start && start.call(null);
     move && move.call(null, { x, y });
