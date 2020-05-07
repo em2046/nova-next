@@ -1,5 +1,6 @@
 import { defineComponent, h, VNode } from 'vue';
 import Color from '../color';
+import DomHelper from '../../../utils/dom-helper';
 
 export default defineComponent({
   props: {
@@ -11,46 +12,30 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    function updateColor(value: string, eventName: string): void {
-      const rgba = Color.fromHex(value);
-      if (/^#?(([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)$/.test(value)) {
-        emit(eventName, rgba);
+    function updateColor(eventName: string, hex: string): void {
+      if (Color.hexRule.test(hex)) {
+        const color = Color.fromHex(hex);
+        emit(eventName, color);
       }
     }
 
     function onHexInput(e: InputEvent): void {
-      if (e.target) {
-        const target = e.target as HTMLInputElement;
-        const value = target.value.trim();
-
-        updateColor(value, 'colorInput');
-      }
+      const target = e.target as HTMLInputElement;
+      const value = DomHelper.getInputValue(target);
+      updateColor('colorInput', value);
     }
 
     function onHexBlur(e: InputEvent): void {
       const target = e.target as HTMLInputElement;
-      const oldValue = target.value.trim();
-      let value = oldValue;
+      const inputValue = DomHelper.getInputValue(target);
+      const hex = Color.hexNormalize(inputValue);
+      const hashHex = `#${hex}`;
 
-      value = value.replace(/[^\dA-Fa-f]/g, '');
-
-      if (value.length === 3) {
-        value = `${value[0]}${value[0]}${value[1]}${value[1]}${value[2]}${value[2]}`;
+      if (inputValue !== hashHex) {
+        DomHelper.setInputValue(target, hashHex);
       }
 
-      if (value.length > 8) {
-        value = value.substr(0, 8);
-      }
-
-      if (value.length === 7) {
-        value = value.substr(0, 6);
-      }
-
-      if (oldValue !== '#' + value) {
-        target.value = '#' + value;
-      }
-
-      updateColor(value, 'colorBlur');
+      updateColor('colorBlur', hex);
     }
 
     return (): VNode | null => {

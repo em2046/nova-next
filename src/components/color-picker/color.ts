@@ -36,6 +36,8 @@ export default class Color {
   b: number;
   a: number;
 
+  static hexRule = /^#?(([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)$/;
+
   /**
    * Create
    * @param r [0, 1]
@@ -114,12 +116,26 @@ export default class Color {
     return Color.fromHsva(h, s / 100, v / 100, a);
   }
 
-  static fromHex(hashHex: string): Color {
-    let hex = hashHex.replace('#', '');
+  static hexNormalize(value: string): string {
+    let hex = value.replace(/[^\dA-Fa-f]/g, '');
 
     if (hex.length === 3) {
-      hex = hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+      hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
     }
+
+    if (hex.length > 8) {
+      hex = hex.substr(0, 8);
+    }
+
+    if (hex.length === 7) {
+      hex = hex.substr(0, 6);
+    }
+
+    return hex;
+  }
+
+  static fromHex(hashHex: string): Color {
+    const hex = Color.hexNormalize(hashHex);
 
     const hexRed = hex.substr(0, 2);
     const hexGreen = hex.substr(2, 2);
