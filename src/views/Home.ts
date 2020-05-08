@@ -1,16 +1,12 @@
-import { ref, h, VNode, RenderFunction, defineComponent } from 'vue';
+import { h, VNode, RenderFunction, defineComponent } from 'vue';
+import { RouterLink } from 'vue-router';
 
 export default defineComponent({
   setup(): RenderFunction {
-    const count = ref(0);
-    const inc = (): void => {
-      count.value++;
-    };
-
     return (): VNode[] => [
-      h('div', { class: 'img' }),
-      h('h1', 'Hello Vue 3!'),
-      h('button', { onClick: inc }, `Clicked ${count.value} times.`),
+      h('h1', 'nova-next'),
+      h('p', 'Experimental Vue components'),
+      h(RouterLink, { to: '/color-picker' }, () => 'ColorPicker'),
     ];
   },
 });

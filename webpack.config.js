@@ -47,6 +47,26 @@ module.exports = (env = {}) => ({
           'css-loader',
         ],
       },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { hmr: !env.prod },
+          },
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                strictMath: true,
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [

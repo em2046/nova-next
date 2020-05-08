@@ -1,4 +1,5 @@
 import { defineComponent, h, VNode } from 'vue';
+import Color from '../color';
 
 export default defineComponent({
   props: {
@@ -6,14 +7,29 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    value: {
+      type: String,
+      required: true,
+    },
   },
-  setup(props) {
+  setup(props, context) {
+    const emit = context.emit;
+
+    function onPrevClick(): void {
+      emit('reset');
+    }
     return (): VNode | null => {
-      const { r, g, b, a } = props.color.toCss();
-      const currColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+      const currColor = props.color.toCssRgbaString();
+      const prevColor = Color.fromHex(props.value).toCssRgbaString();
 
       return h('div', { class: 'nova-color-picker-preview' }, [
-        h('div', { class: 'nova-color-picker-preview-prev' }),
+        h('div', {
+          class: 'nova-color-picker-preview-prev',
+          style: {
+            backgroundColor: prevColor,
+          },
+          onClick: onPrevClick,
+        }),
         h('div', {
           class: 'nova-color-picker-preview-curr',
           style: {

@@ -164,6 +164,14 @@ export default class Color {
   }
 
   /**
+   * @return string like rgba(255, 255, 255, 0.5)
+   */
+  toCssRgbaString(): string {
+    const { r, g, b, a } = this.toCss();
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  }
+
+  /**
    * @return hex like ff0000
    */
   toHex(): string {

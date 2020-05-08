@@ -38,9 +38,6 @@ export default defineComponent({
       move: (position) => {
         emit('move', position);
       },
-      finish: () => {
-        emit('finish');
-      },
     });
 
     return (): VNode => {

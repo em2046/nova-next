@@ -1,8 +1,8 @@
-.nova-color-picker {
-  user-select: none;
-}
+@import "../../../styles/_mixins.less";
 
 .nova-color-picker-panel {
+  user-select: none;
+  position: absolute;
   box-sizing: border-box;
   padding: 20px 20px 15px 20px;
   font-size: 12px;
@@ -80,16 +80,7 @@
 }
 
 .nova-color-picker-alpha-slide {
-  background-image: linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0.2) 25%,
-      transparent 25%
-    ),
-    linear-gradient(-45deg, rgba(0, 0, 0, 0.2) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.2) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.2) 75%);
-  background-size: 10px 10px;
-  background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+  .checkerboard()
 }
 
 .nova-color-picker-alpha-bar {
@@ -199,14 +190,14 @@
 
 .nova-color-picker-preview-prev {
   background-color: #804040;
-  border: 1px solid #000000;
+  border: 1px solid #333333;
 }
 
 .nova-color-picker-preview-curr {
-  background-color: #7f3f3f;
+  background-color: #804040;
   margin-top: -20px;
   margin-left: 20px;
-  border: 1px solid #ffffff;
+  border: 1px solid #333333;
 }
 
 .nova-color-picker-preview-fill-right,

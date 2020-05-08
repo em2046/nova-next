@@ -6,6 +6,9 @@ import {
   VNode,
   watch,
   onMounted,
+  onUnmounted,
+  Teleport,
+  ref,
 } from 'vue';
 import Color from './color';
 import Utils from '../../utils/utils';
@@ -16,6 +19,7 @@ import AlphaSlide from './parts/slides/AlphaSlide';
 import Preview from './parts/Preview';
 import RgbaLabels from './parts/labels/RgbaLabels';
 import HexLabel from './parts/labels/HexLabel';
+import DomHelper from '../../utils/dom-helper';
 
 export default defineComponent({
   model: {
@@ -30,6 +34,9 @@ export default defineComponent({
   setup: function (props, context) {
     const emit = context.emit;
 
+    const triggerRef = ref(null);
+    const dropdownRef = ref(null);
+
     const state = reactive({
       position: {
         // pos [0, 200] -> CSS h [0, 360]
@@ -42,6 +49,28 @@ export default defineComponent({
         alpha: 0,
       },
       color: Color.fromCssLikeHsva(0, 100, 100, 1),
+      dropdown: {
+        opened: false,
+        offset: {
+          left: 0,
+          top: 0,
+        },
+      },
+    });
+
+    const dropdownStyle = computed(() => {
+      const offset = state.dropdown.offset;
+      return {
+        left: `${offset.left}px`,
+        top: `${offset.top}px`,
+      };
+    });
+
+    const triggerInnerStyle = computed(() => {
+      const { r, g, b, a } = state.color.toCss();
+      return {
+        backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})`,
+      };
     });
 
     const hueDegrees = computed(() => {
@@ -92,6 +121,37 @@ export default defineComponent({
       emit('update', `#${color.toHex()}`);
     }
 
+    function onVirtualMaskMousedown(e: MouseEvent): void {
+      const target = e.target as HTMLElement;
+      const dropdown = (dropdownRef.value as unknown) as HTMLElement;
+      const stopDropdown = DomHelper.isInElement(target, dropdown);
+      const trigger = (triggerRef.value as unknown) as HTMLElement;
+      const stopTrigger = DomHelper.isInElement(target, trigger);
+
+      if (stopDropdown || stopTrigger) {
+        return;
+      }
+
+      updatePropsValue(state.color);
+
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      closeDropdown();
+    }
+
+    function closeDropdown(): void {
+      document.removeEventListener('mousedown', onVirtualMaskMousedown);
+      state.dropdown.opened = false;
+    }
+
+    function onTriggerClick(): void {
+      document.addEventListener('mousedown', onVirtualMaskMousedown);
+      state.dropdown.opened = true;
+      const trigger = (triggerRef.value as unknown) as HTMLElement;
+      const rect = DomHelper.getElementPosition(trigger);
+      state.dropdown.offset.left = rect.left;
+      state.dropdown.offset.top = rect.top + rect.height;
+    }
+
     watch(
       () => props.value,
       (value, prevValue) => {
@@ -102,12 +162,33 @@ export default defineComponent({
       }
     );
 
-    onMounted(() => {
+    onUnmounted(() => {
+      closeDropdown();
+    });
+
+    function init(): void {
       const color = Color.fromHex(props.value);
       setColorAndPosition(color);
+    }
+
+    onMounted(() => {
+      init();
     });
 
     return (): VNode => {
+      const triggerNode = h(
+        'div',
+        {
+          class: 'nova-color-picker-trigger',
+          ref: triggerRef,
+          onClick: onTriggerClick,
+        },
+        h('div', {
+          class: 'nova-color-picker-trigger-inner',
+          style: triggerInnerStyle.value,
+        })
+      );
+
       const hsvPanelNode = h(HsvPanel, {
         hueReg: hueDegrees.value,
         saturation: state.position.saturation,
@@ -117,9 +198,6 @@ export default defineComponent({
           state.position.value = Utils.numberLimit(position.y, 0, 200);
           setColorFromPosition();
         },
-        onFinish: () => {
-          updatePropsValue(state.color);
-        },
       });
 
       const hueSlideNode = h(HueSlide, {
@@ -127,9 +205,6 @@ export default defineComponent({
         onMove: (position: MousePosition) => {
           state.position.hue = Utils.numberLimit(position.y, 0, 200);
           setColorFromPosition();
-        },
-        onFinish: () => {
-          updatePropsValue(state.color);
         },
       });
 
@@ -139,9 +214,6 @@ export default defineComponent({
         onMove: (position: MousePosition) => {
           state.position.alpha = Utils.numberLimit(position.y, 0, 200);
           setColorFromPosition();
-        },
-        onFinish: () => {
-          updatePropsValue(state.color);
         },
       });
 
@@ -157,7 +229,7 @@ export default defineComponent({
             setColorAndPosition(color);
           },
           onColorBlur: (color: Color) => {
-            updatePropsValue(color);
+            setColorAndPosition(color);
           },
         }),
         h(HexLabel, {
@@ -166,25 +238,44 @@ export default defineComponent({
             setColorAndPosition(color);
           },
           onColorBlur: (color: Color) => {
-            updatePropsValue(color);
+            setColorAndPosition(color);
           },
         }),
       ]);
 
       const previewNode = h(Preview, {
         color: state.color,
+        value: props.value,
+        onReset() {
+          init();
+        },
       });
 
-      return h(
-        'div',
-        { class: 'nova-color-picker' },
-        h('div', { class: 'nova-color-picker-panel' }, [
-          hsvPanelNode,
-          slidesNode,
-          formNode,
-          previewNode,
-        ])
-      );
+      function createDropdown(): VNode | null {
+        if (!state.dropdown.opened) {
+          return null;
+        }
+        return h(
+          Teleport,
+          { to: 'body' },
+          h(
+            'div',
+            {
+              ref: dropdownRef,
+              class: 'nova-color-picker-panel',
+              style: dropdownStyle.value,
+            },
+            [hsvPanelNode, slidesNode, formNode, previewNode]
+          )
+        );
+      }
+
+      const dropdownNode = createDropdown();
+
+      return h('div', { class: 'nova-color-picker' }, [
+        triggerNode,
+        dropdownNode,
+      ]);
     };
   },
 });

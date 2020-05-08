@@ -8,12 +8,12 @@ export default defineComponent({
         h('nav', { id: 'nav' }, [
           h('ul', [
             h('li', [h(RouterLink, { to: '/' }, () => 'Home')]),
-            h('li', [h(RouterLink, { to: '/button' }, () => 'Button')]),
-            h('li', [h(RouterLink, { to: '/input' }, () => 'Input')]),
+            // h('li', [h(RouterLink, { to: '/button' }, () => 'Button')]),
+            // h('li', [h(RouterLink, { to: '/input' }, () => 'Input')]),
             h('li', [
               h(RouterLink, { to: '/color-picker' }, () => 'ColorPicker'),
             ]),
-            h('li', [h(RouterLink, { to: '/about' }, () => 'About')]),
+            // h('li', [h(RouterLink, { to: '/about' }, () => 'About')]),
           ]),
         ]),
       ]),
