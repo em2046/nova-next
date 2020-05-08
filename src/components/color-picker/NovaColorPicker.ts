@@ -6,9 +6,9 @@ import {
   VNode,
   watch,
   onMounted,
-  onUnmounted,
   Teleport,
   ref,
+  Ref,
 } from 'vue';
 import Color from './color';
 import Utils from '../../utils/utils';
@@ -19,7 +19,8 @@ import AlphaSlide from './parts/slides/AlphaSlide';
 import Preview from './parts/Preview';
 import RgbaLabels from './parts/labels/RgbaLabels';
 import HexLabel from './parts/labels/HexLabel';
-import DomHelper from '../../utils/dom-helper';
+import Trigger from './parts/Trigger';
+import useDropdown from '../../uses/useDropdown';
 
 export default defineComponent({
   model: {
@@ -29,6 +30,10 @@ export default defineComponent({
     value: {
       type: String,
       default: '#ff0000',
+    },
+    teleportToBody: {
+      type: Boolean,
+      default: true,
     },
   },
   setup: function (props, context) {
@@ -49,28 +54,6 @@ export default defineComponent({
         alpha: 0,
       },
       color: Color.fromCssLikeHsva(0, 100, 100, 1),
-      dropdown: {
-        opened: false,
-        offset: {
-          left: 0,
-          top: 0,
-        },
-      },
-    });
-
-    const dropdownStyle = computed(() => {
-      const offset = state.dropdown.offset;
-      return {
-        left: `${offset.left}px`,
-        top: `${offset.top}px`,
-      };
-    });
-
-    const triggerInnerStyle = computed(() => {
-      const { r, g, b, a } = state.color.toCss();
-      return {
-        backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})`,
-      };
     });
 
     const hueDegrees = computed(() => {
@@ -121,36 +104,13 @@ export default defineComponent({
       emit('update', `#${color.toHex()}`);
     }
 
-    function onVirtualMaskMousedown(e: MouseEvent): void {
-      const target = e.target as HTMLElement;
-      const dropdown = (dropdownRef.value as unknown) as HTMLElement;
-      const stopDropdown = DomHelper.isInElement(target, dropdown);
-      const trigger = (triggerRef.value as unknown) as HTMLElement;
-      const stopTrigger = DomHelper.isInElement(target, trigger);
-
-      if (stopDropdown || stopTrigger) {
-        return;
-      }
-
-      updatePropsValue(state.color);
-
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      closeDropdown();
-    }
-
-    function closeDropdown(): void {
-      document.removeEventListener('mousedown', onVirtualMaskMousedown);
-      state.dropdown.opened = false;
-    }
-
-    function onTriggerClick(): void {
-      document.addEventListener('mousedown', onVirtualMaskMousedown);
-      state.dropdown.opened = true;
-      const trigger = (triggerRef.value as unknown) as HTMLElement;
-      const rect = DomHelper.getElementPosition(trigger);
-      state.dropdown.offset.left = rect.left;
-      state.dropdown.offset.top = rect.top + rect.height;
-    }
+    const { dropdown, dropdownStyle } = useDropdown({
+      triggerRef,
+      dropdownRef,
+      onClose: () => {
+        updatePropsValue(state.color);
+      },
+    });
 
     watch(
       () => props.value,
@@ -162,10 +122,6 @@ export default defineComponent({
       }
     );
 
-    onUnmounted(() => {
-      closeDropdown();
-    });
-
     function init(): void {
       const color = Color.fromHex(props.value);
       setColorAndPosition(color);
@@ -176,18 +132,12 @@ export default defineComponent({
     });
 
     return (): VNode => {
-      const triggerNode = h(
-        'div',
-        {
-          class: 'nova-color-picker-trigger',
-          ref: triggerRef,
-          onClick: onTriggerClick,
+      const triggerNode = h(Trigger, {
+        color: state.color,
+        onAssignRef: (assignedRef: Ref<null>) => {
+          triggerRef.value = assignedRef.value;
         },
-        h('div', {
-          class: 'nova-color-picker-trigger-inner',
-          style: triggerInnerStyle.value,
-        })
-      );
+      });
 
       const hsvPanelNode = h(HsvPanel, {
         hueReg: hueDegrees.value,
@@ -252,12 +202,12 @@ export default defineComponent({
       });
 
       function createDropdown(): VNode | null {
-        if (!state.dropdown.opened) {
+        if (!dropdown.opened) {
           return null;
         }
         return h(
           Teleport,
-          { to: 'body' },
+          { to: 'body', disabled: !props.teleportToBody },
           h(
             'div',
             {

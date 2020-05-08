@@ -1,5 +1,6 @@
 import { computed, defineComponent, h, ref, VNode } from 'vue';
 import useMousemove from '../../../../uses/useMousemove';
+import Utils from '../../../../utils/utils';
 
 export default defineComponent({
   props: {
@@ -14,8 +15,9 @@ export default defineComponent({
     const hueSlideRef = ref(null);
 
     const hueThumbStyle = computed(() => {
+      const y = Utils.numberFixed(props.hue, 2);
       return {
-        transform: `translate(0, ${props.hue}px)`,
+        transform: `translate(0, ${y}px)`,
       };
     });
 

@@ -4,7 +4,7 @@ import { NovaColorPicker } from '../../components/color-picker';
 export default defineComponent({
   setup() {
     const color1Default = '#ffff00';
-    const color2Default = '#ffff0080';
+    const color2Default = '#ffff007f';
 
     const state = reactive({
       color1: color1Default,
@@ -38,7 +38,11 @@ export default defineComponent({
           state.color2,
           h('button', { onClick: onColor2Reset }, ['reset']),
         ]),
-        h(NovaColorPicker, { value: state.color2, onUpdate: onColor2Update }),
+        h(NovaColorPicker, {
+          value: state.color2,
+          onUpdate: onColor2Update,
+          teleportToBody: false,
+        }),
       ]),
     ];
   },

@@ -1,5 +1,6 @@
 import { computed, defineComponent, h, ref, VNode } from 'vue';
 import useMousemove from '../../../uses/useMousemove';
+import Utils from '../../../utils/utils';
 
 export default defineComponent({
   props: {
@@ -22,8 +23,10 @@ export default defineComponent({
     const hsvRef = ref(null);
 
     const cursorStyle = computed(() => {
+      const x = Utils.numberFixed(props.saturation, 2);
+      const y = Utils.numberFixed(props.value, 2);
       return {
-        transform: `translate(${props.saturation}px, ${props.value}px)`,
+        transform: `translate(${x}px, ${y}px)`,
       };
     });
 

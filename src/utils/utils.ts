@@ -13,4 +13,9 @@ export default class Utils {
     }
     return n;
   }
+
+  static numberFixed(n: number, fractionDigits: number): string {
+    const fixed = n.toFixed(fractionDigits);
+    return parseFloat(fixed).toString();
+  }
 }
