@@ -1,20 +1,28 @@
 {
   "name": "@em2046/nova-next",
-  "version": "2.0.0-alpha.0",
   "description": "Experimental Vue components",
-  "license": "MIT",
+  "version": "2.0.0-alpha.1",
   "author": {
     "name": "em2046",
     "email": "em2046@qq.com"
   },
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "module": "dist/nova.esm.js",
   "scripts": {
     "dev": "webpack-dev-server",
     "build-demo": "webpack --env.prod",
-    "build": "rollup --config build/rollup.config.es.js -m",
+    "build-style": "gulp -f gulpfile.esm.js extractStyle",
+    "build-rollup": "rollup --config build/rollup/rollup.config.es.js -m",
+    "build": "yarn build-rollup & yarn build-style",
     "test": "yarn jest",
-    "prettier": "prettier --write src/**/*.{ts,tsx,less,css}",
+    "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,less,css}",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
-    "format": "yarn prettier & yarn lint"
+    "format": "yarn prettier & yarn lint",
+    "prepublishOnly": "yarn format & yarn build"
   },
   "repository": {
     "type": "git",
@@ -35,10 +43,15 @@
     "@vue/test-utils": "^2.0.0-alpha.4",
     "css-loader": "^3.5.3",
     "eslint": "^6.8.0",
+    "esm": "^3.2.25",
     "file-loader": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-less": "^4.0.1",
+    "gulp-rename": "^2.0.0",
     "jest": "^26.0.1",
     "less": "^3.11.1",
     "less-loader": "^6.1.0",
+    "less-plugin-autoprefix": "^2.0.0",
     "mini-css-extract-plugin": "^0.9.0",
     "prettier": "^2.0.5",
     "ts-jest": "^25.5.0",

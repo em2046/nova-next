@@ -2,5 +2,7 @@
 node_modules
 # don't lint build output (make sure it's set to your correct build folder name)
 dist
-# don't lint rollup
+# don't lint build scripts
 build
+# don't lint gulpfile
+gulpfile.esm.js
