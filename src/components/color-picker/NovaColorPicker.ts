@@ -39,8 +39,8 @@ export default defineComponent({
   setup: function (props, context) {
     const emit = context.emit;
 
-    const triggerRef = ref(null);
-    const dropdownRef = ref(null);
+    const triggerRef: Ref<HTMLElement | null> = ref(null);
+    const dropdownRef: Ref<HTMLElement | null> = ref(null);
 
     const state = reactive({
       position: {
@@ -134,7 +134,7 @@ export default defineComponent({
     return (): VNode => {
       const triggerNode = h(Trigger, {
         color: state.color,
-        onAssignRef: (assignedRef: Ref<null>) => {
+        onAssignRef: (assignedRef: Ref<HTMLElement | null>) => {
           triggerRef.value = assignedRef.value;
         },
       });

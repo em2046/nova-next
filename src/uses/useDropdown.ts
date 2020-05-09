@@ -9,8 +9,8 @@ import {
 import DomHelper from '../utils/dom-helper';
 
 interface UseDropdownParams {
-  triggerRef: Ref<null>;
-  dropdownRef: Ref<null>;
+  triggerRef: Ref<HTMLElement | null>;
+  dropdownRef: Ref<HTMLElement | null>;
   onOpen?: () => void;
   onClose?: () => void;
 }
@@ -47,9 +47,9 @@ export default function useDropdown(
 
   function onVirtualMaskMousedown(e: MouseEvent): void {
     const target = e.target as HTMLElement;
-    const dropdown = (dropdownRef.value as unknown) as HTMLElement;
+    const dropdown = dropdownRef.value as HTMLElement;
     const stopDropdown = DomHelper.isInElement(target, dropdown);
-    const trigger = (triggerRef.value as unknown) as HTMLElement;
+    const trigger = triggerRef.value as HTMLElement;
     const stopTrigger = DomHelper.isInElement(target, trigger);
 
     if (stopDropdown || stopTrigger) {
@@ -69,7 +69,7 @@ export default function useDropdown(
   function openDropdown(): void {
     document.addEventListener('mousedown', onVirtualMaskMousedown);
     state.dropdown.opened = true;
-    const trigger = (triggerRef.value as unknown) as HTMLElement;
+    const trigger = triggerRef.value as HTMLElement;
     const rect = DomHelper.getElementPosition(trigger);
     state.dropdown.offset.left = rect.left;
     state.dropdown.offset.top = rect.top + rect.height;
@@ -77,13 +77,13 @@ export default function useDropdown(
   }
 
   onMounted(() => {
-    const trigger = (triggerRef.value as unknown) as HTMLElement;
+    const trigger = triggerRef.value as HTMLElement;
     trigger.addEventListener('click', openDropdown);
   });
 
   onBeforeUnmount(() => {
     closeDropdown();
-    const trigger = (triggerRef.value as unknown) as HTMLElement;
+    const trigger = triggerRef.value as HTMLElement;
     trigger.removeEventListener('click', openDropdown);
   });
 

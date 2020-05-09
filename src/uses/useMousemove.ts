@@ -6,7 +6,7 @@ export interface MousePosition {
 }
 
 interface UseMousemoveParams {
-  ref: Ref<null>;
+  ref: Ref<HTMLElement | null>;
   start?: () => void;
   move?: (position: MousePosition) => void;
   finish?: () => void;
@@ -41,7 +41,7 @@ export default function useMousemove(options: UseMousemoveParams): void {
   }
 
   function onMousedown(e: MouseEvent): void {
-    const target: HTMLElement = (ref.value as unknown) as HTMLElement;
+    const target: HTMLElement = ref.value as HTMLElement;
     rect = target.getBoundingClientRect();
 
     const x = e.pageX - rect.x - window.pageXOffset;
@@ -55,12 +55,12 @@ export default function useMousemove(options: UseMousemoveParams): void {
   }
 
   onMounted(() => {
-    const target: HTMLElement = (ref.value as unknown) as HTMLElement;
+    const target: HTMLElement = ref.value as HTMLElement;
     target.addEventListener('mousedown', onMousedown);
   });
 
   onBeforeUnmount(() => {
-    const target: HTMLElement = (ref.value as unknown) as HTMLElement;
+    const target: HTMLElement = ref.value as HTMLElement;
     target.removeEventListener('mousedown', onMousedown);
     document.removeEventListener('mousemove', onMousemove);
     document.removeEventListener('mouseup', onMouseup);

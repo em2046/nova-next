@@ -4,7 +4,7 @@ import Utils from '../../../../utils/utils';
 import DomHelper from '../../../../utils/dom-helper';
 
 interface ChannelParams {
-  channelRef: Ref<null>;
+  channelRef: Ref<HTMLElement | null>;
   label: string;
   value: number;
   onInput: (e: InputEvent) => void;
@@ -37,8 +37,13 @@ export default defineComponent({
       return number;
     }
 
-    function getRgbValue(domRef: Ref<null>): number {
-      const input = (domRef.value as unknown) as HTMLInputElement;
+    function getChannelValue(domRef: Ref<HTMLElement | null>): number | null {
+      if (!domRef.value) {
+        return null;
+      }
+
+      const input = domRef.value as HTMLInputElement;
+
       const value = DomHelper.getInputValue(input);
       const number = rgbNormalize(value);
       DomHelper.setInputValue(input, number);
@@ -58,8 +63,12 @@ export default defineComponent({
       return number;
     }
 
-    function getAlphaValue(domRef: Ref<null>): number {
-      const input = (domRef.value as unknown) as HTMLInputElement;
+    function getAlphaValue(domRef: Ref<HTMLElement | null>): number | null {
+      if (!domRef.value) {
+        return null;
+      }
+
+      const input = domRef.value as HTMLInputElement;
       const value = DomHelper.getInputValue(input);
       const number = alphaNormalize(value);
 
@@ -71,10 +80,15 @@ export default defineComponent({
     }
 
     function updateColor(eventName: string): void {
-      const r = getRgbValue(rRef);
-      const g = getRgbValue(gRef);
-      const b = getRgbValue(bRef);
+      const r = getChannelValue(rRef);
+      const g = getChannelValue(gRef);
+      const b = getChannelValue(bRef);
       const a = getAlphaValue(aRef);
+
+      if (r === null || g === null || b === null || a === null) {
+        return;
+      }
+
       const color = Color.fromCss(r, g, b, a);
       emit(eventName, color);
     }

@@ -23,6 +23,8 @@ export default defineComponent({
       const currColor = props.color.toCssRgbaString();
 
       return h('div', { class: 'nova-color-picker-preview' }, [
+        h('div', { class: 'nova-color-picker-preview-fill-right' }),
+        h('div', { class: 'nova-color-picker-preview-fill-left' }),
         h('div', {
           class: 'nova-color-picker-preview-prev',
           style: {
@@ -36,8 +38,6 @@ export default defineComponent({
             backgroundColor: currColor,
           },
         }),
-        h('div', { class: 'nova-color-picker-preview-fill-right' }),
-        h('div', { class: 'nova-color-picker-preview-fill-left' }),
       ]);
     };
   },

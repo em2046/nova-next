@@ -24,6 +24,13 @@ interface CssLikeHsva {
   a: number;
 }
 
+function hexSimplify(hex: string): string {
+  if (hex[0] === hex[1] && hex[2] === hex[3] && hex[4] === hex[5]) {
+    return `${hex[0]}${hex[2]}${hex[4]}`;
+  }
+  return hex;
+}
+
 /**
  * @property r [0, 1]
  * @property g [0, 1]
@@ -36,7 +43,7 @@ export default class Color {
   b: number;
   a: number;
 
-  static hexRule = /^#?(([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)$/;
+  static hexRule = /^#?((([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)|([\dA-Fa-f]{3}))$/;
 
   /**
    * Create
@@ -119,10 +126,6 @@ export default class Color {
   static hexNormalize(value: string): string {
     let hex = value.replace(/[^\dA-Fa-f]/g, '');
 
-    if (hex.length === 3) {
-      hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
-    }
-
     if (hex.length > 8) {
       hex = hex.substr(0, 8);
     }
@@ -135,7 +138,11 @@ export default class Color {
   }
 
   static fromHex(hashHex: string): Color {
-    const hex = Color.hexNormalize(hashHex);
+    let hex = Color.hexNormalize(hashHex);
+
+    if (hex.length === 3) {
+      hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+    }
 
     const hexRed = hex.substr(0, 2);
     const hexGreen = hex.substr(2, 2);
@@ -174,7 +181,7 @@ export default class Color {
   /**
    * @return hex like ff0000
    */
-  toHex(): string {
+  toHex(short = false): string {
     const { r, g, b } = this.toCss();
     const a = this.a;
 
@@ -186,7 +193,11 @@ export default class Color {
       .padStart(2, '0');
 
     if (hexA === 'ff') {
-      return `${hexR}${hexG}${hexB}`;
+      const hex = `${hexR}${hexG}${hexB}`;
+      if (short) {
+        return hexSimplify(hex);
+      }
+      return hex;
     }
 
     return `${hexR}${hexG}${hexB}${hexA}`;
