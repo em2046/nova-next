@@ -32,6 +32,7 @@ export default defineComponent({
       if (Number.isNaN(number)) {
         number = 0;
       }
+
       number = Utils.numberLimit(number, 0, 255);
       return number;
     }
@@ -74,8 +75,8 @@ export default defineComponent({
       const g = getRgbValue(gRef);
       const b = getRgbValue(bRef);
       const a = getAlphaValue(aRef);
-      const rgba = Color.fromCss(r, g, b, a);
-      emit(eventName, rgba);
+      const color = Color.fromCss(r, g, b, a);
+      emit(eventName, color);
     }
 
     function onRgbInput(e: InputEvent): void {
@@ -108,7 +109,7 @@ export default defineComponent({
       updateColor('colorBlur');
     }
 
-    function createChannelNode(options: ChannelParams): VNode {
+    function createChannel(options: ChannelParams): VNode {
       const { channelRef, label, value, onInput } = options;
 
       return h('label', { class: 'nova-color-picker-label' }, [
@@ -119,7 +120,7 @@ export default defineComponent({
           h('input', {
             value,
             ref: channelRef,
-            onInput: onInput,
+            onInput,
             onBlur: onRgbaBlur,
           })
         ),
@@ -129,28 +130,28 @@ export default defineComponent({
     return (): VNode | null => {
       const { r, g, b, a } = props.color.toCss();
 
-      const rNode = createChannelNode({
+      const rNode = createChannel({
         channelRef: rRef,
         label: 'R',
         value: r,
         onInput: onRgbInput,
       });
 
-      const gNode = createChannelNode({
+      const gNode = createChannel({
         channelRef: gRef,
         label: 'G',
         value: g,
         onInput: onRgbInput,
       });
 
-      const bNode = createChannelNode({
+      const bNode = createChannel({
         channelRef: bRef,
         label: 'B',
         value: b,
         onInput: onRgbInput,
       });
 
-      const aNode = createChannelNode({
+      const aNode = createChannel({
         channelRef: aRef,
         label: 'A',
         value: a,

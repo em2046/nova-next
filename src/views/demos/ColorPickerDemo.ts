@@ -4,7 +4,7 @@ import { NovaColorPicker } from '../../components/color-picker';
 export default defineComponent({
   setup() {
     const color1Default = '#ffff00';
-    const color2Default = '#ffff007f';
+    const color2Default = '#ffff0080';
 
     const state = reactive({
       color1: color1Default,

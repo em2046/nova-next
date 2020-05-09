@@ -19,8 +19,8 @@ export default defineComponent({
       emit('reset');
     }
     return (): VNode | null => {
-      const currColor = props.color.toCssRgbaString();
       const prevColor = Color.fromHex(props.value).toCssRgbaString();
+      const currColor = props.color.toCssRgbaString();
 
       return h('div', { class: 'nova-color-picker-preview' }, [
         h('div', {

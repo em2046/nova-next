@@ -7,7 +7,7 @@ describe('color-picker', () => {
     const wrapper = mount({
       setup() {
         const state = reactive({
-          color: '#7f7f7f7f',
+          color: '#80808080',
         });
         return (): VNode => {
           return h('div', [
