@@ -19,7 +19,7 @@ export default defineComponent({
     const alphaSlideRef = ref(null);
 
     const alphaThumbStyle = computed(() => {
-      const y = Utils.numberFixed(props.alpha, 2);
+      const y = Utils.numberFixed(props.alpha);
       return {
         transform: `translate(0, ${y}px)`,
       };

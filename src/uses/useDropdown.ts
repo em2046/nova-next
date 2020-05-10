@@ -6,7 +6,7 @@ import {
   computed,
   ComputedRef,
 } from 'vue';
-import DomHelper from '../utils/dom-helper';
+import DomUtils from '../utils/dom-utils';
 
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
@@ -48,9 +48,9 @@ export default function useDropdown(
   function onVirtualMaskMousedown(e: MouseEvent): void {
     const target = e.target as HTMLElement;
     const dropdown = dropdownRef.value as HTMLElement;
-    const stopDropdown = DomHelper.isInElement(target, dropdown);
+    const stopDropdown = DomUtils.isInElement(target, dropdown);
     const trigger = triggerRef.value as HTMLElement;
-    const stopTrigger = DomHelper.isInElement(target, trigger);
+    const stopTrigger = DomUtils.isInElement(target, trigger);
 
     if (stopDropdown || stopTrigger) {
       return;
@@ -70,7 +70,7 @@ export default function useDropdown(
     document.addEventListener('mousedown', onVirtualMaskMousedown);
     state.dropdown.opened = true;
     const trigger = triggerRef.value as HTMLElement;
-    const rect = DomHelper.getElementPosition(trigger);
+    const rect = DomUtils.getElementPosition(trigger);
     state.dropdown.offset.left = rect.left;
     state.dropdown.offset.top = rect.top + rect.height;
     onOpen && onOpen.call(null);

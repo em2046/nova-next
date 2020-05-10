@@ -1,6 +1,6 @@
 export default class Utils {
   /**
-   * Return number in [low high]
+   * Return number in the [low, high]
    * @param n Input number
    * @param low Min limit
    * @param high Max limit
@@ -14,7 +14,12 @@ export default class Utils {
     return n;
   }
 
-  static numberFixed(n: number, fractionDigits: number): string {
+  /**
+   * Keep some digits after the decimal point, remove trailing zeros
+   * @param n Input number
+   * @param fractionDigits Number of digits after the decimal point. Must be in the [0, 20]
+   */
+  static numberFixed(n: number, fractionDigits = 2): string {
     const fixed = n.toFixed(fractionDigits);
     return parseFloat(fixed).toString();
   }

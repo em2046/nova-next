@@ -15,7 +15,7 @@ export default defineComponent({
     const hueSlideRef = ref(null);
 
     const hueThumbStyle = computed(() => {
-      const y = Utils.numberFixed(props.hue, 2);
+      const y = Utils.numberFixed(props.hue);
       return {
         transform: `translate(0, ${y}px)`,
       };

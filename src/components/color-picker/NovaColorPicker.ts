@@ -44,18 +44,29 @@ export default defineComponent({
 
     const state = reactive({
       position: {
-        // pos [0, 200] -> CSS h [0, 360]
+        /**
+         * [0, 200] -> CSS [0, 360)
+         */
         hue: 0,
-        // pos [0, 200] -> CSS s [0, 100]
+        /**
+         * [0, 200] -> CSS [0, 100]
+         */
         saturation: 200,
-        // pos [0, 200] -> CSS v [100, 0]
+        /**
+         * [0, 200] -> CSS [100, 0]
+         */
         value: 0,
-        // pos [0, 200] -> CSS a [1, 0]
+        /**
+         * [0, 200] -> CSS [1, 0]
+         */
         alpha: 0,
       },
       color: Color.fromCssLikeHsva(0, 100, 100, 1),
     });
 
+    /**
+     * [0, 360)
+     */
     const hueDegrees = computed(() => {
       return Math.round((state.position.hue / 200) * 360) % 360;
     });
@@ -101,7 +112,7 @@ export default defineComponent({
     }
 
     function updatePropsValue(color: Color): void {
-      emit('update', `#${color.toHex()}`);
+      emit('update', color.toCssHexString());
     }
 
     const { dropdown, dropdownStyle } = useDropdown({

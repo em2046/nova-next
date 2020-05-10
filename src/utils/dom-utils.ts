@@ -1,6 +1,6 @@
 const defaultSearchLimit = 1024;
 
-export default class DomHelper {
+export default class DomUtils {
   static getInputValue(target: HTMLInputElement): string {
     return target.value.trim();
   }
@@ -30,5 +30,29 @@ export default class DomHelper {
     }
 
     return false;
+  }
+
+  static getStyleOf(element: HTMLElement, prop: string): string {
+    return getComputedStyle(element).getPropertyValue(prop);
+  }
+
+  static getPixelNumber(pixel: string): number {
+    if (pixel.indexOf('px') !== pixel.length - 2) {
+      throw new Error('Can only get pixel type');
+    }
+
+    return parseFloat(pixel);
+  }
+
+  static getBorderTopWidth(element: HTMLElement): number {
+    const borderTopWidth = DomUtils.getStyleOf(element, 'border-top-width');
+
+    return DomUtils.getPixelNumber(borderTopWidth);
+  }
+
+  static getBorderLeftWidth(element: HTMLElement): number {
+    const borderLeftWidth = DomUtils.getStyleOf(element, 'border-left-width');
+
+    return DomUtils.getPixelNumber(borderLeftWidth);
   }
 }

@@ -1,7 +1,7 @@
 import { defineComponent, h, Ref, ref, VNode } from 'vue';
 import Color from '../../color';
 import Utils from '../../../../utils/utils';
-import DomHelper from '../../../../utils/dom-helper';
+import DomUtils from '../../../../utils/dom-utils';
 
 interface ChannelParams {
   channelRef: Ref<HTMLElement | null>;
@@ -44,9 +44,9 @@ export default defineComponent({
 
       const input = domRef.value as HTMLInputElement;
 
-      const value = DomHelper.getInputValue(input);
+      const value = DomUtils.getInputValue(input);
       const number = rgbNormalize(value);
-      DomHelper.setInputValue(input, number);
+      DomUtils.setInputValue(input, number);
 
       return number;
     }
@@ -69,11 +69,11 @@ export default defineComponent({
       }
 
       const input = domRef.value as HTMLInputElement;
-      const value = DomHelper.getInputValue(input);
+      const value = DomUtils.getInputValue(input);
       const number = alphaNormalize(value);
 
       if (number.toString() !== value) {
-        DomHelper.setInputValue(input, number);
+        DomUtils.setInputValue(input, number);
       }
 
       return number;
@@ -95,7 +95,7 @@ export default defineComponent({
 
     function onRgbInput(e: InputEvent): void {
       const input = e.target as HTMLInputElement;
-      const value = DomHelper.getInputValue(input);
+      const value = DomUtils.getInputValue(input);
 
       if (value === '') {
         return;
@@ -108,7 +108,7 @@ export default defineComponent({
 
     function onAlphaInput(e: InputEvent): void {
       const input = e.target as HTMLInputElement;
-      const value = DomHelper.getInputValue(input);
+      const value = DomUtils.getInputValue(input);
 
       if (value === '') {
         return;

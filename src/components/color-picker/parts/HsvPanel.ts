@@ -23,8 +23,8 @@ export default defineComponent({
     const hsvRef = ref(null);
 
     const cursorStyle = computed(() => {
-      const x = Utils.numberFixed(props.saturation, 2);
-      const y = Utils.numberFixed(props.value, 2);
+      const x = Utils.numberFixed(props.saturation);
+      const y = Utils.numberFixed(props.value);
       return {
         transform: `translate(${x}px, ${y}px)`,
       };

@@ -14,7 +14,7 @@
   "module": "dist/nova.esm.js",
   "scripts": {
     "dev": "vite",
-    "build-style": "gulp -f gulpfile.esm.js extractStyle",
+    "build-style": "gulp -f gulpfile.esm.js style",
     "build-rollup": "rollup --config build/rollup/rollup.config.es.js -m",
     "build": "yarn build-style & yarn build-rollup",
     "test": "yarn jest",

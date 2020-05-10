@@ -60,7 +60,7 @@ export default class Color {
   }
 
   /**
-   * from CSS RGBA
+   * From CSS RGBA
    * @param r [0, 255]
    * @param g [0, 255]
    * @param b [0, 255]
@@ -71,7 +71,7 @@ export default class Color {
   }
 
   /**
-   * from HSVA
+   * From HSVA
    * @param h [0, 360)
    * @param s [0, 1]
    * @param v [0, 1]
@@ -113,7 +113,7 @@ export default class Color {
   }
 
   /**
-   * from CSS like HSVA
+   * From CSS like HSVA
    * @param h [0, 360)
    * @param s [0, 100]
    * @param v [0, 100]
@@ -171,7 +171,7 @@ export default class Color {
   }
 
   /**
-   * @return string like rgba(255, 255, 255, 0.5)
+   * Return string like rgba(255, 255, 255, 0.5)
    */
   toCssRgbaString(): string {
     const { r, g, b, a } = this.toCss();
@@ -179,7 +179,8 @@ export default class Color {
   }
 
   /**
-   * @return hex like ff0000
+   * Return hex like ff9900
+   * @param short Return hex like f90
    */
   toHex(short = false): string {
     const { r, g, b } = this.toCss();
@@ -201,6 +202,14 @@ export default class Color {
     }
 
     return `${hexR}${hexG}${hexB}${hexA}`;
+  }
+
+  /**
+   * Return CSS like #ff9900
+   * @param short Return CSS like #f90
+   */
+  toCssHexString(short = false): string {
+    return `#${this.toHex(short)}`;
   }
 
   toHsva(): CssLikeHsva {

@@ -1,6 +1,6 @@
 import { defineComponent, h, VNode, reactive } from 'vue';
 import Color from '../../color';
-import DomHelper from '../../../../utils/dom-helper';
+import DomUtils from '../../../../utils/dom-utils';
 
 export default defineComponent({
   props: {
@@ -26,18 +26,18 @@ export default defineComponent({
 
     function onHexInput(e: InputEvent): void {
       const target = e.target as HTMLInputElement;
-      const value = DomHelper.getInputValue(target);
+      const value = DomUtils.getInputValue(target);
       updateColor('colorInput', value);
     }
 
     function onHexBlur(e: InputEvent): void {
       const target = e.target as HTMLInputElement;
-      const inputValue = DomHelper.getInputValue(target);
+      const inputValue = DomUtils.getInputValue(target);
       const hex = Color.hexNormalize(inputValue);
       const hashHex = `#${hex}`;
 
       if (inputValue !== hashHex) {
-        DomHelper.setInputValue(target, hashHex);
+        DomUtils.setInputValue(target, hashHex);
       }
 
       updateColor('colorBlur', hex);
@@ -53,7 +53,7 @@ export default defineComponent({
             class: 'nova-color-picker-hex',
           },
           h('input', {
-            value: `#${props.color.toHex(state.hexShort)}`,
+            value: props.color.toCssHexString(state.hexShort),
             onInput: onHexInput,
             onBlur: onHexBlur,
           })

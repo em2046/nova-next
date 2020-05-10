@@ -1,3 +1,3 @@
-import extractStyle from './build/gulp/extract-style';
+import style from './build/gulp/style';
 
-export { extractStyle };
+export { style };
