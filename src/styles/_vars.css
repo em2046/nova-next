@@ -1,0 +1,28 @@
+:root {
+  --checkerboard-white: transparent;
+  --checkerboard-drak: rgba(0, 0, 0, 0.2);
+  --checkerboard-size: 10px 10px;
+  --checkerboard-bg: linear-gradient(
+        45deg,
+        var(--checkerboard-drak) 25%,
+        var(--checkerboard-white) 25%
+      )
+      0 0 / var(--checkerboard-size),
+    linear-gradient(
+        -45deg,
+        var(--checkerboard-drak) 25%,
+        var(--checkerboard-white) 25%
+      )
+      0 5px / var(--checkerboard-size),
+    linear-gradient(
+        45deg,
+        var(--checkerboard-white) 75%,
+        var(--checkerboard-drak) 75%
+      )
+      5px -5px / var(--checkerboard-size),
+    linear-gradient(
+        -45deg,
+        var(--checkerboard-white) 75%,
+        var(--checkerboard-drak) 75%
+      ) -5px 0 / var(--checkerboard-size);
+}

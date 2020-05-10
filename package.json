@@ -13,13 +13,12 @@
   ],
   "module": "dist/nova.esm.js",
   "scripts": {
-    "dev": "webpack-dev-server",
-    "build-demo": "webpack --env.prod",
+    "dev": "vite",
     "build-style": "gulp -f gulpfile.esm.js extractStyle",
     "build-rollup": "rollup --config build/rollup/rollup.config.es.js -m",
-    "build": "yarn build-rollup & yarn build-style",
+    "build": "yarn build-style & yarn build-rollup",
     "test": "yarn jest",
-    "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,less,css}",
+    "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css}",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "format": "yarn prettier & yarn lint",
     "prepublishOnly": "yarn format & yarn build"
@@ -32,7 +31,7 @@
     "url": "https://github.com/em2046/nova-next/issues"
   },
   "dependencies": {
-    "vue": "^3.0.0-beta.9"
+    "vue": "^3.0.0-beta.10"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^4.1.1",
@@ -41,27 +40,16 @@
     "@typescript-eslint/parser": "^2.31.0",
     "@vue/compiler-sfc": "^3.0.0-beta.9",
     "@vue/test-utils": "^2.0.0-alpha.4",
-    "css-loader": "^3.5.3",
     "eslint": "^6.8.0",
     "esm": "^3.2.25",
-    "file-loader": "^6.0.0",
+    "glob": "^7.1.6",
     "gulp": "^4.0.2",
-    "gulp-less": "^4.0.1",
-    "gulp-rename": "^2.0.0",
+    "gulp-concat-css": "^3.1.0",
     "jest": "^26.0.1",
-    "less": "^3.11.1",
-    "less-loader": "^6.1.0",
-    "less-plugin-autoprefix": "^2.0.0",
-    "mini-css-extract-plugin": "^0.9.0",
     "prettier": "^2.0.5",
     "ts-jest": "^25.5.0",
-    "ts-loader": "^7.0.2",
     "typescript": "^3.8.3",
-    "url-loader": "^4.1.0",
-    "vue-loader": "^16.0.0-alpha.3",
-    "vue-router": "^4.0.0-alpha.9",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "vite": "^0.13.2",
+    "vue-router": "^4.0.0-alpha.10"
   }
 }

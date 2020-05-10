@@ -1,7 +1,5 @@
-@import '../../../styles/_mixins.less';
-
 .nova-color-picker-trigger {
-  .checkerboard();
+  background: var(--checkerboard-bg);
   box-sizing: border-box;
   box-shadow: inset 0 0 0 1px #ccc;
   padding: 5px;

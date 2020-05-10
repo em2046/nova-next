@@ -14,11 +14,5 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
       ],
     },
-    {
-      files: ['./webpack.config.js'],
-      env: {
-        es6: true,
-      },
-    },
   ],
-}
+};
