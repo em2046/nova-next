@@ -19,8 +19,8 @@ export default class Utils {
    * @param n Input number
    * @param fractionDigits Number of digits after the decimal point. Must be in the [0, 20]
    */
-  static numberFixed(n: number, fractionDigits = 2): string {
+  static numberFixed(n: number, fractionDigits = 2): number {
     const fixed = n.toFixed(fractionDigits);
-    return parseFloat(fixed).toString();
+    return parseFloat(fixed);
   }
 }

@@ -20,26 +20,26 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    const rRef = ref(null);
-    const gRef = ref(null);
-    const bRef = ref(null);
+    const hRef = ref(null);
+    const sRef = ref(null);
+    const lRef = ref(null);
     const aRef = ref(null);
 
     function updateColor(eventName: string): void {
-      const r = getIntValue(rRef, 255);
-      const g = getIntValue(gRef, 255);
-      const b = getIntValue(bRef, 255);
+      const h = getIntValue(hRef, 360);
+      const s = getIntValue(sRef, 100);
+      const l = getIntValue(lRef, 100);
       const a = getAlphaValue(aRef);
 
-      if (r === null || g === null || b === null || a === null) {
+      if (h === null || s === null || l === null || a === null) {
         return;
       }
 
-      const color = Color.fromCss(r, g, b, a);
+      const color = Color.fromCssHsla(h, s, l, a);
       emit(eventName, color);
     }
 
-    function onRgbInput(e: InputEvent): void {
+    function onHslInput(e: InputEvent): void {
       const input = e.target as HTMLInputElement;
       const value = DomUtils.getInputValue(input);
 
@@ -65,7 +65,7 @@ export default defineComponent({
       }
     }
 
-    function onRgbaBlur(): void {
+    function onHslaBlur(): void {
       updateColor('colorBlur');
     }
 
@@ -81,47 +81,47 @@ export default defineComponent({
             value,
             ref: channelRef,
             onInput,
-            onBlur: onRgbaBlur,
+            onBlur: onHslaBlur,
           })
         ),
       ]);
     }
 
     return (): VNode | null => {
-      const { r, g, b, a } = props.color.toCss();
+      const hsla = props.color.toCssHsla();
 
-      const rNode = createChannel({
-        channelRef: rRef,
-        label: 'R',
-        value: r,
-        onInput: onRgbInput,
+      const hNode = createChannel({
+        channelRef: hRef,
+        label: 'H',
+        value: hsla.h,
+        onInput: onHslInput,
       });
 
-      const gNode = createChannel({
-        channelRef: gRef,
-        label: 'G',
-        value: g,
-        onInput: onRgbInput,
+      const sNode = createChannel({
+        channelRef: sRef,
+        label: 'S',
+        value: hsla.s,
+        onInput: onHslInput,
       });
 
-      const bNode = createChannel({
-        channelRef: bRef,
-        label: 'B',
-        value: b,
-        onInput: onRgbInput,
+      const lNode = createChannel({
+        channelRef: lRef,
+        label: 'L',
+        value: hsla.l,
+        onInput: onHslInput,
       });
 
       const aNode = createChannel({
         channelRef: aRef,
         label: 'A',
-        value: a,
+        value: hsla.a,
         onInput: onAlphaInput,
       });
 
       return h('div', { class: 'nova-color-picker-labels' }, [
-        rNode,
-        gNode,
-        bNode,
+        hNode,
+        sNode,
+        lNode,
         aNode,
       ]);
     };

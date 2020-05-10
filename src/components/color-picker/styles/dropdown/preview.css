@@ -1,0 +1,39 @@
+.nova-color-picker-preview-prev,
+.nova-color-picker-preview-curr {
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+}
+
+.nova-color-picker-preview {
+  background: var(--checkerboard-bg);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.nova-color-picker-preview-prev {
+  border: 1px solid #1a1a1a;
+  margin-top: -60px;
+}
+
+.nova-color-picker-preview-curr {
+  margin-top: -20px;
+  margin-left: 20px;
+  border: 1px solid #1a1a1a;
+}
+
+.nova-color-picker-preview-fill-right,
+.nova-color-picker-preview-fill-left {
+  width: 20px;
+  height: 20px;
+  background-color: #333333;
+}
+
+.nova-color-picker-preview-fill-right {
+  margin-top: 0;
+  margin-left: 40px;
+}
+
+.nova-color-picker-preview-fill-left {
+  margin-top: 20px;
+}

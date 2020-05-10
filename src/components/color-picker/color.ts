@@ -1,3 +1,5 @@
+import Utils from '../../utils/utils';
+
 /**
  * @property r [0, 255]
  * @property g [0, 255]
@@ -12,15 +14,41 @@ interface CssRgba {
 }
 
 /**
- * @property r [0, 360)
- * @property g [0, 100]
- * @property b [0, 100]
+ * @property h [0, 360)
+ * @property s [0, 1]
+ * @property v [0, 1]
  * @property a [0, 1]
  */
-interface CssLikeHsva {
+interface Hsva {
   h: number;
   s: number;
   v: number;
+  a: number;
+}
+
+/**
+ * @property h [0, 360)
+ * @property s [0, 1]
+ * @property l [0, 1]
+ * @property a [0, 1]
+ */
+interface Hsla {
+  h: number;
+  s: number;
+  l: number;
+  a: number;
+}
+
+/**
+ * @property h [0, 360)
+ * @property s [0, 100]
+ * @property l [0, 100]
+ * @property a [0, 1]
+ */
+interface CssHsla {
+  h: number;
+  s: number;
+  l: number;
   a: number;
 }
 
@@ -29,6 +57,51 @@ function hexSimplify(hex: string): string {
     return `${hex[0]}${hex[2]}${hex[4]}`;
   }
   return hex;
+}
+
+function rgbToHue(
+  max: number,
+  min: number,
+  r: number,
+  g: number,
+  b: number
+): number {
+  let h = 0;
+  if (max === min) {
+    h = 0;
+  } else if (max === r && g >= b) {
+    h = 60 * ((g - b) / (max - min));
+  } else if (max === r && g < b) {
+    h = 60 * ((g - b) / (max - min)) + 360;
+  } else if (max === g) {
+    h = 60 * ((b - r) / (max - min)) + 120;
+  } else if (max === b) {
+    h = 60 * ((r - g) / (max - min)) + 240;
+  }
+  return Math.round(h);
+}
+
+function HslToRgbChannelLimit(tC: number): number {
+  if (tC < 0) {
+    tC = tC + 1;
+  } else if (tC > 1) {
+    tC = tC - 1;
+  }
+  return tC;
+}
+
+function HslToRgbChannel(tC: number, q: number, p: number): number {
+  let c;
+  if (tC < 1 / 6) {
+    c = p + (q - p) * 6 * tC;
+  } else if (1 / 6 <= tC && tC < 1 / 2) {
+    c = q;
+  } else if (1 / 2 <= tC && tC < 2 / 3) {
+    c = p + (q - p) * 6 * (2 / 3 - tC);
+  } else {
+    c = p;
+  }
+  return c;
 }
 
 /**
@@ -123,6 +196,37 @@ export default class Color {
     return Color.fromHsva(h, s / 100, v / 100, a);
   }
 
+  static fromHsla(h = 0, s = 0, l = 0, a = 1): Color {
+    let q;
+    if (l < 1 / 2) {
+      q = l * (1 + s);
+    } else {
+      q = l + s - l * s;
+    }
+
+    const p = 2 * l - q;
+
+    const hK = h / 360;
+
+    let tR = hK + 1 / 3;
+    let tG = hK;
+    let tB = hK - 1 / 3;
+
+    tR = HslToRgbChannelLimit(tR);
+    tG = HslToRgbChannelLimit(tG);
+    tB = HslToRgbChannelLimit(tB);
+
+    const r = HslToRgbChannel(tR, q, p);
+    const g = HslToRgbChannel(tG, q, p);
+    const b = HslToRgbChannel(tB, q, p);
+
+    return new Color(r, g, b, a);
+  }
+
+  static fromCssHsla(h = 0, s = 0, l = 0, a = 1): Color {
+    return Color.fromHsla(h, s / 100, l / 100, a);
+  }
+
   static hexNormalize(value: string): string {
     let hex = value.replace(/[^\dA-Fa-f]/g, '');
 
@@ -165,7 +269,7 @@ export default class Color {
     const r = Math.round(this.r * 255);
     const g = Math.round(this.g * 255);
     const b = Math.round(this.b * 255);
-    const a = parseFloat(this.a.toFixed(2));
+    const a = Utils.numberFixed(this.a);
 
     return { r, g, b, a };
   }
@@ -212,7 +316,7 @@ export default class Color {
     return `#${this.toHex(short)}`;
   }
 
-  toHsva(): CssLikeHsva {
+  toHsva(): Hsva {
     const r = this.r;
     const g = this.g;
     const b = this.b;
@@ -221,18 +325,7 @@ export default class Color {
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
 
-    let h = 0;
-    if (max === min) {
-      h = 0;
-    } else if (max === r && g >= b) {
-      h = 60 * ((g - b) / (max - min));
-    } else if (max === r && g < b) {
-      h = 60 * ((g - b) / (max - min)) + 360;
-    } else if (max === g) {
-      h = 60 * ((b - r) / (max - min)) + 120;
-    } else if (max === b) {
-      h = 60 * ((r - g) / (max - min)) + 240;
-    }
+    const h = rgbToHue(max, min, r, g, b);
 
     let s;
     if (max === 0) {
@@ -248,6 +341,47 @@ export default class Color {
       s,
       v,
       a,
+    };
+  }
+
+  toHsla(): Hsla {
+    const r = this.r;
+    const g = this.g;
+    const b = this.b;
+    const a = this.a;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+
+    const l = (1 / 2) * (max + min);
+
+    let s = 0;
+    if (l === 0 || max === min) {
+      s = 0;
+    } else if (0 < l && l <= 1 / 2) {
+      s = (max - min) / (2 * l);
+    } else if (l > 1 / 2) {
+      s = (max - min) / (2 - 2 * l);
+    }
+
+    const h = rgbToHue(max, min, r, g, b);
+
+    return {
+      h,
+      s,
+      l,
+      a,
+    };
+  }
+
+  toCssHsla(): CssHsla {
+    const hsla = this.toHsla();
+
+    return {
+      h: hsla.h,
+      s: Math.round(hsla.s * 100),
+      l: Math.round(hsla.l * 100),
+      a: Utils.numberFixed(hsla.a),
     };
   }
 }

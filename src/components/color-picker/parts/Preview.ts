@@ -18,6 +18,7 @@ export default defineComponent({
     function onPrevClick(): void {
       emit('reset');
     }
+
     return (): VNode | null => {
       const prevColor = Color.fromHex(props.value).toCssRgbaString();
       const currColor = props.color.toCssRgbaString();

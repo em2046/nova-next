@@ -46,7 +46,7 @@ export default defineComponent({
     return (): VNode | null => {
       return h(
         'div',
-        { class: 'nova-color-picker-rgb' },
+        { class: 'nova-color-picker-output' },
         h(
           'div',
           {

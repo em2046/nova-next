@@ -1,0 +1,110 @@
+.nova-color-picker-form {
+  margin-right: 10px;
+}
+
+.nova-color-picker-labels {
+  justify-content: flex-end;
+  display: flex;
+  color: #cccccc;
+}
+
+.nova-color-picker-label {
+  box-sizing: border-box;
+  width: 40px;
+  height: 45px;
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nova-color-picker-label-text {
+  line-height: 15px;
+  height: 20px;
+  text-align: center;
+}
+
+.nova-color-picker-number,
+.nova-color-picker-hex {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  height: 25px;
+}
+
+.nova-color-picker-number input,
+.nova-color-picker-hex input {
+  color: #cccccc;
+  border: none;
+  background: none;
+  height: 23px;
+  line-height: 23px;
+  padding: 0;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  font-family: 'Sarasa Mono SC', Iosevka, 'Fira Code', Monaco, Consolas,
+    monospace;
+}
+
+.nova-color-picker-number input:focus,
+.nova-color-picker-hex input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.nova-color-picker-number {
+  width: 40px;
+}
+
+.nova-color-picker-output {
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nova-color-picker-hex {
+  width: 85px;
+}
+
+.nova-color-picker-labels-switch {
+  width: 20px;
+  height: 20px;
+  margin-top: -65px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.nova-color-picker-labels-switch:before,
+.nova-color-picker-labels-switch:after {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  content: '';
+  display: block;
+}
+
+.nova-color-picker-labels-switch:before {
+  border-width: 0 3px 3px 3px;
+  border-color: transparent transparent #cccccc transparent;
+  margin-bottom: 2px;
+}
+
+.nova-color-picker-labels-switch:after {
+  border-width: 3px 3px 0 3px;
+  border-color: #cccccc transparent transparent transparent;
+  margin-top: 2px;
+}
+
+.nova-color-picker-labels-switch:hover {
+  background-color: #cccccc;
+}
+
+.nova-color-picker-labels-switch:hover:before {
+  border-color: transparent transparent #ffffff transparent;
+}
+
+.nova-color-picker-labels-switch:hover:after {
+  border-color: #ffffff transparent transparent transparent;
+}

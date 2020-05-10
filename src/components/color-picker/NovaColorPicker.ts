@@ -18,9 +18,20 @@ import HueSlide from './parts/slides/HueSlide';
 import AlphaSlide from './parts/slides/AlphaSlide';
 import Preview from './parts/Preview';
 import RgbaLabels from './parts/labels/RgbaLabels';
+import HslaLabels from './parts/labels/HslaLabels';
 import HexLabel from './parts/labels/HexLabel';
 import Trigger from './parts/Trigger';
 import useDropdown from '../../uses/useDropdown';
+
+const RGBA = Symbol('RGBA');
+const HSLA = Symbol('HSLA');
+
+const modeList = [RGBA, HSLA];
+const modeSize = modeList.length;
+const labelsMap = {
+  [RGBA]: RgbaLabels,
+  [HSLA]: HslaLabels,
+};
 
 export default defineComponent({
   model: {
@@ -62,6 +73,7 @@ export default defineComponent({
         alpha: 0,
       },
       color: Color.fromCssLikeHsva(0, 100, 100, 1),
+      mode: RGBA,
     });
 
     /**
@@ -113,6 +125,19 @@ export default defineComponent({
 
     function updatePropsValue(color: Color): void {
       emit('update', color.toCssHexString());
+    }
+
+    function switchMode(): void {
+      let activeModeIndex = modeList.findIndex((mode) => {
+        return state.mode === mode;
+      });
+
+      activeModeIndex++;
+      if (activeModeIndex >= modeSize) {
+        activeModeIndex = 0;
+      }
+
+      state.mode = modeList[activeModeIndex];
     }
 
     const { dropdown, dropdownStyle } = useDropdown({
@@ -183,8 +208,11 @@ export default defineComponent({
         alphaSlideNode,
       ]);
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      const currModeLabels = labelsMap[state.mode];
       const formNode = h('div', { class: 'nova-color-picker-form' }, [
-        h(RgbaLabels, {
+        h(currModeLabels, {
           color: state.color,
           onColorInput: (color: Color) => {
             setColorAndPosition(color);
@@ -201,6 +229,10 @@ export default defineComponent({
           onColorBlur: (color: Color) => {
             setColorAndPosition(color);
           },
+        }),
+        h('div', {
+          class: 'nova-color-picker-labels-switch',
+          onClick: switchMode,
         }),
       ]);
 
