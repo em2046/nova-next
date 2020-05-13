@@ -1,6 +1,10 @@
 import { h, VNode, reactive, defineComponent } from 'vue';
 import { NovaColorPicker } from '../../components/color-picker';
 
+function getRandomNumber(low = 0, high = 100): number {
+  return Math.floor(Math.random() * (high - low) + low);
+}
+
 export default defineComponent({
   setup() {
     const color1Default = '#ffff00';
@@ -8,10 +12,16 @@ export default defineComponent({
 
     const state = reactive({
       color1: color1Default,
+      color1Disabled: true,
       color2: color2Default,
+      color2CustomValue: getRandomNumber(),
+      color2DropdownClass: 'custom-dropdown-class-name' + getRandomNumber(),
+      color2DropdownStyle: {
+        background: '#000000',
+      },
     });
 
-    function onColor1Update(color1: string): void {
+    function onColor1Change(color1: string): void {
       state.color1 = color1;
     }
 
@@ -19,7 +29,11 @@ export default defineComponent({
       state.color1 = color1Default;
     }
 
-    function onColor2Update(color2: string): void {
+    function onColor1ToggleDisable(): void {
+      state.color1Disabled = !state.color1Disabled;
+    }
+
+    function onColor2Change(color2: string): void {
       state.color2 = color2;
     }
 
@@ -27,21 +41,46 @@ export default defineComponent({
       state.color2 = color2Default;
     }
 
+    function onColor2Click(): void {
+      state.color2CustomValue = getRandomNumber();
+      state.color2DropdownClass =
+        'custom-dropdown-class-name-' + getRandomNumber();
+      state.color2DropdownStyle = {
+        background: `#${getRandomNumber(0, 0xffffff)
+          .toString(16)
+          .padStart(6, '0')}`,
+      };
+    }
+
     return (): VNode[] => [
       h('section', [
         h('div', [
           state.color1,
-          h('button', { onClick: onColor1Reset }, ['reset']),
+          h('button', { onClick: onColor1Reset }, ['Reset']),
+          h('button', { onClick: onColor1ToggleDisable }, ['Toggle disable']),
         ]),
-        h(NovaColorPicker, { value: state.color1, onUpdate: onColor1Update }),
+        h(NovaColorPicker, {
+          value: state.color1,
+          disabled: state.color1Disabled,
+          onChange: onColor1Change,
+        }),
         h('div', [
           state.color2,
-          h('button', { onClick: onColor2Reset }, ['reset']),
+          h('button', { onClick: onColor2Reset }, ['Reset']),
         ]),
         h(NovaColorPicker, {
           value: state.color2,
-          onUpdate: onColor2Update,
+          onChange: onColor2Change,
+          onClick: onColor2Click,
+          onOpenChange: (open: boolean) => {
+            console.log(open);
+          },
           teleportToBody: false,
+          dropdownClass: [state.color2DropdownClass],
+          dropdownStyle: state.color2DropdownStyle,
+          class: 'custom-class-name',
+          style: { background: '#000000' },
+          ['data-custom']: state.color2CustomValue,
         }),
       ]),
     ];

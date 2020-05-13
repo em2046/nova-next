@@ -1,0 +1,9 @@
+.nova-color-picker {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.nova-color-picker-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -33,21 +33,60 @@ const labelsMap = {
   [HSLA]: HslaLabels,
 };
 
+const colorPickerProps = {
+  value: {
+    type: String,
+    default: '#ff0000',
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  dropdownClass: {
+    type: [String, Array, Object],
+    default: '',
+  },
+  dropdownStyle: {
+    type: Object,
+    default: {},
+  },
+  teleportToBody: {
+    type: Boolean,
+    default: true,
+  },
+  alpha: {
+    type: Boolean,
+    default: false,
+  },
+  format: {
+    type: String,
+    default: 'hex',
+  },
+  preset: {
+    type: Array,
+    default: [],
+  },
+};
+
+interface Data {
+  value: string;
+  disabled: boolean;
+  dropdownClass: string | object | (string | object)[];
+  dropdownStyle: object;
+  teleportToBody: boolean;
+  alpha: boolean;
+  format: string;
+  preset: string[];
+}
+
 export default defineComponent({
   model: {
-    event: 'update',
+    event: 'change',
   },
-  props: {
-    value: {
-      type: String,
-      default: '#ff0000',
-    },
-    teleportToBody: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  setup: function (props, context) {
+  props: colorPickerProps,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  setup: function (props: Data, context) {
     const emit = context.emit;
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
@@ -81,6 +120,19 @@ export default defineComponent({
      */
     const hueDegrees = computed(() => {
       return Math.round((state.position.hue / 200) * 360) % 360;
+    });
+
+    const classList = computed(() => {
+      return [
+        'nova-color-picker',
+        {
+          ['nova-color-picker-disabled']: props.disabled,
+        },
+      ];
+    });
+
+    const dropdownClassList = computed(() => {
+      return ['nova-color-picker-panel', props.dropdownClass];
     });
 
     function getColorFromPosition(): Color {
@@ -123,8 +175,8 @@ export default defineComponent({
       setColor(getColorFromPosition());
     }
 
-    function updatePropsValue(color: Color): void {
-      emit('update', color.toCssHexString());
+    function changePropsValue(color: Color): void {
+      emit('change', color.toCssHexString());
     }
 
     function switchMode(): void {
@@ -143,8 +195,13 @@ export default defineComponent({
     const { dropdown, dropdownStyle } = useDropdown({
       triggerRef,
       dropdownRef,
+      props,
+      onOpen: () => {
+        emit('openChange', true);
+      },
       onClose: () => {
-        updatePropsValue(state.color);
+        emit('openChange', false);
+        changePropsValue(state.color);
       },
     });
 
@@ -245,9 +302,10 @@ export default defineComponent({
       });
 
       function createDropdown(): VNode | null {
-        if (!dropdown.opened) {
+        if (!dropdown.opened || props.disabled) {
           return null;
         }
+
         return h(
           Teleport,
           { to: 'body', disabled: !props.teleportToBody },
@@ -255,8 +313,12 @@ export default defineComponent({
             'div',
             {
               ref: dropdownRef,
-              class: 'nova-color-picker-panel',
-              style: dropdownStyle.value,
+              class: dropdownClassList.value,
+              style: Object.assign(
+                {},
+                props.dropdownStyle,
+                dropdownStyle.value
+              ),
             },
             [hsvPanelNode, slidesNode, formNode, previewNode]
           )
@@ -265,10 +327,7 @@ export default defineComponent({
 
       const dropdownNode = createDropdown();
 
-      return h('div', { class: 'nova-color-picker' }, [
-        triggerNode,
-        dropdownNode,
-      ]);
+      return h('div', { class: classList.value }, [triggerNode, dropdownNode]);
     };
   },
 });

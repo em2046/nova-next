@@ -11,6 +11,7 @@ import DomUtils from '../utils/dom-utils';
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
   dropdownRef: Ref<HTMLElement | null>;
+  props: Readonly<{ disabled: boolean }>;
   onOpen?: () => void;
   onClose?: () => void;
 }
@@ -43,9 +44,13 @@ export default function useDropdown(
     },
   });
 
-  const { triggerRef, dropdownRef, onOpen, onClose } = options;
+  const { triggerRef, dropdownRef, props, onOpen, onClose } = options;
 
   function onVirtualMaskMousedown(e: MouseEvent): void {
+    if (props.disabled) {
+      return;
+    }
+
     const target = e.target as HTMLElement;
     const dropdown = dropdownRef.value as HTMLElement;
     const stopDropdown = DomUtils.isInElement(target, dropdown);
@@ -61,19 +66,35 @@ export default function useDropdown(
   }
 
   function closeDropdown(): void {
+    if (props.disabled) {
+      return;
+    }
+
     document.removeEventListener('mousedown', onVirtualMaskMousedown);
+    const openedOld = state.dropdown.opened;
     state.dropdown.opened = false;
-    onClose && onClose.call(null);
+
+    if (openedOld) {
+      onClose && onClose.call(null);
+    }
   }
 
   function openDropdown(): void {
+    if (props.disabled) {
+      return;
+    }
+
     document.addEventListener('mousedown', onVirtualMaskMousedown);
+    const openedOld = state.dropdown.opened;
     state.dropdown.opened = true;
     const trigger = triggerRef.value as HTMLElement;
     const rect = DomUtils.getElementPosition(trigger);
     state.dropdown.offset.left = rect.left;
     state.dropdown.offset.top = rect.top + rect.height;
-    onOpen && onOpen.call(null);
+
+    if (!openedOld) {
+      onOpen && onOpen.call(null);
+    }
   }
 
   onMounted(() => {
