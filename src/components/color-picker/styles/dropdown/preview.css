@@ -6,7 +6,6 @@
 }
 
 .nova-color-picker-preview {
-  background: var(--checkerboard-bg);
   margin-top: 10px;
   margin-bottom: 5px;
 }
@@ -24,16 +23,16 @@
 
 .nova-color-picker-preview-fill-right,
 .nova-color-picker-preview-fill-left {
-  width: 20px;
-  height: 20px;
+  background: var(--checkerboard-bg);
   background-color: #333333;
+  width: 40px;
+  height: 40px;
 }
 
 .nova-color-picker-preview-fill-right {
-  margin-top: 0;
-  margin-left: 40px;
+  margin-top: -20px;
+  margin-left: 20px;
 }
 
 .nova-color-picker-preview-fill-left {
-  margin-top: 20px;
 }

@@ -45,8 +45,8 @@ export default function useMousemove(options: UseMousemoveParams): void {
   function onMousedown(e: MouseEvent): void {
     const target: HTMLElement = ref.value as HTMLElement;
     rect = target.getBoundingClientRect();
-    border.left = DomUtils.getBorderLeftWidth(target);
-    border.top = DomUtils.getBorderTopWidth(target);
+    border.left = DomUtils.getPaddingLeft(target);
+    border.top = DomUtils.getPaddingTop(target);
 
     const x = e.pageX - rect.x - window.pageXOffset - border.left;
     const y = e.pageY - rect.y - window.pageYOffset - border.top;

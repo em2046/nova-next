@@ -44,14 +44,14 @@ export default class DomUtils {
     return parseFloat(pixel);
   }
 
-  static getBorderTopWidth(element: HTMLElement): number {
-    const borderTopWidth = DomUtils.getStyleOf(element, 'border-top-width');
+  static getPaddingTop(element: HTMLElement): number {
+    const borderTopWidth = DomUtils.getStyleOf(element, 'padding-top');
 
     return DomUtils.getPixelNumber(borderTopWidth);
   }
 
-  static getBorderLeftWidth(element: HTMLElement): number {
-    const borderLeftWidth = DomUtils.getStyleOf(element, 'border-left-width');
+  static getPaddingLeft(element: HTMLElement): number {
+    const borderLeftWidth = DomUtils.getStyleOf(element, 'padding-left');
 
     return DomUtils.getPixelNumber(borderLeftWidth);
   }

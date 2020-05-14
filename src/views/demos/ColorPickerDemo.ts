@@ -12,7 +12,7 @@ export default defineComponent({
 
     const state = reactive({
       color1: color1Default,
-      color1Disabled: true,
+      color1Disabled: false,
       color2: color2Default,
       color2CustomValue: getRandomNumber(),
       color2DropdownClass: 'custom-dropdown-class-name' + getRandomNumber(),
@@ -41,14 +41,22 @@ export default defineComponent({
       state.color2 = color2Default;
     }
 
+    function getColorChannel(): string {
+      return `${getRandomNumber(0, Math.floor(0xff / 2))
+        .toString(16)
+        .padStart(2, '0')}`;
+    }
+
     function onColor2Click(): void {
       state.color2CustomValue = getRandomNumber();
       state.color2DropdownClass =
         'custom-dropdown-class-name-' + getRandomNumber();
+    }
+
+    function onOpenChange(open: boolean): void {
+      console.log(open);
       state.color2DropdownStyle = {
-        background: `#${getRandomNumber(0, 0xffffff)
-          .toString(16)
-          .padStart(6, '0')}`,
+        background: `#${getColorChannel()}${getColorChannel()}${getColorChannel()}`,
       };
     }
 
@@ -72,14 +80,12 @@ export default defineComponent({
           value: state.color2,
           onChange: onColor2Change,
           onClick: onColor2Click,
-          onOpenChange: (open: boolean) => {
-            console.log(open);
-          },
+          onOpenChange: onOpenChange,
           teleportToBody: false,
           dropdownClass: [state.color2DropdownClass],
           dropdownStyle: state.color2DropdownStyle,
           class: 'custom-class-name',
-          style: { background: '#000000' },
+          style: { background: '#666666' },
           ['data-custom']: state.color2CustomValue,
         }),
       ]),
