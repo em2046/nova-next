@@ -23,14 +23,14 @@ import HexLabel from './parts/labels/HexLabel';
 import Trigger from './parts/Trigger';
 import useDropdown from '../../uses/useDropdown';
 
-const RGBA = Symbol('RGBA');
-const HSLA = Symbol('HSLA');
+const rgba = Symbol('rgba');
+const hsla = Symbol('hsla');
 
-const modeList = [RGBA, HSLA];
+const modeList = [rgba, hsla];
 const modeSize = modeList.length;
 const labelsMap = {
-  [RGBA]: RgbaLabels,
-  [HSLA]: HslaLabels,
+  [rgba]: RgbaLabels,
+  [hsla]: HslaLabels,
 };
 
 const colorPickerProps = {
@@ -95,7 +95,7 @@ export default defineComponent({
     const state = reactive({
       position: {
         /**
-         * [0, 200] -> CSS [0, 360)
+         * [0, 200] -> CSS [0, 360]
          */
         hue: 0,
         /**
@@ -112,11 +112,11 @@ export default defineComponent({
         alpha: 0,
       },
       color: Color.fromCssLikeHsva(0, 100, 100, 1),
-      mode: RGBA,
+      mode: rgba,
     });
 
     /**
-     * [0, 360)
+     * [0, 360]
      */
     const hueDegrees = computed(() => {
       return Math.round((state.position.hue / 200) * 360) % 360;
@@ -163,12 +163,8 @@ export default defineComponent({
     }
 
     function setColorAndPosition(color: Color): void {
-      const panelColor = getColorFromPosition();
-
-      if (panelColor.toHex() !== color.toHex()) {
-        setPositionFromColor(color);
-        setColor(color);
-      }
+      setPositionFromColor(color);
+      setColor(color);
     }
 
     function setColorFromPosition(): void {

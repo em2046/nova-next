@@ -1,6 +1,58 @@
-import { defineComponent, h, VNode, reactive } from 'vue';
+import { defineComponent, h, reactive, ref, Ref, VNode } from 'vue';
 import Color from '../../color';
 import DomUtils from '../../../../utils/dom-utils';
+import Utils from '../../../../utils/utils';
+
+interface FunctionKeys {
+  alt: boolean;
+  shift: boolean;
+  ctrl: boolean;
+}
+
+interface TuningParams {
+  r: number;
+  g: number;
+  b: number;
+  max: number;
+  length: number;
+}
+
+const up = Symbol('up');
+const down = Symbol('down');
+type Direction = typeof up | typeof down;
+
+function calcTuned(
+  functionKeys: FunctionKeys,
+  originNumber: number,
+  direction: Direction,
+  tuningParams: TuningParams
+): string {
+  const { alt, shift, ctrl } = functionKeys;
+
+  let step = 0;
+  if (alt) {
+    step += tuningParams.b;
+  }
+  if (shift) {
+    step += tuningParams.g;
+  }
+  if (ctrl) {
+    step += tuningParams.r;
+  }
+  if (!(alt || ctrl || shift)) {
+    step = tuningParams.b;
+  }
+
+  let tunedNumber = originNumber;
+  if (direction === up) {
+    tunedNumber = originNumber + step;
+  } else if (direction === down) {
+    tunedNumber = originNumber - step;
+  }
+  tunedNumber = Utils.numberLimit(tunedNumber, 0, tuningParams.max);
+
+  return tunedNumber.toString(16).padStart(tuningParams.length, '0');
+}
 
 export default defineComponent({
   props: {
@@ -11,6 +63,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const emit = context.emit;
+
+    const hexRef: Ref<HTMLElement | null> = ref(null);
 
     const state = reactive({
       hexShort: false,
@@ -43,6 +97,70 @@ export default defineComponent({
       updateColor('colorBlur', hex);
     }
 
+    function tuning(functionKeys: FunctionKeys, direction: Direction): void {
+      if (!hexRef.value) {
+        return;
+      }
+
+      const hexInput = hexRef.value as HTMLInputElement;
+      const hexValue = DomUtils.getInputValue(hexInput);
+
+      if (!Color.hexRule.test(hexValue)) {
+        return;
+      }
+
+      const pureHex = hexValue.replace('#', '');
+      const hexNumber = parseInt(pureHex, 16);
+      let tunedPureHex;
+
+      if (pureHex.length === 3) {
+        const params = {
+          b: 0x001,
+          g: 0x010,
+          r: 0x100,
+          max: 0xfff,
+          length: 3,
+        };
+        tunedPureHex = calcTuned(functionKeys, hexNumber, direction, params);
+      } else if (pureHex.length === 6) {
+        const params = {
+          b: 0x000001,
+          g: 0x000100,
+          r: 0x010000,
+          max: 0xffffff,
+          length: 6,
+        };
+        tunedPureHex = calcTuned(functionKeys, hexNumber, direction, params);
+      }
+
+      if (!tunedPureHex) {
+        return;
+      }
+
+      const newHex = `#${tunedPureHex}`;
+      DomUtils.setInputValue(hexInput, newHex);
+      updateColor('colorInput', newHex);
+    }
+
+    function onHexKeydown(e: KeyboardEvent): void {
+      const options = {
+        alt: e.altKey,
+        shift: e.shiftKey,
+        ctrl: e.ctrlKey,
+      };
+
+      switch (e.key) {
+        case 'ArrowUp':
+        case 'Up':
+          tuning(options, up);
+          break;
+        case 'ArrowDown':
+        case 'Down':
+          tuning(options, down);
+          break;
+      }
+    }
+
     return (): VNode | null => {
       return h(
         'div',
@@ -54,8 +172,10 @@ export default defineComponent({
           },
           h('input', {
             value: props.color.toCssHexString(state.hexShort),
+            ref: hexRef,
             onInput: onHexInput,
             onBlur: onHexBlur,
+            onKeydown: onHexKeydown,
           })
         )
       );

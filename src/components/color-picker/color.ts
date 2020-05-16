@@ -14,7 +14,7 @@ interface CssRgba {
 }
 
 /**
- * @property h [0, 360)
+ * @property h [0, 360]
  * @property s [0, 1]
  * @property v [0, 1]
  * @property a [0, 1]
@@ -27,7 +27,7 @@ interface Hsva {
 }
 
 /**
- * @property h [0, 360)
+ * @property h [0, 360]
  * @property s [0, 1]
  * @property l [0, 1]
  * @property a [0, 1]
@@ -40,7 +40,7 @@ interface Hsla {
 }
 
 /**
- * @property h [0, 360)
+ * @property h [0, 360]
  * @property s [0, 100]
  * @property l [0, 100]
  * @property a [0, 1]
@@ -145,7 +145,7 @@ export default class Color {
 
   /**
    * From HSVA
-   * @param h [0, 360)
+   * @param h [0, 360]
    * @param s [0, 1]
    * @param v [0, 1]
    * @param a [0, 1]
@@ -187,7 +187,7 @@ export default class Color {
 
   /**
    * From CSS like HSVA
-   * @param h [0, 360)
+   * @param h [0, 360]
    * @param s [0, 100]
    * @param v [0, 100]
    * @param a [0, 1]

@@ -85,7 +85,7 @@ export default defineComponent({
           dropdownClass: [state.color2DropdownClass],
           dropdownStyle: state.color2DropdownStyle,
           class: 'custom-class-name',
-          style: { background: '#666666' },
+          style: { background: '#333333' },
           ['data-custom']: state.color2CustomValue,
         }),
       ]),

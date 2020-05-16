@@ -2,14 +2,14 @@ export default class Utils {
   /**
    * Return number in the [low, high]
    * @param n Input number
-   * @param low Min limit
-   * @param high Max limit
+   * @param min Min limit, Default is 0
+   * @param max Max limit, Default is Infinity
    */
-  static numberLimit(n: number, low = 0, high = Infinity): number {
-    if (n < low) {
-      return low;
-    } else if (n > high) {
-      return high;
+  static numberLimit(n: number, min = 0, max = Infinity): number {
+    if (n < min) {
+      return min;
+    } else if (n > max) {
+      return max;
     }
     return n;
   }
@@ -17,7 +17,7 @@ export default class Utils {
   /**
    * Keep some digits after the decimal point, remove trailing zeros
    * @param n Input number
-   * @param fractionDigits Number of digits after the decimal point. Must be in the [0, 20]
+   * @param fractionDigits Number of digits after the decimal point. Must be in the [0, 20], Default is 2
    */
   static numberFixed(n: number, fractionDigits = 2): number {
     const fixed = n.toFixed(fractionDigits);

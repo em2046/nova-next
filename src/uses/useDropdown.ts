@@ -89,8 +89,8 @@ export default function useDropdown(
     state.dropdown.opened = true;
     const trigger = triggerRef.value as HTMLElement;
     const rect = DomUtils.getElementPosition(trigger);
-    state.dropdown.offset.left = rect.left;
-    state.dropdown.offset.top = rect.top + rect.height;
+    state.dropdown.offset.left = rect.left + window.pageXOffset;
+    state.dropdown.offset.top = rect.top + rect.height + window.pageYOffset;
 
     if (!openedOld) {
       onOpen && onOpen.call(null);
