@@ -242,6 +242,7 @@ export default class Color {
   }
 
   static fromHex(hashHex: string): Color {
+    console.log(hashHex);
     let hex = Color.hexNormalize(hashHex);
 
     if (hex.length === 3) {

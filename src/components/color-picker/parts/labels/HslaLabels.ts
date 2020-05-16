@@ -1,14 +1,16 @@
-import { defineComponent, h, Ref, ref, VNode } from 'vue';
+import { defineComponent, h, reactive, VNode, watch } from 'vue';
 import Color from '../../color';
 import DomUtils from '../../../../utils/dom-utils';
-import { getAlphaValue, getIntValue } from './label-utils';
+import { alphaNormalize, intNormalize } from './label-utils';
+import NumberInput from './NumberInput';
 
 interface ChannelParams {
-  channelRef: Ref<HTMLElement | null>;
   label: string;
   value: number;
   onInput: (e: InputEvent) => void;
 }
+
+type hslChannel = 'h' | 's' | 'l';
 
 export default defineComponent({
   props: {
@@ -20,26 +22,25 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    const hRef = ref(null);
-    const sRef = ref(null);
-    const lRef = ref(null);
-    const aRef = ref(null);
+    const hsla = props.color.toCssHsla();
+    const state = reactive({
+      h: hsla.h,
+      s: hsla.s,
+      l: hsla.l,
+      a: hsla.a,
+    });
 
     function updateColor(eventName: string): void {
-      const h = getIntValue(hRef, 360);
-      const s = getIntValue(sRef, 100);
-      const l = getIntValue(lRef, 100);
-      const a = getAlphaValue(aRef);
-
-      if (h === null || s === null || l === null || a === null) {
-        return;
-      }
+      const h = intNormalize(state.h, 360);
+      const s = intNormalize(state.s, 100);
+      const l = intNormalize(state.l, 100);
+      const a = alphaNormalize(state.a);
 
       const color = Color.fromCssHsla(h, s, l, a);
       emit(eventName, color);
     }
 
-    function onHslInput(e: InputEvent): void {
+    function onHslInput(e: InputEvent, channel: hslChannel): void {
       const input = e.target as HTMLInputElement;
       const value = DomUtils.getInputValue(input);
 
@@ -48,6 +49,7 @@ export default defineComponent({
       }
 
       if (/^\d+$/.test(value)) {
+        state[channel] = value;
         updateColor('colorInput');
       }
     }
@@ -61,6 +63,7 @@ export default defineComponent({
       }
 
       if (/^((0)|(1)|(\d\.\d{1,2}))$/.test(value)) {
+        state['a'] = value;
         updateColor('colorInput');
       }
     }
@@ -70,16 +73,15 @@ export default defineComponent({
     }
 
     function createChannel(options: ChannelParams): VNode {
-      const { channelRef, label, value, onInput } = options;
+      const { label, value, onInput } = options;
 
       return h('label', { class: 'nova-color-picker-label' }, [
         h('div', { class: 'nova-color-picker-label-text' }, label),
         h(
           'div',
           { class: 'nova-color-picker-number' },
-          h('input', {
-            value,
-            ref: channelRef,
+          h(NumberInput, {
+            value: value.toString(),
             onInput,
             onBlur: onHslaBlur,
           })
@@ -87,34 +89,48 @@ export default defineComponent({
       ]);
     }
 
-    return (): VNode | null => {
-      const hsla = props.color.toCssHsla();
+    watch(
+      () => props.color,
+      (value, prevValue) => {
+        if (value === prevValue) {
+          return;
+        }
+        const hsla = props.color.toCssHsla();
 
+        state.h = hsla.h;
+        state.s = hsla.s;
+        state.l = hsla.l;
+        state.a = hsla.a;
+      }
+    );
+    return (): VNode | null => {
       const hNode = createChannel({
-        channelRef: hRef,
         label: 'H',
-        value: hsla.h,
-        onInput: onHslInput,
+        value: state.h,
+        onInput: (e) => {
+          onHslInput(e, 'h');
+        },
       });
 
       const sNode = createChannel({
-        channelRef: sRef,
         label: 'S',
-        value: hsla.s,
-        onInput: onHslInput,
+        value: state.s,
+        onInput: (e) => {
+          onHslInput(e, 's');
+        },
       });
 
       const lNode = createChannel({
-        channelRef: lRef,
         label: 'L',
-        value: hsla.l,
-        onInput: onHslInput,
+        value: state.l,
+        onInput: (e) => {
+          onHslInput(e, 'l');
+        },
       });
 
       const aNode = createChannel({
-        channelRef: aRef,
         label: 'A',
-        value: hsla.a,
+        value: state.a,
         onInput: onAlphaInput,
       });
 

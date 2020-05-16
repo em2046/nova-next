@@ -1,14 +1,16 @@
-import { defineComponent, h, Ref, ref, VNode } from 'vue';
+import { defineComponent, h, watch, VNode, reactive } from 'vue';
 import Color from '../../color';
 import DomUtils from '../../../../utils/dom-utils';
-import { getAlphaValue, getIntValue } from './label-utils';
+import { alphaNormalize, intNormalize } from './label-utils';
+import NumberInput from './NumberInput';
 
 interface ChannelParams {
-  channelRef: Ref<HTMLElement | null>;
   label: string;
   value: number;
   onInput: (e: InputEvent) => void;
 }
+
+type rgbChannel = 'r' | 'g' | 'b';
 
 export default defineComponent({
   props: {
@@ -20,26 +22,25 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    const rRef = ref(null);
-    const gRef = ref(null);
-    const bRef = ref(null);
-    const aRef = ref(null);
+    const { r, g, b, a } = props.color.toCss();
+    const state = reactive({
+      r: r,
+      g: g,
+      b: b,
+      a: a,
+    });
 
     function updateColor(eventName: string): void {
-      const r = getIntValue(rRef, 255);
-      const g = getIntValue(gRef, 255);
-      const b = getIntValue(bRef, 255);
-      const a = getAlphaValue(aRef);
-
-      if (r === null || g === null || b === null || a === null) {
-        return;
-      }
+      const r = intNormalize(state.r, 255);
+      const g = intNormalize(state.g, 255);
+      const b = intNormalize(state.b, 255);
+      const a = alphaNormalize(state.a);
 
       const color = Color.fromCss(r, g, b, a);
       emit(eventName, color);
     }
 
-    function onRgbInput(e: InputEvent): void {
+    function onRgbInput(e: InputEvent, channel: rgbChannel): void {
       const input = e.target as HTMLInputElement;
       const value = DomUtils.getInputValue(input);
 
@@ -48,6 +49,7 @@ export default defineComponent({
       }
 
       if (/^\d+$/.test(value)) {
+        state[channel] = value;
         updateColor('colorInput');
       }
     }
@@ -61,6 +63,7 @@ export default defineComponent({
       }
 
       if (/^((0)|(1)|(\d\.\d{1,2}))$/.test(value)) {
+        state['a'] = value;
         updateColor('colorInput');
       }
     }
@@ -70,16 +73,15 @@ export default defineComponent({
     }
 
     function createChannel(options: ChannelParams): VNode {
-      const { channelRef, label, value, onInput } = options;
+      const { label, value, onInput } = options;
 
       return h('label', { class: 'nova-color-picker-label' }, [
         h('div', { class: 'nova-color-picker-label-text' }, label),
         h(
           'div',
           { class: 'nova-color-picker-number' },
-          h('input', {
-            value,
-            ref: channelRef,
+          h(NumberInput, {
+            value: value.toString(),
             onInput,
             onBlur: onRgbaBlur,
           })
@@ -87,32 +89,49 @@ export default defineComponent({
       ]);
     }
 
+    watch(
+      () => props.color,
+      (value, prevValue) => {
+        if (value === prevValue) {
+          return;
+        }
+        const { r, g, b, a } = props.color.toCss();
+
+        state.r = r;
+        state.g = g;
+        state.b = b;
+        state.a = a;
+      }
+    );
+
     return (): VNode | null => {
-      const { r, g, b, a } = props.color.toCss();
+      const { r, g, b, a } = state;
 
       const rNode = createChannel({
-        channelRef: rRef,
         label: 'R',
         value: r,
-        onInput: onRgbInput,
+        onInput: (e) => {
+          onRgbInput(e, 'r');
+        },
       });
 
       const gNode = createChannel({
-        channelRef: gRef,
         label: 'G',
         value: g,
-        onInput: onRgbInput,
+        onInput: (e) => {
+          onRgbInput(e, 'g');
+        },
       });
 
       const bNode = createChannel({
-        channelRef: bRef,
         label: 'B',
         value: b,
-        onInput: onRgbInput,
+        onInput: (e) => {
+          onRgbInput(e, 'b');
+        },
       });
 
       const aNode = createChannel({
-        channelRef: aRef,
         label: 'A',
         value: a,
         onInput: onAlphaInput,

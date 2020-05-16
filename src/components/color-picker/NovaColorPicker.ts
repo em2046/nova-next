@@ -80,13 +80,14 @@ interface Data {
 }
 
 export default defineComponent({
+  name: 'NovaColorPicker',
   model: {
     event: 'update',
   },
   props: colorPickerProps,
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  setup: function (props: Data, context) {
+  setup(props: Data, context) {
     const emit = context.emit;
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
@@ -145,12 +146,12 @@ export default defineComponent({
     }
 
     function setPositionFromColor(color: Color): void {
-      const { h, s, v, a } = color.toHsva();
+      const hsva = color.toHsva();
 
-      const hue = Utils.numberLimit((h / 360) * 200, 0, 200);
-      const saturation = Utils.numberLimit(s * 200, 0, 200);
-      const value = Utils.numberLimit(200 - 200 * v, 0, 200);
-      const alpha = Utils.numberLimit(200 - 200 * a, 0, 200);
+      const hue = Utils.numberLimit((hsva.h / 360) * 200, 0, 200);
+      const saturation = Utils.numberLimit(hsva.s * 200, 0, 200);
+      const value = Utils.numberLimit(200 - 200 * hsva.v, 0, 200);
+      const alpha = Utils.numberLimit(200 - 200 * hsva.a, 0, 200);
 
       state.position.hue = hue;
       state.position.saturation = saturation;
@@ -204,10 +205,12 @@ export default defineComponent({
     watch(
       () => props.value,
       (value, prevValue) => {
-        if (value !== prevValue) {
-          const color = Color.fromHex(value);
-          setColorAndPosition(color);
+        if (value === prevValue) {
+          return;
         }
+
+        const color = Color.fromHex(value);
+        setColorAndPosition(color);
       }
     );
 

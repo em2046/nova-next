@@ -1,6 +1,7 @@
 import { defineComponent, h, VNode } from 'vue';
 
 export default defineComponent({
+  name: 'NovaInput',
   setup() {
     return (): VNode => {
       return h(
