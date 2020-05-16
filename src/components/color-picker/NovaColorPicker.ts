@@ -81,7 +81,7 @@ interface Data {
 
 export default defineComponent({
   model: {
-    event: 'change',
+    event: 'update',
   },
   props: colorPickerProps,
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -172,7 +172,7 @@ export default defineComponent({
     }
 
     function changePropsValue(color: Color): void {
-      emit('change', color.toCssHexString());
+      emit('update', color.toCssHexString());
     }
 
     function switchMode(): void {

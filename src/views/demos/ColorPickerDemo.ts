@@ -21,7 +21,7 @@ export default defineComponent({
       },
     });
 
-    function onColor1Change(color1: string): void {
+    function onColor1Update(color1: string): void {
       state.color1 = color1;
     }
 
@@ -33,7 +33,7 @@ export default defineComponent({
       state.color1Disabled = !state.color1Disabled;
     }
 
-    function onColor2Change(color2: string): void {
+    function onColor2Update(color2: string): void {
       state.color2 = color2;
     }
 
@@ -53,7 +53,7 @@ export default defineComponent({
         'custom-dropdown-class-name-' + getRandomNumber();
     }
 
-    function onOpenChange(open: boolean): void {
+    function onColor2OpenChange(open: boolean): void {
       console.log(open);
       state.color2DropdownStyle = {
         background: `#${getColorChannel()}${getColorChannel()}${getColorChannel()}`,
@@ -70,7 +70,7 @@ export default defineComponent({
         h(NovaColorPicker, {
           value: state.color1,
           disabled: state.color1Disabled,
-          onChange: onColor1Change,
+          onUpdate: onColor1Update,
         }),
         h('div', [
           state.color2,
@@ -78,9 +78,9 @@ export default defineComponent({
         ]),
         h(NovaColorPicker, {
           value: state.color2,
-          onChange: onColor2Change,
+          onUpdate: onColor2Update,
           onClick: onColor2Click,
-          onOpenChange: onOpenChange,
+          onOpenChange: onColor2OpenChange,
           teleportToBody: false,
           dropdownClass: [state.color2DropdownClass],
           dropdownStyle: state.color2DropdownStyle,
