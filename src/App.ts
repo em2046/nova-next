@@ -1,4 +1,4 @@
-import { RouterView, RouterLink } from 'vue-router';
+import { RouterLink, RouterView } from 'vue-router';
 import { defineComponent, h, VNode } from 'vue';
 
 export default defineComponent({

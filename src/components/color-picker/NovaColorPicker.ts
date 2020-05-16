@@ -2,13 +2,13 @@ import {
   computed,
   defineComponent,
   h,
-  reactive,
-  VNode,
-  watch,
   onMounted,
-  Teleport,
+  reactive,
   ref,
   Ref,
+  Teleport,
+  VNode,
+  watch,
 } from 'vue';
 import Color from './color';
 import Utils from '../../utils/utils';

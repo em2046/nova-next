@@ -1,10 +1,10 @@
 import {
-  onMounted,
-  onBeforeUnmount,
-  Ref,
-  reactive,
   computed,
   ComputedRef,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  Ref,
 } from 'vue';
 import DomUtils from '../utils/dom-utils';
 

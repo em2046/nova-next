@@ -1,4 +1,4 @@
-import { h, VNode, defineComponent } from 'vue';
+import { defineComponent, h, VNode } from 'vue';
 import { NovaInput } from '../../index';
 
 export default defineComponent({

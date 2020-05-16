@@ -1,5 +1,15 @@
 const defaultSearchLimit = 1024;
 
+export interface FunctionKeys {
+  alt: boolean;
+  shift: boolean;
+  ctrl: boolean;
+}
+
+export const up = Symbol('up');
+export const down = Symbol('down');
+export type Direction = typeof up | typeof down;
+
 export default class DomUtils {
   static getInputValue(target: HTMLInputElement): string {
     return target.value.trim();

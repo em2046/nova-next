@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import NovaColorPicker from '../NovaColorPicker';
-import { h, VNode, reactive } from 'vue';
+import { h, reactive, VNode } from 'vue';
 
 describe('color-picker', () => {
   test('render', async () => {

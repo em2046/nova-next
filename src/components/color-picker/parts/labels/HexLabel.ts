@@ -1,13 +1,12 @@
 import { defineComponent, h, reactive, ref, Ref, VNode } from 'vue';
 import Color from '../../color';
-import DomUtils from '../../../../utils/dom-utils';
+import DomUtils, {
+  Direction,
+  down,
+  FunctionKeys,
+  up,
+} from '../../../../utils/dom-utils';
 import Utils from '../../../../utils/utils';
-
-interface FunctionKeys {
-  alt: boolean;
-  shift: boolean;
-  ctrl: boolean;
-}
 
 interface TuningParams {
   r: number;
@@ -16,10 +15,6 @@ interface TuningParams {
   max: number;
   length: number;
 }
-
-const up = Symbol('up');
-const down = Symbol('down');
-type Direction = typeof up | typeof down;
 
 function calcTuned(
   functionKeys: FunctionKeys,
@@ -153,10 +148,12 @@ export default defineComponent({
         case 'ArrowUp':
         case 'Up':
           tuning(options, up);
+          e.preventDefault();
           break;
         case 'ArrowDown':
         case 'Down':
           tuning(options, down);
+          e.preventDefault();
           break;
       }
     }

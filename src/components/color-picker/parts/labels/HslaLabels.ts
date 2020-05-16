@@ -1,14 +1,14 @@
 import { defineComponent, h, reactive, VNode, watch } from 'vue';
 import Color from '../../color';
 import DomUtils from '../../../../utils/dom-utils';
-import { alphaNormalize, intNormalize } from './label-utils';
+import {
+  alphaNormalize,
+  alphaRule,
+  ChannelParams,
+  intNormalize,
+  UpdateParams,
+} from './label-utils';
 import NumberInput from './NumberInput';
-
-interface ChannelParams {
-  label: string;
-  value: number;
-  onInput: (e: InputEvent) => void;
-}
 
 type hslChannel = 'h' | 's' | 'l';
 
@@ -40,8 +40,7 @@ export default defineComponent({
       emit(eventName, color);
     }
 
-    function onHslInput(e: InputEvent, channel: hslChannel): void {
-      const input = e.target as HTMLInputElement;
+    function onHslInput(input: HTMLInputElement, channel: hslChannel): void {
       const value = DomUtils.getInputValue(input);
 
       if (value === '') {
@@ -54,15 +53,14 @@ export default defineComponent({
       }
     }
 
-    function onAlphaInput(e: InputEvent): void {
-      const input = e.target as HTMLInputElement;
+    function onAlphaInput(input: HTMLInputElement): void {
       const value = DomUtils.getInputValue(input);
 
       if (value === '') {
         return;
       }
 
-      if (/^((0)|(1)|(\d\.\d{1,2}))$/.test(value)) {
+      if (alphaRule.test(value)) {
         state['a'] = value;
         updateColor('colorInput');
       }
@@ -73,7 +71,7 @@ export default defineComponent({
     }
 
     function createChannel(options: ChannelParams): VNode {
-      const { label, value, onInput } = options;
+      const { label, value, onInput, onUpdate } = options;
 
       return h('label', { class: 'nova-color-picker-label' }, [
         h('div', { class: 'nova-color-picker-label-text' }, label),
@@ -83,6 +81,7 @@ export default defineComponent({
           h(NumberInput, {
             value: value.toString(),
             onInput,
+            onUpdate,
             onBlur: onHslaBlur,
           })
         ),
@@ -108,7 +107,10 @@ export default defineComponent({
         label: 'H',
         value: state.h,
         onInput: (e) => {
-          onHslInput(e, 'h');
+          onHslInput(e.target as HTMLInputElement, 'h');
+        },
+        onUpdate: (params: UpdateParams) => {
+          onHslInput(params.target, 'h');
         },
       });
 
@@ -116,7 +118,10 @@ export default defineComponent({
         label: 'S',
         value: state.s,
         onInput: (e) => {
-          onHslInput(e, 's');
+          onHslInput(e.target as HTMLInputElement, 's');
+        },
+        onUpdate: (params: UpdateParams) => {
+          onHslInput(params.target, 's');
         },
       });
 
@@ -124,14 +129,22 @@ export default defineComponent({
         label: 'L',
         value: state.l,
         onInput: (e) => {
-          onHslInput(e, 'l');
+          onHslInput(e.target as HTMLInputElement, 'l');
+        },
+        onUpdate: (params: UpdateParams) => {
+          onHslInput(params.target, 'l');
         },
       });
 
       const aNode = createChannel({
         label: 'A',
         value: state.a,
-        onInput: onAlphaInput,
+        onInput: (e) => {
+          onAlphaInput(e.target as HTMLInputElement);
+        },
+        onUpdate: (params: UpdateParams) => {
+          onAlphaInput(params.target);
+        },
       });
 
       return h('div', { class: 'nova-color-picker-labels' }, [

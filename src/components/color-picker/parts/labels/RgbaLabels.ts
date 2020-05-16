@@ -1,14 +1,14 @@
-import { defineComponent, h, watch, VNode, reactive } from 'vue';
+import { defineComponent, h, reactive, VNode, watch } from 'vue';
 import Color from '../../color';
 import DomUtils from '../../../../utils/dom-utils';
-import { alphaNormalize, intNormalize } from './label-utils';
+import {
+  alphaNormalize,
+  alphaRule,
+  ChannelParams,
+  intNormalize,
+  UpdateParams,
+} from './label-utils';
 import NumberInput from './NumberInput';
-
-interface ChannelParams {
-  label: string;
-  value: number;
-  onInput: (e: InputEvent) => void;
-}
 
 type rgbChannel = 'r' | 'g' | 'b';
 
@@ -22,12 +22,12 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    const { r, g, b, a } = props.color.toCss();
+    const rgba = props.color.toCss();
     const state = reactive({
-      r: r,
-      g: g,
-      b: b,
-      a: a,
+      r: rgba.r,
+      g: rgba.g,
+      b: rgba.b,
+      a: rgba.a,
     });
 
     function updateColor(eventName: string): void {
@@ -40,8 +40,7 @@ export default defineComponent({
       emit(eventName, color);
     }
 
-    function onRgbInput(e: InputEvent, channel: rgbChannel): void {
-      const input = e.target as HTMLInputElement;
+    function onRgbInput(input: HTMLInputElement, channel: rgbChannel): void {
       const value = DomUtils.getInputValue(input);
 
       if (value === '') {
@@ -54,15 +53,14 @@ export default defineComponent({
       }
     }
 
-    function onAlphaInput(e: InputEvent): void {
-      const input = e.target as HTMLInputElement;
+    function onAlphaInput(input: HTMLInputElement): void {
       const value = DomUtils.getInputValue(input);
 
       if (value === '') {
         return;
       }
 
-      if (/^((0)|(1)|(\d\.\d{1,2}))$/.test(value)) {
+      if (alphaRule.test(value)) {
         state['a'] = value;
         updateColor('colorInput');
       }
@@ -73,7 +71,7 @@ export default defineComponent({
     }
 
     function createChannel(options: ChannelParams): VNode {
-      const { label, value, onInput } = options;
+      const { label, value, onInput, onUpdate } = options;
 
       return h('label', { class: 'nova-color-picker-label' }, [
         h('div', { class: 'nova-color-picker-label-text' }, label),
@@ -83,6 +81,7 @@ export default defineComponent({
           h(NumberInput, {
             value: value.toString(),
             onInput,
+            onUpdate,
             onBlur: onRgbaBlur,
           })
         ),
@@ -95,46 +94,58 @@ export default defineComponent({
         if (value === prevValue) {
           return;
         }
-        const { r, g, b, a } = props.color.toCss();
+        const rgba = props.color.toCss();
 
-        state.r = r;
-        state.g = g;
-        state.b = b;
-        state.a = a;
+        state.r = rgba.r;
+        state.g = rgba.g;
+        state.b = rgba.b;
+        state.a = rgba.a;
       }
     );
 
     return (): VNode | null => {
-      const { r, g, b, a } = state;
-
       const rNode = createChannel({
         label: 'R',
-        value: r,
+        value: state.r,
         onInput: (e) => {
-          onRgbInput(e, 'r');
+          onRgbInput(e.target as HTMLInputElement, 'r');
+        },
+        onUpdate: (params: UpdateParams) => {
+          onRgbInput(params.target, 'r');
         },
       });
 
       const gNode = createChannel({
         label: 'G',
-        value: g,
+        value: state.g,
         onInput: (e) => {
-          onRgbInput(e, 'g');
+          onRgbInput(e.target as HTMLInputElement, 'g');
+        },
+        onUpdate: (params: UpdateParams) => {
+          onRgbInput(params.target, 'g');
         },
       });
 
       const bNode = createChannel({
         label: 'B',
-        value: b,
+        value: state.b,
         onInput: (e) => {
-          onRgbInput(e, 'b');
+          onRgbInput(e.target as HTMLInputElement, 'b');
+        },
+        onUpdate: (params: UpdateParams) => {
+          onRgbInput(params.target, 'b');
         },
       });
 
       const aNode = createChannel({
         label: 'A',
-        value: a,
-        onInput: onAlphaInput,
+        value: state.a,
+        onInput: (e) => {
+          onAlphaInput(e.target as HTMLInputElement);
+        },
+        onUpdate: (params: UpdateParams) => {
+          onAlphaInput(params.target);
+        },
       });
 
       return h('div', { class: 'nova-color-picker-labels' }, [

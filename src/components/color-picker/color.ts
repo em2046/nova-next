@@ -111,12 +111,12 @@ function HslToRgbChannel(tC: number, q: number, p: number): number {
  * @property a [0, 1]
  */
 export default class Color {
+  static hexRule = /^#?((([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)|([\dA-Fa-f]{3}))$/;
+
   r: number;
   g: number;
   b: number;
   a: number;
-
-  static hexRule = /^#?((([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)|([\dA-Fa-f]{3}))$/;
 
   /**
    * Create
@@ -242,7 +242,6 @@ export default class Color {
   }
 
   static fromHex(hashHex: string): Color {
-    console.log(hashHex);
     let hex = Color.hexNormalize(hashHex);
 
     if (hex.length === 3) {

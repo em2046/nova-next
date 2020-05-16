@@ -1,4 +1,4 @@
-import { h, VNode, reactive, defineComponent } from 'vue';
+import { defineComponent, h, reactive, VNode } from 'vue';
 import { NovaColorPicker } from '../../components/color-picker';
 
 function getRandomNumber(low = 0, high = 100): number {
