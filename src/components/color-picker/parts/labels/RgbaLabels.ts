@@ -14,6 +14,10 @@ type rgbChannel = 'r' | 'g' | 'b';
 
 export default defineComponent({
   props: {
+    alpha: {
+      type: Boolean,
+      required: true,
+    },
     color: {
       type: Object,
       required: true,
@@ -137,16 +141,24 @@ export default defineComponent({
         },
       });
 
-      const aNode = createChannel({
-        label: 'A',
-        value: state.a,
-        onInput: (e) => {
-          onAlphaInput(e.target as HTMLInputElement);
-        },
-        onUpdate: (params: UpdateParams) => {
-          onAlphaInput(params.target);
-        },
-      });
+      function createAlpha(): VNode | null {
+        if (!props.alpha) {
+          return null;
+        }
+
+        return createChannel({
+          label: 'A',
+          value: state.a,
+          onInput: (e) => {
+            onAlphaInput(e.target as HTMLInputElement);
+          },
+          onUpdate: (params: UpdateParams) => {
+            onAlphaInput(params.target);
+          },
+        });
+      }
+
+      const aNode = createAlpha();
 
       return h('div', { class: 'nova-color-picker-labels' }, [
         rNode,

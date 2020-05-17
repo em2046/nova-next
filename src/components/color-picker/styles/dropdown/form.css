@@ -65,11 +65,15 @@
   width: 85px;
 }
 
+.nova-color-picker-panel-has-alpha .nova-color-picker-labels-switch {
+  margin-left: 10px;
+}
+
 .nova-color-picker-labels-switch {
   width: 20px;
-  height: 20px;
-  margin-top: -65px;
-  margin-left: 10px;
+  height: 25px;
+  margin-top: -55px;
+  margin-left: 55px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -98,7 +102,7 @@
 }
 
 .nova-color-picker-labels-switch:hover {
-  background-color: #cccccc;
+  background-color: #1a1a1a;
 }
 
 .nova-color-picker-labels-switch:hover:before {

@@ -21,6 +21,7 @@ import RgbaLabels from './parts/labels/RgbaLabels';
 import HslaLabels from './parts/labels/HslaLabels';
 import HexLabel from './parts/labels/HexLabel';
 import Trigger from './parts/Trigger';
+import PresetValues from './parts/PresetValues';
 import useDropdown from '../../uses/useDropdown';
 
 const rgba = Symbol('rgba');
@@ -133,7 +134,13 @@ export default defineComponent({
     });
 
     const dropdownClassList = computed(() => {
-      return ['nova-color-picker-panel', props.dropdownClass];
+      return [
+        'nova-color-picker-panel',
+        props.dropdownClass,
+        {
+          ['nova-color-picker-panel-has-alpha']: props.alpha,
+        },
+      ];
     });
 
     function getColorFromPosition(): Color {
@@ -156,11 +163,18 @@ export default defineComponent({
       state.position.hue = hue;
       state.position.saturation = saturation;
       state.position.value = value;
-      state.position.alpha = alpha;
+
+      if (props.alpha) {
+        state.position.alpha = alpha;
+      }
     }
 
     function setColor(color: Color): void {
-      state.color = color;
+      if (props.alpha) {
+        state.color = color;
+      } else {
+        state.color = new Color(color.r, color.g, color.b);
+      }
     }
 
     function setColorAndPosition(color: Color): void {
@@ -242,6 +256,22 @@ export default defineComponent({
         },
       });
 
+      function createPreset(): VNode | null {
+        if (!props.preset.length) {
+          return null;
+        }
+
+        return h(PresetValues, {
+          preset: props.preset,
+          color: state.color,
+          onSelect: (color: Color) => {
+            setColorAndPosition(color);
+          },
+        });
+      }
+
+      const presetNode = createPreset();
+
       const hueSlideNode = h(HueSlide, {
         hue: state.position.hue,
         onMove: (position: MousePosition) => {
@@ -250,14 +280,22 @@ export default defineComponent({
         },
       });
 
-      const alphaSlideNode = h(AlphaSlide, {
-        alpha: state.position.alpha,
-        color: state.color,
-        onMove: (position: MousePosition) => {
-          state.position.alpha = Utils.numberLimit(position.y, 0, 200);
-          setColorFromPosition();
-        },
-      });
+      function createAlpha(): VNode | null {
+        if (!props.alpha) {
+          return null;
+        }
+
+        return h(AlphaSlide, {
+          alpha: state.position.alpha,
+          color: state.color,
+          onMove: (position: MousePosition) => {
+            state.position.alpha = Utils.numberLimit(position.y, 0, 200);
+            setColorFromPosition();
+          },
+        });
+      }
+
+      const alphaSlideNode = createAlpha();
 
       const slidesNode = h('div', { class: 'nova-color-picker-slides' }, [
         hueSlideNode,
@@ -270,6 +308,7 @@ export default defineComponent({
       const formNode = h('div', { class: 'nova-color-picker-form' }, [
         h(currModeLabels, {
           color: state.color,
+          alpha: props.alpha,
           onColorInput: (color: Color) => {
             setColorAndPosition(color);
           },
@@ -319,7 +358,7 @@ export default defineComponent({
                 dropdownStyle.value
               ),
             },
-            [hsvPanelNode, slidesNode, formNode, previewNode]
+            [hsvPanelNode, slidesNode, formNode, previewNode, presetNode]
           )
         );
       }

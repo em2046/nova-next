@@ -1,6 +1,6 @@
 :root {
   --checkerboard-white: transparent;
-  --checkerboard-drak: rgba(0, 0, 0, 0.2);
+  --checkerboard-drak: rgba(0, 0, 0, 0.5);
   --checkerboard-size: 10px 10px;
   --checkerboard-bg: linear-gradient(
         45deg,

@@ -6,10 +6,9 @@
   font-size: 12px;
   color: #ffffff;
   background-color: #333333;
-  width: 320px;
-  height: 320px;
+  width: 330px;
   display: grid;
-  grid-template-columns: 220px 60px;
-  grid-column-gap: 10px;
+  grid-template-columns: 220px auto;
+  grid-column-gap: 20px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
 }

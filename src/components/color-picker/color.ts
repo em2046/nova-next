@@ -1,5 +1,7 @@
 import Utils from '../../utils/utils';
 
+const colorFormatError = 'Color format error';
+
 /**
  * @property r [0, 255]
  * @property g [0, 255]
@@ -104,6 +106,28 @@ function HslToRgbChannel(tC: number, q: number, p: number): number {
   return c;
 }
 
+function getRgbFromText(text: string): number[] {
+  const hasPercent = text.indexOf('%') !== -1;
+  const percentSize = text.replace(/[^%]/g, '').length;
+  if (hasPercent && percentSize !== 3) {
+    throw new Error(colorFormatError);
+  }
+
+  return text.split(',').map((channel) => {
+    if (hasPercent) {
+      return parseInt(channel) / 100;
+    } else {
+      return parseInt(channel) / 255;
+    }
+  });
+}
+
+function getHslFromText(text: string): number[] {
+  return text.split(',').map((channel) => {
+    return parseInt(channel);
+  });
+}
+
 /**
  * @property r [0, 1]
  * @property g [0, 1]
@@ -112,6 +136,10 @@ function HslToRgbChannel(tC: number, q: number, p: number): number {
  */
 export default class Color {
   static hexRule = /^#?((([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)|([\dA-Fa-f]{3}))$/;
+  static rgbRule = /^rgb\((\d{1,3}%?,){2}\d{1,3}%?\)$/;
+  static rgbaRule = /^rgba\((\d{1,3}%?,){2}\d{1,3}%?,(\d+(\.\d{1,2})?)\)$/;
+  static hslRule = /^hsl\(\d{1,3}(,\d{1,3}%){2}\)$/;
+  static hslaRule = /^hsla\(\d{1,3}(,\d{1,3}%){2},(\d+(\.\d{1,2})?)\)$/;
 
   r: number;
   g: number;
@@ -141,6 +169,55 @@ export default class Color {
    */
   static fromCss(r = 0, g = 0, b = 0, a = 1): Color {
     return new Color(r / 255, g / 255, b / 255, a);
+  }
+
+  static fromCssRgbString(text: string): Color {
+    if (!Color.rgbRule.test(text)) {
+      throw new Error(colorFormatError);
+    }
+
+    text = text.slice(4, -1);
+    const [r, g, b] = getRgbFromText(text);
+
+    return new Color(r, g, b);
+  }
+
+  static fromCssRgbaString(text: string): Color {
+    if (!Color.rgbaRule.test(text)) {
+      throw new Error(colorFormatError);
+    }
+
+    text = text.slice(5, -1);
+    const [textR, textG, textB, textA] = text.split(',');
+    const [r, g, b] = getRgbFromText(`${textR},${textG},${textB}`);
+    const a = parseFloat(textA);
+
+    return new Color(r, g, b, a);
+  }
+
+  static fromCssHslString(text: string): Color {
+    if (!Color.hslRule.test(text)) {
+      throw new Error(colorFormatError);
+    }
+
+    text = text.slice(4, -1);
+    const [h, s, l] = getHslFromText(text);
+
+    return Color.fromCssHsla(h, s, l);
+  }
+
+  static fromCssHslaString(text: string): Color {
+    if (!Color.hslaRule.test(text)) {
+      throw new Error(colorFormatError);
+    }
+
+    text = text.slice(5, -1);
+    const [textH, textS, textL, textA] = text.split(',');
+
+    const [h, s, l] = getHslFromText(`${textH},${textS},${textL}`);
+    const a = parseFloat(textA);
+
+    return Color.fromCssHsla(h, s, l, a);
   }
 
   /**
@@ -244,6 +321,10 @@ export default class Color {
   static fromHex(hashHex: string): Color {
     let hex = Color.hexNormalize(hashHex);
 
+    if (!Color.hexRule.test(hex)) {
+      throw new Error(colorFormatError);
+    }
+
     if (hex.length === 3) {
       hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
     }
@@ -265,6 +346,37 @@ export default class Color {
     return this.fromCss(cssRed, cssGreen, cssBlue, cssAlpha);
   }
 
+  static parse(text: string): Color {
+    // Hash hex
+    if (text[0] === '#') {
+      return Color.fromHex(text);
+    }
+
+    text = text.replace(/[^\drgb,hls%a.()]/g, '');
+
+    // RGB
+    if (text.indexOf('rgb(') === 0) {
+      return Color.fromCssRgbString(text);
+    }
+
+    // RGBA
+    if (text.indexOf('rgba(') === 0) {
+      return Color.fromCssRgbaString(text);
+    }
+
+    // HSL
+    if (text.indexOf('hsl(') === 0) {
+      return Color.fromCssHslString(text);
+    }
+
+    // HSLA
+    if (text.indexOf('hsla(') === 0) {
+      return Color.fromCssHslaString(text);
+    }
+
+    return new Color();
+  }
+
   toCss(): CssRgba {
     const r = Math.round(this.r * 255);
     const g = Math.round(this.g * 255);
@@ -276,9 +388,15 @@ export default class Color {
 
   /**
    * Return string like rgba(255, 255, 255, 0.5)
+   * If alpha is 1, then return string like rgb(255, 255, 255)
    */
   toCssRgbaString(): string {
     const { r, g, b, a } = this.toCss();
+
+    if (a === 1) {
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
     return `rgba(${r}, ${g}, ${b}, ${a})`;
   }
 
@@ -383,5 +501,14 @@ export default class Color {
       l: Math.round(hsla.l * 100),
       a: Utils.numberFixed(hsla.a),
     };
+  }
+
+  toCssHslaString(): string {
+    const { h, s, l, a } = this.toCssHsla();
+    if (a === 1) {
+      return `hsl(${h}, ${s}%, ${l}%)`;
+    }
+
+    return `hsla(${h}, ${s}%, ${l}%, ${a})`;
   }
 }

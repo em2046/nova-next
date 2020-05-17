@@ -13,6 +13,7 @@ describe('color-picker', () => {
           return h('div', [
             h(NovaColorPicker, {
               value: state.color,
+              alpha: true,
               teleportToBody: false,
             }),
           ]);

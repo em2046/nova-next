@@ -24,6 +24,7 @@ export default function useMousemove(options: UseMousemoveParams): void {
     if (moving) {
       return;
     }
+
     moving = true;
     requestAnimationFrame(() => {
       moving = false;

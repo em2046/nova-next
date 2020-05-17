@@ -1,6 +1,6 @@
 import Utils from '../../../../utils/utils';
 
-export const alphaRule = /^((0)|(1)|(\d+\.\d{1,2}))$/;
+export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
 
 export interface ChannelParams {
   label: string;
