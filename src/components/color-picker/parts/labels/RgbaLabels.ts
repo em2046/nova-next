@@ -94,10 +94,7 @@ export default defineComponent({
 
     watch(
       () => props.color,
-      (value, prevValue) => {
-        if (value === prevValue) {
-          return;
-        }
+      () => {
         const rgba = props.color.toCss();
 
         state.r = rgba.r;

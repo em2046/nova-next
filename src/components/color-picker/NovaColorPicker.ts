@@ -34,6 +34,8 @@ const labelsMap = {
   [hsla]: HslaLabels,
 };
 
+type Format = 'hex' | 'rgb' | 'hsl';
+
 const colorPickerProps = {
   value: {
     type: String,
@@ -76,7 +78,7 @@ interface Data {
   dropdownStyle: object;
   teleportToBody: boolean;
   alpha: boolean;
-  format: string;
+  format: Format;
   preset: string[];
 }
 
@@ -94,6 +96,7 @@ export default defineComponent({
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
 
+    const mode = props.format === 'hsl' ? hsla : rgba;
     const state = reactive({
       position: {
         /**
@@ -114,7 +117,7 @@ export default defineComponent({
         alpha: 0,
       },
       color: Color.fromCssLikeHsva(0, 100, 100, 1),
-      mode: rgba,
+      mode,
     });
 
     /**
@@ -187,7 +190,7 @@ export default defineComponent({
     }
 
     function changePropsValue(color: Color): void {
-      emit('update', color.toCssHexString());
+      emit('update', color.toString(props.format));
     }
 
     function switchMode(): void {
@@ -218,18 +221,14 @@ export default defineComponent({
 
     watch(
       () => props.value,
-      (value, prevValue) => {
-        if (value === prevValue) {
-          return;
-        }
-
-        const color = Color.fromHex(value);
+      (value) => {
+        const color = Color.parse(value);
         setColorAndPosition(color);
       }
     );
 
     function init(): void {
-      const color = Color.fromHex(props.value);
+      const color = Color.parse(props.value);
       setColorAndPosition(color);
     }
 

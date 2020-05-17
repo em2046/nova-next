@@ -352,7 +352,7 @@ export default class Color {
       return Color.fromHex(text);
     }
 
-    text = text.replace(/[^\drgb,hls%a.()]/g, '');
+    text = text.replace(/[^\drgb,hsl%a.()]/g, '');
 
     // RGB
     if (text.indexOf('rgb(') === 0) {
@@ -505,10 +505,23 @@ export default class Color {
 
   toCssHslaString(): string {
     const { h, s, l, a } = this.toCssHsla();
+
     if (a === 1) {
       return `hsl(${h}, ${s}%, ${l}%)`;
     }
 
     return `hsla(${h}, ${s}%, ${l}%, ${a})`;
+  }
+
+  toString(format = 'hex'): string {
+    switch (format) {
+      case 'rgb':
+        return this.toCssRgbaString();
+      case 'hsl':
+        return this.toCssHslaString();
+      case 'hex':
+      default:
+        return this.toCssHexString();
+    }
   }
 }

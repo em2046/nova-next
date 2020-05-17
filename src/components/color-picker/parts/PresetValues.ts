@@ -21,8 +21,9 @@ export default defineComponent({
     }
 
     function createPreset(color: string): VNode {
-      const selected =
-        Color.parse(color).toCssHexString() === props.color.toCssHexString();
+      const presetHex = Color.parse(color).toCssHexString();
+      const panelHex = props.color.toCssHexString();
+      const selected = presetHex === panelHex;
       const classList = [
         'nova-color-picker-preset',
         {

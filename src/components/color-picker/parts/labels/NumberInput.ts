@@ -88,7 +88,7 @@ export default defineComponent({
       return h('input', {
         value: props.value,
         ref: inputRef,
-        onKeydown: onKeydown,
+        onKeydown,
       });
     };
   },

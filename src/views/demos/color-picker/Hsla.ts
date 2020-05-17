@@ -3,45 +3,30 @@ import { NovaColorPicker } from '../../../index';
 
 export default defineComponent({
   setup() {
-    const defaultColor = '#808040';
-
+    const defaultColor = 'hsla(180, 50%, 50%, 0.5)';
     const state = reactive({
       color: defaultColor,
-      disabled: false,
     });
-
-    function onUpdate(color: string): void {
-      state.color = color;
-    }
 
     function onReset(): void {
       state.color = defaultColor;
     }
 
-    function onToggleDisable(): void {
-      state.disabled = !state.disabled;
+    function onUpdate(color: string): void {
+      state.color = color;
     }
 
     return (): VNode => {
       return h('div', {}, [
-        h('div', [
+        h('div', {}, [
           state.color,
           h('button', { onClick: onReset }, ['Reset']),
-          h('button', { onClick: onToggleDisable }, ['Toggle disable']),
         ]),
         h(NovaColorPicker, {
           value: state.color,
-          disabled: state.disabled,
+          format: 'hsl',
+          alpha: true,
           onUpdate,
-          preset: [
-            '#804040',
-            '#808040',
-            '#408040',
-            '#408080',
-            '#404080',
-            '#804080',
-            '#808080',
-          ],
         }),
       ]);
     };

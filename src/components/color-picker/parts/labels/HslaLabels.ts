@@ -94,10 +94,7 @@ export default defineComponent({
 
     watch(
       () => props.color,
-      (value, prevValue) => {
-        if (value === prevValue) {
-          return;
-        }
+      () => {
         const hsla = props.color.toCssHsla();
 
         state.h = hsla.h;
