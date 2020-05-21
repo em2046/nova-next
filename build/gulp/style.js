@@ -1,40 +1,53 @@
-import { dest, series, src } from 'gulp';
-import { fromRoot } from '../utils';
-import concatCss from 'gulp-concat-css';
+import fs from 'fs';
+import { series } from 'gulp';
+import { rollup } from 'rollup';
+import rollupTypescript from '@rollup/plugin-typescript';
+import css from 'rollup-plugin-css-only';
 import glob from 'glob';
 
-function component(file, componentName) {
-  return new Promise((resolve) => {
-    src(fromRoot(file))
-      .pipe(concatCss(`${componentName}.css`))
-      .pipe(dest(fromRoot('dist/css')))
-      .on('end', () => {
-        resolve();
-      });
+const cssPath = './dist/css';
+if (!fs.existsSync(cssPath)) {
+  fs.mkdirSync(cssPath);
+}
+
+async function component(inputPath, outputPath) {
+  const bundle = await rollup({
+    input: inputPath,
+    plugins: [
+      rollupTypescript(),
+      css({
+        output: (styles) => {
+          fs.writeFileSync(outputPath, styles);
+        },
+      }),
+    ],
+  });
+
+  return await bundle.generate({
+    format: 'esm',
+    sourcemap: true,
   });
 }
 
 async function components() {
   let list = [];
 
-  glob('src/components/**/index.css', (er, files) => {
+  glob('src/components/*/styles/index.ts', (er, files) => {
     files.forEach((file) => {
       const componentName = file.replace(
         /^.+components\/(.+)\/styles.+$/,
         '$1'
       );
-      const promise = component(file, componentName);
+      const promise = component(file, `./dist/css/${componentName}.css`);
       list.push(promise);
     });
   });
 
-  await Promise.all(list);
+  return await Promise.all(list);
 }
 
-function bundle() {
-  return src(fromRoot('src/styles/index.css'))
-    .pipe(concatCss('nova.css'))
-    .pipe(dest(fromRoot('dist')));
+async function bundle() {
+  return await component('./src/styles/index.ts', './dist/nova.css');
 }
 
 export default series(components, bundle);
