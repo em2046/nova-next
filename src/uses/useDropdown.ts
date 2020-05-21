@@ -11,7 +11,7 @@ import DomUtils from '../utils/dom-utils';
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
   dropdownRef: Ref<HTMLElement | null>;
-  props: Readonly<{ disabled: boolean }>;
+  props: Readonly<unknown>;
   onOpen?: () => void;
   onClose?: () => void;
 }
@@ -22,6 +22,10 @@ interface Dropdown {
     left: number;
     top: number;
   };
+}
+
+interface DropdownProps {
+  disabled: boolean;
 }
 
 type DropdownStyle = ComputedRef<{ left: string; top: string }>;
@@ -45,9 +49,10 @@ export default function useDropdown(
   });
 
   const { triggerRef, dropdownRef, props, onOpen, onClose } = options;
+  const dropdownProps = props as DropdownProps;
 
   function onVirtualMaskMousedown(e: MouseEvent): void {
-    if (props.disabled) {
+    if (dropdownProps.disabled) {
       return;
     }
 
@@ -66,7 +71,7 @@ export default function useDropdown(
   }
 
   function closeDropdown(): void {
-    if (props.disabled) {
+    if (dropdownProps.disabled) {
       return;
     }
 
@@ -80,7 +85,7 @@ export default function useDropdown(
   }
 
   function openDropdown(): void {
-    if (props.disabled) {
+    if (dropdownProps.disabled) {
       return;
     }
 

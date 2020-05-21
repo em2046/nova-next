@@ -3,7 +3,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "strict": true,
-    "jsx": "preserve",
+    "jsx": "react",
+    "jsxFactory": "h",
     "moduleResolution": "Node",
     "sourceMap": true
   },

@@ -34,8 +34,6 @@ const labelsMap = {
   [hsla]: HslaLabels,
 };
 
-type Format = 'hex' | 'rgb' | 'hsl';
-
 const colorPickerProps = {
   value: {
     type: String,
@@ -71,26 +69,13 @@ const colorPickerProps = {
   },
 };
 
-interface Data {
-  value: string;
-  disabled: boolean;
-  dropdownClass: string | object | (string | object)[];
-  dropdownStyle: object;
-  teleportToBody: boolean;
-  alpha: boolean;
-  format: Format;
-  preset: string[];
-}
-
 export default defineComponent({
   name: 'NovaColorPicker',
   model: {
     event: 'update',
   },
   props: colorPickerProps,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  setup(props: Data, context) {
+  setup(props, context) {
     const emit = context.emit;
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);

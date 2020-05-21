@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive, VNode } from 'vue';
+import { defineComponent, h, reactive } from 'vue';
 import { NovaColorPicker } from '../../../index';
 
 const hex = [
@@ -50,7 +50,6 @@ const hsla = [
   'hsla(240,100%,50%, 0.7)',
   'hsla(240,100%,50%,   1)',
 ];
-
 const preset = [...hex, ...rgb, ...rgba, ...hsl, ...hsla];
 
 function getRandomNumber(low = 0, high = 100): number {
@@ -85,24 +84,31 @@ export default defineComponent({
       console.log(open);
     }
 
-    return (): VNode => {
-      return h('div', {}, [
-        h('div', [state.color, h('button', { onClick: onReset }, ['Reset'])]),
-        h(NovaColorPicker, {
-          format: 'rgb',
-          alpha: true,
-          value: state.color,
-          onUpdate,
-          onClick,
-          onOpenChange,
-          teleportToBody: false,
-          dropdownClass: [state.colorDropdownClass],
-          class: 'custom-class-name',
-          style: { background: '#333333' },
-          ['data-custom']: state.colorCustomValue,
-          preset,
-        }),
-      ]);
+    return (): unknown => {
+      const pickerProps = {
+        format: 'rgb',
+        alpha: true,
+        value: state.color,
+        onUpdate,
+        onClick,
+        onOpenChange,
+        teleportToBody: false,
+        dropdownClass: [state.colorDropdownClass],
+        class: 'custom-class-name',
+        style: { background: '#333333' },
+        ['data-custom']: state.colorCustomValue,
+        preset,
+      };
+
+      return (
+        <div>
+          <div>
+            {state.color}
+            <button onClick={onReset}>Reset</button>
+          </div>
+          <NovaColorPicker {...pickerProps} />
+        </div>
+      );
     };
   },
 });
