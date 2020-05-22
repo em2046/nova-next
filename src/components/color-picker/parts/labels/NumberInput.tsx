@@ -1,4 +1,4 @@
-import { defineComponent, h, ref, Ref, VNode } from 'vue';
+import { defineComponent, h, ref, Ref } from 'vue';
 import DomUtils, {
   Direction,
   down,
@@ -84,12 +84,15 @@ export default defineComponent({
       }
     }
 
-    return (): VNode => {
-      return h('input', {
-        value: props.value,
-        ref: inputRef,
-        onKeydown,
-      });
+    return (): unknown => {
+      return (
+        <input
+          type="text"
+          value={props.value}
+          ref={inputRef}
+          onKeydown={onKeydown}
+        />
+      );
     };
   },
 });

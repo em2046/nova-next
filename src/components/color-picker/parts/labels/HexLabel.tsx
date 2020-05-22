@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive, ref, Ref, VNode } from 'vue';
+import { defineComponent, h, reactive, ref, Ref } from 'vue';
 import Color from '../../color';
 import DomUtils, {
   Direction,
@@ -73,13 +73,13 @@ export default defineComponent({
       }
     }
 
-    function onHexInput(e: InputEvent): void {
+    function onHexInput(e: Event): void {
       const target = e.target as HTMLInputElement;
       const value = DomUtils.getInputValue(target);
       updateColor('colorInput', value);
     }
 
-    function onHexBlur(e: InputEvent): void {
+    function onHexBlur(e: Event): void {
       const target = e.target as HTMLInputElement;
       const inputValue = DomUtils.getInputValue(target);
       const hex = Color.hexNormalize(inputValue);
@@ -158,23 +158,20 @@ export default defineComponent({
       }
     }
 
-    return (): VNode | null => {
-      return h(
-        'div',
-        { class: 'nova-color-picker-output' },
-        h(
-          'div',
-          {
-            class: 'nova-color-picker-hex',
-          },
-          h('input', {
-            value: props.color.toCssHexString(state.hexShort),
-            ref: hexRef,
-            onInput: onHexInput,
-            onBlur: onHexBlur,
-            onKeydown: onHexKeydown,
-          })
-        )
+    return (): unknown | null => {
+      return (
+        <div class="nova-color-picker-output">
+          <div class="nova-color-picker-hex">
+            <input
+              type="text"
+              value={props.color.toCssHexString(state.hexShort)}
+              ref={hexRef}
+              onInput={onHexInput}
+              onBlur={onHexBlur}
+              onKeydown={onHexKeydown}
+            />
+          </div>
+        </div>
       );
     };
   },

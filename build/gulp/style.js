@@ -7,7 +7,7 @@ import glob from 'glob';
 
 const cssPath = './dist/css';
 if (!fs.existsSync(cssPath)) {
-  fs.mkdirSync(cssPath);
+  fs.mkdirSync(cssPath, { recursive: true });
 }
 
 async function component(inputPath, outputPath) {
