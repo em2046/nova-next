@@ -85,7 +85,7 @@ export default defineComponent({
       }
     }
 
-    return (): unknown => {
+    return (): JSX.Element => {
       return (
         <input
           type="text"

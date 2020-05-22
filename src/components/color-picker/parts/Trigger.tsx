@@ -23,7 +23,7 @@ export default defineComponent({
       emit('assignRef', triggerRef);
     });
 
-    return (): unknown => {
+    return (): JSX.Element => {
       return (
         <div class="nova-color-picker-trigger" ref={triggerRef}>
           <div

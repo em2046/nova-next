@@ -33,7 +33,7 @@ export default defineComponent({
       },
     });
 
-    return (): unknown | null => {
+    return (): JSX.Element => {
       const { r, g, b } = props.color.toCssRgba();
       const currColorRgb = `${r}, ${g}, ${b}`;
       const currColorLinearGradient = `linear-gradient(180deg, rgba(${currColorRgb}, 1), rgba(${currColorRgb}, 0))`;

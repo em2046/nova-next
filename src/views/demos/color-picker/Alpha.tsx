@@ -85,7 +85,7 @@ export default defineComponent({
       console.log(open);
     }
 
-    return (): unknown => {
+    return (): JSX.Element => {
       const pickerProps = {
         format: 'rgb',
         alpha: true,

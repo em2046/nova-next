@@ -6,7 +6,7 @@ export default defineComponent({
   setup(props, context) {
     const { slots } = context;
 
-    return (): unknown => {
+    return (): JSX.Element => {
       const children = slots.default && slots.default();
       return (
         <button class="nova-button" type="button">

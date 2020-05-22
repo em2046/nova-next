@@ -45,7 +45,7 @@ export default defineComponent({
       },
     });
 
-    return (): unknown => {
+    return (): JSX.Element => {
       return (
         <div
           class={'nova-color-picker-hsv'}

@@ -11,7 +11,7 @@ describe('color-picker', () => {
           color: '#80808080',
         });
 
-        return (): unknown => {
+        return (): JSX.Element => {
           return (
             <div>
               <NovaColorPicker

@@ -87,7 +87,7 @@ export default defineComponent({
       }
     );
 
-    return (): unknown | null => {
+    return (): JSX.Element => {
       const hNode = createChannel({
         label: 'H',
         value: state.h,

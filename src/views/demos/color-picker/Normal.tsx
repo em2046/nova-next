@@ -23,7 +23,7 @@ export default defineComponent({
       state.disabled = !state.disabled;
     }
 
-    return (): unknown => {
+    return (): JSX.Element => {
       const pickerProps = {
         value: state.color,
         disabled: state.disabled,

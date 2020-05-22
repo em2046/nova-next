@@ -4,7 +4,7 @@ import { vueJsxCompat } from './vue-jsx-compat';
 
 export default defineComponent({
   setup() {
-    return (): unknown => [
+    return (): JSX.Element[] => [
       <header id="header">
         <nav id="nav">
           <ul>

@@ -29,7 +29,7 @@ export default defineComponent({
       },
     });
 
-    return (): unknown => {
+    return (): JSX.Element => {
       return (
         <div class="nova-color-picker-hue-slide" ref={hueSlideRef}>
           <div class="nova-color-picker-hue-bar" />

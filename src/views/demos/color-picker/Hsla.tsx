@@ -17,7 +17,7 @@ export default defineComponent({
       state.color = color;
     }
 
-    return (): unknown => {
+    return (): JSX.Element => {
       const pickerProps = {
         value: state.color,
         format: 'hsl',

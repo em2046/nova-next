@@ -159,7 +159,7 @@ export default defineComponent({
       }
     }
 
-    return (): unknown | null => {
+    return (): JSX.Element => {
       return (
         <div class="nova-color-picker-output">
           <div class="nova-color-picker-hex">

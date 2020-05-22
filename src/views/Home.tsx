@@ -4,7 +4,7 @@ import { vueJsxCompat } from '../vue-jsx-compat';
 
 export default defineComponent({
   setup() {
-    return (): unknown => [
+    return (): JSX.Element => [
       <h1>Nova next</h1>,
       <p>Experimental Vue components</p>,
       <RouterLink to="/color-picker">{(): string => 'ColorPicker'}</RouterLink>,

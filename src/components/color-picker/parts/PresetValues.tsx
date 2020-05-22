@@ -21,7 +21,7 @@ export default defineComponent({
       emit('select', color);
     }
 
-    function createPreset(color: string): unknown {
+    function createPreset(color: string): JSX.Element {
       const presetHex = Color.parse(color).toCssHexString();
       const panelHex = props.color.toCssHexString();
       const selected = presetHex === panelHex;
@@ -48,7 +48,7 @@ export default defineComponent({
       );
     }
 
-    return (): unknown => {
+    return (): JSX.Element => {
       return (
         <div class="nova-color-picker-presets">
           {props.preset.map((value) => createPreset(value as string))}

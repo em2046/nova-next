@@ -20,7 +20,7 @@ export default defineComponent({
       emit('reset');
     }
 
-    return (): unknown | null => {
+    return (): JSX.Element => {
       const prevColor = Color.parse(props.value).toCssRgbaString();
       const currColor = props.color.toCssRgbaString();
       const prevStyle = {

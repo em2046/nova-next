@@ -23,15 +23,18 @@ import PresetValues from './parts/PresetValues';
 import useDropdown from '../../uses/useDropdown';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 
-const rgba = Symbol('rgba');
-const hsla = Symbol('hsla');
+//region mode
+const modeRgba = Symbol('rgba');
+const modeHsla = Symbol('hsla');
 
-const modeList = [rgba, hsla];
+const modeList = [modeRgba, modeHsla];
 const modeSize = modeList.length;
+
 const labelsMap = {
-  [rgba]: RgbaLabels,
-  [hsla]: HslaLabels,
+  [modeRgba]: RgbaLabels,
+  [modeHsla]: HslaLabels,
 };
+//endregion
 
 const colorPickerProps = {
   value: {
@@ -80,7 +83,7 @@ export default defineComponent({
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
 
-    const mode = props.format === 'hsl' ? hsla : rgba;
+    const mode = props.format === 'hsl' ? modeHsla : modeRgba;
     const state = reactive({
       position: {
         /**
@@ -220,7 +223,7 @@ export default defineComponent({
       init();
     });
 
-    return (): unknown => {
+    return (): JSX.Element => {
       function onAssignRef(assignedRef: Ref<HTMLElement | null>): void {
         triggerRef.value = assignedRef.value;
       }
@@ -244,7 +247,7 @@ export default defineComponent({
         />
       );
 
-      function createPreset(): unknown | null {
+      function createPreset(): JSX.Element | null {
         if (!props.preset.length) {
           return null;
         }
@@ -269,7 +272,7 @@ export default defineComponent({
         <HueSlide hue={state.position.hue} onMove={onAlphaMove} />
       );
 
-      function createAlpha(): unknown | null {
+      function createAlpha(): JSX.Element | null {
         if (!props.alpha) {
           return null;
         }
@@ -297,6 +300,7 @@ export default defineComponent({
         </div>
       );
 
+      // FIXME Any type
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       const CurrModeLabels = labelsMap[state.mode];
@@ -322,7 +326,7 @@ export default defineComponent({
         <Preview color={state.color} value={props.value} onReset={init} />
       );
 
-      function createDropdown(): unknown | null {
+      function createDropdown(): JSX.Element | null {
         if (!dropdown.opened || props.disabled) {
           return null;
         }

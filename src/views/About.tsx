@@ -3,6 +3,6 @@ import { vueJsxCompat } from '../vue-jsx-compat';
 
 export default defineComponent({
   setup() {
-    return (): unknown => <h1>About page!</h1>;
+    return (): JSX.Element => <h1>About page!</h1>;
   },
 });
