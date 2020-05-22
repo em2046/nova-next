@@ -6,7 +6,7 @@ import DomUtils, {
   up,
 } from '../../../../utils/dom-utils';
 import Utils from '../../../../utils/utils';
-import { vueJsxCompat } from '../../../../vueJsxCompat';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export default defineComponent({
   props: {

@@ -1,11 +1,14 @@
 import Utils from '../../../../utils/utils';
+import NumberInput from './NumberInput';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
 
 export interface ChannelParams {
   label: string;
   value: number;
-  onInput: (e: InputEvent) => void;
+  onInput: (e: Event) => void;
+  onBlur: (e: Event) => void;
   onUpdate: (params: UpdateParams) => void;
 }
 
@@ -36,4 +39,22 @@ export function alphaNormalize(value: number): number {
 
   number = Utils.numberLimit(number, 0, 1);
   return number;
+}
+
+export function createChannel(options: ChannelParams): unknown {
+  const { label, value, onInput, onUpdate, onBlur } = options;
+
+  return (
+    <label class="nova-color-picker-label">
+      <div class="nova-color-picker-label-text">{label}</div>
+      <div class="nova-color-picker-number">
+        <NumberInput
+          value={value.toString()}
+          onInput={onInput}
+          onUpdate={onUpdate}
+          onBlur={onBlur}
+        />
+      </div>
+    </label>
+  );
 }

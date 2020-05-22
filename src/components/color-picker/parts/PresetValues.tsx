@@ -1,5 +1,6 @@
-import { defineComponent, h, VNode } from 'vue';
+import { defineComponent } from 'vue';
 import Color from '../color';
+import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 export default defineComponent({
   props: {
@@ -20,7 +21,7 @@ export default defineComponent({
       emit('select', color);
     }
 
-    function createPreset(color: string): VNode {
+    function createPreset(color: string): unknown {
       const presetHex = Color.parse(color).toCssHexString();
       const panelHex = props.color.toCssHexString();
       const selected = presetHex === panelHex;
@@ -31,32 +32,27 @@ export default defineComponent({
         },
       ];
 
-      return h(
-        'div',
-        {
-          class: classList,
-          onClick: () => {
-            selectPreset(color);
-          },
-        },
-        [
-          h('div', {
-            class: 'nova-color-picker-preset-inner',
-            style: {
+      function onClick(): void {
+        selectPreset(color);
+      }
+
+      return (
+        <div class={classList} onClick={onClick}>
+          <div
+            class="nova-color-picker-preset-inner"
+            style={{
               backgroundColor: color,
-            },
-          }),
-        ]
+            }}
+          />
+        </div>
       );
     }
 
-    return (): VNode => {
-      return h(
-        'div',
-        {
-          class: 'nova-color-picker-presets',
-        },
-        props.preset.map((value) => createPreset(value as string))
+    return (): unknown => {
+      return (
+        <div class="nova-color-picker-presets">
+          {props.preset.map((value) => createPreset(value as string))}
+        </div>
       );
     };
   },

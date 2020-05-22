@@ -1,6 +1,6 @@
 import { defineComponent, reactive } from 'vue';
 import { NovaColorPicker } from '../../../index';
-import { vueJsxCompat } from '../../../vueJsxCompat';
+import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 export default defineComponent({
   setup() {

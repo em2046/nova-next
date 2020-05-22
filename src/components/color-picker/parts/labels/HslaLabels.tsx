@@ -1,14 +1,14 @@
-import { defineComponent, h, reactive, VNode, watch } from 'vue';
+import { defineComponent, reactive, watch } from 'vue';
 import Color from '../../color';
 import DomUtils from '../../../../utils/dom-utils';
 import {
   alphaNormalize,
   alphaRule,
-  ChannelParams,
+  createChannel,
   intNormalize,
   UpdateParams,
 } from './label-utils';
-import NumberInput from './NumberInput';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 type hslChannel = 'h' | 's' | 'l';
 
@@ -74,24 +74,6 @@ export default defineComponent({
       updateColor('colorBlur');
     }
 
-    function createChannel(options: ChannelParams): VNode {
-      const { label, value, onInput, onUpdate } = options;
-
-      return h('label', { class: 'nova-color-picker-label' }, [
-        h('div', { class: 'nova-color-picker-label-text' }, label),
-        h(
-          'div',
-          { class: 'nova-color-picker-number' },
-          h(NumberInput, {
-            value: value.toString(),
-            onInput,
-            onUpdate,
-            onBlur: onHslaBlur,
-          })
-        ),
-      ]);
-    }
-
     watch(
       () => props.color,
       () => {
@@ -103,7 +85,8 @@ export default defineComponent({
         state.a = hsla.a;
       }
     );
-    return (): VNode | null => {
+
+    return (): unknown | null => {
       const hNode = createChannel({
         label: 'H',
         value: state.h,
@@ -113,6 +96,7 @@ export default defineComponent({
         onUpdate: (params: UpdateParams) => {
           onHslInput(params.target, 'h');
         },
+        onBlur: onHslaBlur,
       });
 
       const sNode = createChannel({
@@ -124,6 +108,7 @@ export default defineComponent({
         onUpdate: (params: UpdateParams) => {
           onHslInput(params.target, 's');
         },
+        onBlur: onHslaBlur,
       });
 
       const lNode = createChannel({
@@ -135,9 +120,10 @@ export default defineComponent({
         onUpdate: (params: UpdateParams) => {
           onHslInput(params.target, 'l');
         },
+        onBlur: onHslaBlur,
       });
 
-      function createAlpha(): VNode | null {
+      function createAlpha(): unknown | null {
         if (!props.alpha) {
           return null;
         }
@@ -151,17 +137,20 @@ export default defineComponent({
           onUpdate: (params: UpdateParams) => {
             onAlphaInput(params.target);
           },
+          onBlur: onHslaBlur,
         });
       }
 
       const aNode = createAlpha();
 
-      return h('div', { class: 'nova-color-picker-labels' }, [
-        hNode,
-        sNode,
-        lNode,
-        aNode,
-      ]);
+      return (
+        <div class="nova-color-picker-labels">
+          {hNode}
+          {sNode}
+          {lNode}
+          {aNode}
+        </div>
+      );
     };
   },
 });

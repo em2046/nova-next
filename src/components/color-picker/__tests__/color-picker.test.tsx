@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import NovaColorPicker from '../NovaColorPicker';
-import { h, reactive, VNode } from 'vue';
+import { reactive } from 'vue';
+import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 describe('color-picker', () => {
   test('render', async () => {
@@ -9,14 +10,17 @@ describe('color-picker', () => {
         const state = reactive({
           color: '#80808080',
         });
-        return (): VNode => {
-          return h('div', [
-            h(NovaColorPicker, {
-              value: state.color,
-              alpha: true,
-              teleportToBody: false,
-            }),
-          ]);
+
+        return (): unknown => {
+          return (
+            <div>
+              <NovaColorPicker
+                value={state.color}
+                alpha={true}
+                teleportToBody={false}
+              />
+            </div>
+          );
         };
       },
     });

@@ -1,5 +1,6 @@
-import { defineComponent, h, VNode } from 'vue';
+import { defineComponent } from 'vue';
 import Color from '../color';
+import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 export default defineComponent({
   props: {
@@ -19,27 +20,28 @@ export default defineComponent({
       emit('reset');
     }
 
-    return (): VNode | null => {
+    return (): unknown | null => {
       const prevColor = Color.parse(props.value).toCssRgbaString();
       const currColor = props.color.toCssRgbaString();
+      const prevStyle = {
+        backgroundColor: prevColor,
+      };
+      const currStyle = {
+        backgroundColor: currColor,
+      };
 
-      return h('div', { class: 'nova-color-picker-preview' }, [
-        h('div', { class: 'nova-color-picker-preview-fill-left' }),
-        h('div', { class: 'nova-color-picker-preview-fill-right' }),
-        h('div', {
-          class: 'nova-color-picker-preview-prev',
-          style: {
-            backgroundColor: prevColor,
-          },
-          onClick: onPrevClick,
-        }),
-        h('div', {
-          class: 'nova-color-picker-preview-curr',
-          style: {
-            backgroundColor: currColor,
-          },
-        }),
-      ]);
+      return (
+        <div class="nova-color-picker-preview">
+          <div class="nova-color-picker-preview-fill-left" />
+          <div class="nova-color-picker-preview-fill-right" />
+          <div
+            class="nova-color-picker-preview-prev"
+            style={prevStyle}
+            onClick={onPrevClick}
+          />
+          <div class="nova-color-picker-preview-curr" style={currStyle} />
+        </div>
+      );
     };
   },
 });

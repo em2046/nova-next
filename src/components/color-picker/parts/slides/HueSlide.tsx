@@ -1,6 +1,7 @@
-import { computed, defineComponent, h, ref, VNode } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import useMousemove from '../../../../uses/useMousemove';
 import Utils from '../../../../utils/utils';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export default defineComponent({
   props: {
@@ -28,22 +29,15 @@ export default defineComponent({
       },
     });
 
-    return (): VNode => {
-      return h(
-        'div',
-        {
-          class: 'nova-color-picker-hue-slide',
-          ref: hueSlideRef,
-        },
-        [
-          h('div', {
-            class: 'nova-color-picker-hue-bar',
-          }),
-          h('div', {
-            class: 'nova-color-picker-hue-thumb',
-            style: hueThumbStyle.value,
-          }),
-        ]
+    return (): unknown => {
+      return (
+        <div class="nova-color-picker-hue-slide" ref={hueSlideRef}>
+          <div class="nova-color-picker-hue-bar" />
+          <div
+            class="nova-color-picker-hue-thumb"
+            style={hueThumbStyle.value}
+          />
+        </div>
       );
     };
   },

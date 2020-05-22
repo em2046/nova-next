@@ -1,13 +1,11 @@
 import {
   computed,
   defineComponent,
-  h,
   onMounted,
   reactive,
   ref,
   Ref,
   Teleport,
-  VNode,
   watch,
 } from 'vue';
 import Color from './color';
@@ -23,6 +21,7 @@ import HexLabel from './parts/labels/HexLabel';
 import Trigger from './parts/Trigger';
 import PresetValues from './parts/PresetValues';
 import useDropdown from '../../uses/useDropdown';
+import { vueJsxCompat } from '../../vue-jsx-compat';
 
 const rgba = Symbol('rgba');
 const hsla = Symbol('hsla');
@@ -221,135 +220,144 @@ export default defineComponent({
       init();
     });
 
-    return (): VNode => {
-      const triggerNode = h(Trigger, {
-        color: state.color,
-        onAssignRef: (assignedRef: Ref<HTMLElement | null>) => {
-          triggerRef.value = assignedRef.value;
-        },
-      });
+    return (): unknown => {
+      function onAssignRef(assignedRef: Ref<HTMLElement | null>): void {
+        triggerRef.value = assignedRef.value;
+      }
 
-      const hsvPanelNode = h(HsvPanel, {
-        hueReg: hueDegrees.value,
-        saturation: state.position.saturation,
-        value: state.position.value,
-        onMove: (position: MousePosition) => {
-          state.position.saturation = Utils.numberLimit(position.x, 0, 200);
-          state.position.value = Utils.numberLimit(position.y, 0, 200);
-          setColorFromPosition();
-        },
-      });
+      const triggerNode = (
+        <Trigger color={state.color} onAssignRef={onAssignRef} />
+      );
 
-      function createPreset(): VNode | null {
+      function getOnMove(position: MousePosition): void {
+        state.position.saturation = Utils.numberLimit(position.x, 0, 200);
+        state.position.value = Utils.numberLimit(position.y, 0, 200);
+        setColorFromPosition();
+      }
+
+      const hsvPanelNode = (
+        <HsvPanel
+          hueReg={hueDegrees.value}
+          saturation={state.position.saturation}
+          value={state.position.value}
+          onMove={getOnMove}
+        />
+      );
+
+      function createPreset(): unknown | null {
         if (!props.preset.length) {
           return null;
         }
 
-        return h(PresetValues, {
-          preset: props.preset,
-          color: state.color,
-          onSelect: (color: Color) => {
-            setColorAndPosition(color);
-          },
-        });
+        return (
+          <PresetValues
+            preset={props.preset}
+            color={state.color}
+            onSelect={setColorAndPosition}
+          />
+        );
       }
 
       const presetNode = createPreset();
 
-      const hueSlideNode = h(HueSlide, {
-        hue: state.position.hue,
-        onMove: (position: MousePosition) => {
-          state.position.hue = Utils.numberLimit(position.y, 0, 200);
-          setColorFromPosition();
-        },
-      });
+      function onAlphaMove(position: MousePosition): void {
+        state.position.hue = Utils.numberLimit(position.y, 0, 200);
+        setColorFromPosition();
+      }
 
-      function createAlpha(): VNode | null {
+      const hueSlideNode = (
+        <HueSlide hue={state.position.hue} onMove={onAlphaMove} />
+      );
+
+      function createAlpha(): unknown | null {
         if (!props.alpha) {
           return null;
         }
 
-        return h(AlphaSlide, {
-          alpha: state.position.alpha,
-          color: state.color,
-          onMove: (position: MousePosition) => {
-            state.position.alpha = Utils.numberLimit(position.y, 0, 200);
-            setColorFromPosition();
-          },
-        });
+        function onAlphaMove(position: MousePosition): void {
+          state.position.alpha = Utils.numberLimit(position.y, 0, 200);
+          setColorFromPosition();
+        }
+
+        return (
+          <AlphaSlide
+            alpha={state.position.alpha}
+            color={state.color}
+            onMove={onAlphaMove}
+          />
+        );
       }
 
       const alphaSlideNode = createAlpha();
 
-      const slidesNode = h('div', { class: 'nova-color-picker-slides' }, [
-        hueSlideNode,
-        alphaSlideNode,
-      ]);
+      const slidesNode = (
+        <div class="nova-color-picker-slides">
+          {hueSlideNode}
+          {alphaSlideNode}
+        </div>
+      );
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      const currModeLabels = labelsMap[state.mode];
-      const formNode = h('div', { class: 'nova-color-picker-form' }, [
-        h(currModeLabels, {
-          color: state.color,
-          alpha: props.alpha,
-          onColorInput: (color: Color) => {
-            setColorAndPosition(color);
-          },
-          onColorBlur: (color: Color) => {
-            setColorAndPosition(color);
-          },
-        }),
-        h(HexLabel, {
-          color: state.color,
-          onColorInput: (color: Color) => {
-            setColorAndPosition(color);
-          },
-          onColorBlur: (color: Color) => {
-            setColorAndPosition(color);
-          },
-        }),
-        h('div', {
-          class: 'nova-color-picker-labels-switch',
-          onClick: switchMode,
-        }),
-      ]);
+      const CurrModeLabels = labelsMap[state.mode];
 
-      const previewNode = h(Preview, {
-        color: state.color,
-        value: props.value,
-        onReset() {
-          init();
-        },
-      });
+      const formNode = (
+        <div class="nova-color-picker-form">
+          <CurrModeLabels
+            color={state.color}
+            alpha={props.alpha}
+            onColorInput={setColorAndPosition}
+            onColorBlur={setColorAndPosition}
+          />
+          <HexLabel
+            color={state.color}
+            onColorInput={setColorAndPosition}
+            onColorBlur={setColorAndPosition}
+          />
+          <div class="nova-color-picker-labels-switch" onClick={switchMode} />
+        </div>
+      );
 
-      function createDropdown(): VNode | null {
+      const previewNode = (
+        <Preview color={state.color} value={props.value} onReset={init} />
+      );
+
+      function createDropdown(): unknown | null {
         if (!dropdown.opened || props.disabled) {
           return null;
         }
 
-        return h(
-          Teleport,
-          { to: 'body', disabled: !props.teleportToBody },
-          h(
-            'div',
-            {
-              ref: dropdownRef,
-              class: dropdownClassList.value,
-              style: Object.assign(
-                {},
-                props.dropdownStyle,
-                dropdownStyle.value
-              ),
-            },
-            [hsvPanelNode, slidesNode, formNode, previewNode, presetNode]
-          )
+        const style = Object.assign(
+          {},
+          props.dropdownStyle,
+          dropdownStyle.value
+        );
+
+        return (
+          <Teleport to="body" disabled={!props.teleportToBody}>
+            <div
+              ref={dropdownRef}
+              class={dropdownClassList.value}
+              style={style}
+            >
+              {hsvPanelNode}
+              {slidesNode}
+              {formNode}
+              {previewNode}
+              {presetNode}
+            </div>
+          </Teleport>
         );
       }
 
       const dropdownNode = createDropdown();
 
-      return h('div', { class: classList.value }, [triggerNode, dropdownNode]);
+      return (
+        <div class={classList.value}>
+          {triggerNode}
+          {dropdownNode}
+        </div>
+      );
     };
   },
 });

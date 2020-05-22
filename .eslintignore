@@ -7,4 +7,4 @@ build
 # don't lint gulpfile
 gulpfile.esm.js
 # don't lint vue jsx compat
-src/vueJsxCompat.ts
+src/vue-jsx-compat.ts

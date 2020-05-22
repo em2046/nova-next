@@ -1,4 +1,5 @@
-import { computed, defineComponent, h, onMounted, ref, VNode } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
+import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 export default defineComponent({
   props: {
@@ -22,17 +23,14 @@ export default defineComponent({
       emit('assignRef', triggerRef);
     });
 
-    return (): VNode => {
-      return h(
-        'div',
-        {
-          class: 'nova-color-picker-trigger',
-          ref: triggerRef,
-        },
-        h('div', {
-          class: 'nova-color-picker-trigger-inner',
-          style: triggerInnerStyle.value,
-        })
+    return (): unknown => {
+      return (
+        <div class="nova-color-picker-trigger" ref={triggerRef}>
+          <div
+            class="nova-color-picker-trigger-inner"
+            style={triggerInnerStyle.value}
+          />
+        </div>
       );
     };
   },

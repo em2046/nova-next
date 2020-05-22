@@ -1,6 +1,7 @@
-import { computed, defineComponent, h, ref, VNode } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import useMousemove from '../../../../uses/useMousemove';
 import Utils from '../../../../utils/utils';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export default defineComponent({
   props: {
@@ -32,29 +33,23 @@ export default defineComponent({
       },
     });
 
-    return (): VNode | null => {
+    return (): unknown | null => {
       const { r, g, b } = props.color.toCss();
       const currColorRgb = `${r}, ${g}, ${b}`;
       const currColorLinearGradient = `linear-gradient(180deg, rgba(${currColorRgb}, 1), rgba(${currColorRgb}, 0))`;
 
-      return h(
-        'div',
-        {
-          class: 'nova-color-picker-alpha-slide',
-          ref: alphaSlideRef,
-        },
-        [
-          h('div', {
-            class: 'nova-color-picker-alpha-bar',
-            style: {
-              backgroundImage: currColorLinearGradient,
-            },
-          }),
-          h('div', {
-            class: 'nova-color-picker-alpha-thumb',
-            style: alphaThumbStyle.value,
-          }),
-        ]
+      const barStyle = {
+        backgroundImage: currColorLinearGradient,
+      };
+
+      return (
+        <div class="nova-color-picker-alpha-slide" ref={alphaSlideRef}>
+          <div class="nova-color-picker-alpha-bar" style={barStyle} />
+          <div
+            class="nova-color-picker-alpha-thumb"
+            style={alphaThumbStyle.value}
+          />
+        </div>
       );
     };
   },
