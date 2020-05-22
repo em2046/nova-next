@@ -1,5 +1,6 @@
-import { defineComponent, h, reactive } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { NovaColorPicker } from '../../../index';
+import { vueJsxCompat } from '../../../vueJsxCompat';
 
 const hex = [
   '#80404080',

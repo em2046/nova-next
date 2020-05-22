@@ -1,5 +1,6 @@
-import { defineComponent, h } from 'vue';
+import { defineComponent } from 'vue';
 import { RouterLink } from 'vue-router';
+import { vueJsxCompat } from '../vueJsxCompat';
 
 export default defineComponent({
   setup() {

@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive, ref, Ref } from 'vue';
+import { defineComponent, reactive, ref, Ref } from 'vue';
 import Color from '../../color';
 import DomUtils, {
   Direction,
@@ -7,6 +7,7 @@ import DomUtils, {
   up,
 } from '../../../../utils/dom-utils';
 import Utils from '../../../../utils/utils';
+import { vueJsxCompat } from '../../../../vueJsxCompat';
 
 interface TuningParams {
   r: number;

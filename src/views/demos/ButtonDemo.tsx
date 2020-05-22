@@ -1,5 +1,6 @@
 import { NovaButton } from '../../index';
-import { defineComponent, h } from 'vue';
+import { defineComponent } from 'vue';
+import { vueJsxCompat } from '../../vueJsxCompat';
 
 export default defineComponent({
   setup() {

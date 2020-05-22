@@ -1,4 +1,4 @@
-import { defineComponent, h, ref, Ref } from 'vue';
+import { defineComponent, ref, Ref } from 'vue';
 import DomUtils, {
   Direction,
   down,
@@ -6,6 +6,7 @@ import DomUtils, {
   up,
 } from '../../../../utils/dom-utils';
 import Utils from '../../../../utils/utils';
+import { vueJsxCompat } from '../../../../vueJsxCompat';
 
 export default defineComponent({
   props: {
