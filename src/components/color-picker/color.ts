@@ -167,7 +167,7 @@ export default class Color {
    * @param b [0, 255]
    * @param a [0, 1]
    */
-  static fromCss(r = 0, g = 0, b = 0, a = 1): Color {
+  static fromCssRgba(r = 0, g = 0, b = 0, a = 1): Color {
     return new Color(r / 255, g / 255, b / 255, a);
   }
 
@@ -343,7 +343,7 @@ export default class Color {
       cssAlpha = parseInt(hexAlpha, 16) / 255;
     }
 
-    return this.fromCss(cssRed, cssGreen, cssBlue, cssAlpha);
+    return this.fromCssRgba(cssRed, cssGreen, cssBlue, cssAlpha);
   }
 
   static parse(text: string): Color {
@@ -377,7 +377,7 @@ export default class Color {
     return new Color();
   }
 
-  toCss(): CssRgba {
+  toCssRgba(): CssRgba {
     const r = Math.round(this.r * 255);
     const g = Math.round(this.g * 255);
     const b = Math.round(this.b * 255);
@@ -391,7 +391,7 @@ export default class Color {
    * If alpha is 1, then return string like rgb(255, 255, 255)
    */
   toCssRgbaString(): string {
-    const { r, g, b, a } = this.toCss();
+    const { r, g, b, a } = this.toCssRgba();
 
     if (a === 1) {
       return `rgb(${r}, ${g}, ${b})`;
@@ -405,7 +405,7 @@ export default class Color {
    * @param short Return hex like f90
    */
   toHex(short = false): string {
-    const { r, g, b } = this.toCss();
+    const { r, g, b } = this.toCssRgba();
     const a = this.a;
 
     const hexR = r.toString(16).padStart(2, '0');

@@ -27,7 +27,7 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    const rgba = props.color.toCss();
+    const rgba = props.color.toCssRgba();
     const state = reactive({
       r: rgba.r,
       g: rgba.g,
@@ -41,7 +41,7 @@ export default defineComponent({
       const b = intNormalize(state.b, 255);
       const a = alphaNormalize(state.a);
 
-      const color = Color.fromCss(r, g, b, a);
+      const color = Color.fromCssRgba(r, g, b, a);
       emit(eventName, color);
     }
 
@@ -78,7 +78,7 @@ export default defineComponent({
     watch(
       () => props.color,
       () => {
-        const rgba = props.color.toCss();
+        const rgba = props.color.toCssRgba();
 
         state.r = rgba.r;
         state.g = rgba.g;

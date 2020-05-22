@@ -42,7 +42,7 @@ describe('color', () => {
       const r = percentToValue(parseInt(x11Color.red), 255);
       const g = percentToValue(parseInt(x11Color.green), 255);
       const b = percentToValue(parseInt(x11Color.blue), 255);
-      const hex = Color.fromCss(r, g, b).toHex();
+      const hex = Color.fromCssRgba(r, g, b).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
     });
@@ -50,7 +50,7 @@ describe('color', () => {
 
   test('hex to rgb', () => {
     x11Colors.forEach((x11Color) => {
-      const { r, g, b } = Color.fromHex(x11Color.hex).toCss();
+      const { r, g, b } = Color.fromHex(x11Color.hex).toCssRgba();
       expect(valueToPercent(r, 255).toString()).toEqual(x11Color.red);
       expect(valueToPercent(g, 255).toString()).toEqual(x11Color.green);
       expect(valueToPercent(b, 255).toString()).toEqual(x11Color.blue);
@@ -70,7 +70,7 @@ describe('color', () => {
 
   test('hex to hsl', () => {
     x11Colors.forEach((x11Color) => {
-      const { h, s, l } = Color.fromHex(hexNormalize(x11Color.hex)).toCssHsla();
+      const { h, s, l } = Color.fromHex(x11Color.hex).toCssHsla();
       const sameH = almostSameValue(h, parseInt(x11Color.hue), 360);
       const sameS = almostSameValue(s, parseInt(x11Color.hslSaturation), 100);
       const sameL = almostSameValue(l, parseInt(x11Color.light), 100);
@@ -88,6 +88,21 @@ describe('color', () => {
       const hex = Color.fromCssLikeHsva(h, s, v).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
+    });
+  });
+
+  test('hex to hsv', () => {
+    x11Colors.forEach((x11Color) => {
+      const { h, s, v } = Color.fromHex(x11Color.hex).toHsva();
+      const hue = parseInt(x11Color.hue);
+      const saturation = parseInt(x11Color.hsvSaturation);
+      const value = parseInt(x11Color.value);
+      const sameH = almostSameValue(h, hue, 360);
+      const sameS = almostSameValue(Math.round(s * 100), saturation, 100);
+      const sameV = almostSameValue(Math.round(v * 100), value, 100);
+      expect(sameH).toBeTruthy();
+      expect(sameS).toBeTruthy();
+      expect(sameV).toBeTruthy();
     });
   });
 });
