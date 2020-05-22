@@ -4,12 +4,19 @@ import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
 
-export interface ChannelParams {
-  label: string;
+interface Params {
   value: number;
   onInput: (e: Event) => void;
   onBlur: (e: Event) => void;
   onUpdate: (params: UpdateParams) => void;
+}
+
+export interface ChannelParams extends Params {
+  label: string;
+}
+
+export interface AlphaParams extends Params {
+  alpha: boolean;
 }
 
 export interface UpdateParams {
@@ -57,4 +64,20 @@ export function createChannel(options: ChannelParams): unknown {
       </div>
     </label>
   );
+}
+
+export function createAlpha(options: AlphaParams): unknown | null {
+  const { alpha, value, onInput, onUpdate, onBlur } = options;
+
+  if (!alpha) {
+    return null;
+  }
+
+  return createChannel({
+    label: 'A',
+    value: value,
+    onInput: onInput,
+    onUpdate: onUpdate,
+    onBlur: onBlur,
+  });
 }

@@ -4,6 +4,7 @@ import DomUtils from '../../../../utils/dom-utils';
 import {
   alphaNormalize,
   alphaRule,
+  createAlpha,
   createChannel,
   intNormalize,
   UpdateParams,
@@ -123,25 +124,17 @@ export default defineComponent({
         onBlur: onRgbaBlur,
       });
 
-      function createAlpha(): unknown | null {
-        if (!props.alpha) {
-          return null;
-        }
-
-        return createChannel({
-          label: 'A',
-          value: state.a,
-          onInput: (e) => {
-            onAlphaInput(e.target as HTMLInputElement);
-          },
-          onUpdate: (params: UpdateParams) => {
-            onAlphaInput(params.target);
-          },
-          onBlur: onRgbaBlur,
-        });
-      }
-
-      const aNode = createAlpha();
+      const aNode = createAlpha({
+        alpha: !!props.alpha,
+        value: state.a,
+        onInput: (e) => {
+          onAlphaInput(e.target as HTMLInputElement);
+        },
+        onUpdate: (params: UpdateParams) => {
+          onAlphaInput(params.target);
+        },
+        onBlur: onRgbaBlur,
+      });
 
       return (
         <div class="nova-color-picker-labels">
