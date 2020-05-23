@@ -116,4 +116,52 @@ describe('color-picker', () => {
     const classListAfter = wrapper.find('.nova-color-picker').classes();
     expect(classListAfter).not.toContain('nova-color-picker-disabled');
   });
+
+  test('class', async () => {
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          color: '#808080',
+        });
+
+        const classList = [
+          'array-class',
+          {
+            ['object-class']: true,
+          },
+        ];
+        const dropdownClassList = [
+          'array-dropdown-class',
+          {
+            ['object-dropdown-class']: true,
+          },
+        ];
+
+        return () => {
+          return (
+            <div>
+              <NovaColorPicker
+                value={state.color}
+                class={classList}
+                dropdownClass={dropdownClassList}
+                teleportToBody={false}
+              />
+            </div>
+          );
+        };
+      },
+    });
+
+    const classList = wrapper.find('.nova-color-picker').classes();
+    expect(classList).toContain('array-class');
+    expect(classList).toContain('object-class');
+
+    await wrapper.find('.nova-color-picker-trigger').trigger('click');
+    const dropdownClassList = wrapper
+      .find('.nova-color-picker-panel')
+      .classes();
+    expect(dropdownClassList).toContain('array-dropdown-class');
+    expect(dropdownClassList).toContain('object-dropdown-class');
+    expect(wrapper.html()).toMatchSnapshot();
+  });
 });
