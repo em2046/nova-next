@@ -1,5 +1,6 @@
-import x11Colors from '../assets/x11-colors';
 import Color from '../color';
+import x11Colors from '../assets/x11-colors';
+import hslData from '../assets/css-wg/hsl';
 
 function valueToPercent(value: number, max: number): number {
   return Math.round((value / max) * 100);
@@ -36,7 +37,19 @@ function hexNormalize(hex: string): string {
   return hex.slice(1).toLowerCase();
 }
 
-describe('color', () => {
+function almostSameHsl(a: string, b: string): boolean {
+  const useless = /[^\d,]/g;
+  const [aH, aS, aL] = a.replace(useless, '').split(',');
+  const [bH, bS, bL] = b.replace(useless, '').split(',');
+
+  const sameH = almostSameValue(parseInt(aH), parseInt(bH), 360);
+  const sameS = almostSameValue(parseInt(aS), parseInt(bS), 100);
+  const sameL = almostSameValue(parseInt(aL), parseInt(bL), 100);
+
+  return sameH && sameS && sameL;
+}
+
+describe('x11-colors', () => {
   test('rgb to hex', () => {
     x11Colors.forEach((x11Color) => {
       const r = percentToValue(parseInt(x11Color.red), 255);
@@ -103,6 +116,37 @@ describe('color', () => {
       expect(sameH).toBeTruthy();
       expect(sameS).toBeTruthy();
       expect(sameV).toBeTruthy();
+    });
+  });
+});
+
+describe('css-wg-colors', () => {
+  test('hsl', () => {
+    function validateHsl(data: string[][], hue: number): void {
+      const saturationKeys = data[0].slice(1);
+      data.slice(1).forEach((lightList) => {
+        const light = lightList[0];
+        lightList.slice(1).forEach((color, index) => {
+          const originHsl = `hsl(${hue}, ${saturationKeys[index]}, ${light})`;
+          const outputHex = Color.fromCssHslString(originHsl).toHex();
+          const sameHex = almostSameHex(outputHex, hexNormalize(color));
+          expect(sameHex).toBeTruthy();
+        });
+      });
+
+      data.slice(2, -1).forEach((lightList) => {
+        const light = lightList[0];
+        lightList.slice(1, -1).forEach((color, index) => {
+          const originHsl = `hsl(${hue}, ${saturationKeys[index]}, ${light})`;
+          const outputHsl = Color.fromHex(color).toCssHslaString();
+          const sameHsl = almostSameHsl(originHsl, outputHsl);
+          expect(sameHsl).toBeTruthy();
+        });
+      });
+    }
+
+    hslData.forEach((data, index) => {
+      validateHsl(data, 30 * index);
     });
   });
 });

@@ -128,6 +128,10 @@ function getHslFromText(text: string): number[] {
   });
 }
 
+function cssColorNormalize(text: string): string {
+  return text.replace(/[^\drgb,hsl%a.()]/g, '');
+}
+
 /**
  * @property r [0, 1]
  * @property g [0, 1]
@@ -172,6 +176,8 @@ export default class Color {
   }
 
   static fromCssRgbString(text: string): Color {
+    text = cssColorNormalize(text);
+
     if (!Color.rgbRule.test(text)) {
       throw new Error(colorFormatError);
     }
@@ -183,6 +189,8 @@ export default class Color {
   }
 
   static fromCssRgbaString(text: string): Color {
+    text = cssColorNormalize(text);
+
     if (!Color.rgbaRule.test(text)) {
       throw new Error(colorFormatError);
     }
@@ -196,6 +204,8 @@ export default class Color {
   }
 
   static fromCssHslString(text: string): Color {
+    text = cssColorNormalize(text);
+
     if (!Color.hslRule.test(text)) {
       throw new Error(colorFormatError);
     }
@@ -207,6 +217,8 @@ export default class Color {
   }
 
   static fromCssHslaString(text: string): Color {
+    text = cssColorNormalize(text);
+
     if (!Color.hslaRule.test(text)) {
       throw new Error(colorFormatError);
     }
@@ -352,7 +364,7 @@ export default class Color {
       return Color.fromHex(text);
     }
 
-    text = text.replace(/[^\drgb,hsl%a.()]/g, '');
+    text = cssColorNormalize(text);
 
     // RGB
     if (text.indexOf('rgb(') === 0) {
