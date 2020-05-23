@@ -1,4 +1,5 @@
 .nova-color-picker-form {
+  margin-top: 5px;
   margin-right: 10px;
 }
 
@@ -10,15 +11,18 @@
 
 .nova-color-picker-label {
   box-sizing: border-box;
-  width: 40px;
-  height: 45px;
+  width: 55px;
   margin-left: 5px;
   display: flex;
   flex-direction: column;
 }
 
+.nova-color-picker-panel-has-alpha .nova-color-picker-label {
+  width: 40px;
+}
+
 .nova-color-picker-label-text {
-  line-height: 15px;
+  line-height: 20px;
   height: 20px;
   text-align: center;
 }
@@ -48,11 +52,11 @@
 .nova-color-picker-number input:focus,
 .nova-color-picker-hex input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .nova-color-picker-number {
-  width: 40px;
+  width: 100%;
 }
 
 .nova-color-picker-output {
@@ -62,18 +66,16 @@
 }
 
 .nova-color-picker-hex {
+  width: 115px;
+}
+.nova-color-picker-panel-has-alpha .nova-color-picker-hex {
   width: 85px;
 }
-
-.nova-color-picker-panel-has-alpha .nova-color-picker-labels-switch {
-  margin-left: 10px;
-}
-
 .nova-color-picker-labels-switch {
   width: 20px;
   height: 25px;
-  margin-top: -55px;
-  margin-left: 55px;
+  margin-top: -25px;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;

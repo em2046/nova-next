@@ -313,12 +313,12 @@ export default defineComponent({
             onColorInput={setColorAndPosition}
             onColorBlur={setColorAndPosition}
           />
+          <div class="nova-color-picker-labels-switch" onClick={switchMode} />
           <HexLabel
             color={state.color}
             onColorInput={setColorAndPosition}
             onColorBlur={setColorAndPosition}
           />
-          <div class="nova-color-picker-labels-switch" onClick={switchMode} />
         </div>
       );
 
