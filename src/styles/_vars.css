@@ -1,28 +1,3 @@
 :root {
-  --checkerboard-white: transparent;
-  --checkerboard-drak: rgba(0, 0, 0, 0.5);
-  --checkerboard-size: 10px 10px;
-  --checkerboard-bg: linear-gradient(
-        45deg,
-        var(--checkerboard-drak) 25%,
-        var(--checkerboard-white) 25%
-      )
-      0 0 / var(--checkerboard-size),
-    linear-gradient(
-        -45deg,
-        var(--checkerboard-drak) 25%,
-        var(--checkerboard-white) 25%
-      )
-      0 5px / var(--checkerboard-size),
-    linear-gradient(
-        45deg,
-        var(--checkerboard-white) 75%,
-        var(--checkerboard-drak) 75%
-      )
-      5px -5px / var(--checkerboard-size),
-    linear-gradient(
-        -45deg,
-        var(--checkerboard-white) 75%,
-        var(--checkerboard-drak) 75%
-      ) -5px 0 / var(--checkerboard-size);
+  --checkerboard-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M15 20v-5h-5v-5H5V5h5v5h5v5h5v5zM5 20v-5H0v-5h5v5h5v5zm10-10V5h-5V0h5v5h5v5zM0 5V0h5v5z' fill='rgba(0,0,0,0.5)'/%3E%3C/svg%3E");
 }

@@ -27,13 +27,14 @@ import { vueJsxCompat } from '../../vue-jsx-compat';
 const modeRgba = Symbol('rgba');
 const modeHsla = Symbol('hsla');
 
-const modeList = [modeRgba, modeHsla];
+const labelsMap = new Map([
+  [modeRgba, RgbaLabels],
+  [modeHsla, HslaLabels],
+]);
+
+const modeList = [...labelsMap.keys()];
 const modeSize = modeList.length;
 
-const labelsMap = {
-  [modeRgba]: RgbaLabels,
-  [modeHsla]: HslaLabels,
-};
 //endregion
 
 const colorPickerProps = {
@@ -300,19 +301,26 @@ export default defineComponent({
         </div>
       );
 
-      // FIXME Any type
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      const CurrModeLabels = labelsMap[state.mode];
+      function createLabels(): JSX.Element | null {
+        const CurrLabels = labelsMap.get(state.mode);
+        if (!CurrLabels) {
+          return null;
+        }
 
-      const formNode = (
-        <div class="nova-color-picker-form">
-          <CurrModeLabels
+        return (
+          <CurrLabels
             color={state.color}
             alpha={props.alpha}
             onColorInput={setColorAndPosition}
             onColorBlur={setColorAndPosition}
           />
+        );
+      }
+
+      const labelsNode = createLabels();
+      const formNode = (
+        <div class="nova-color-picker-form">
+          {labelsNode}
           <div class="nova-color-picker-labels-switch" onClick={switchMode} />
           <HexLabel
             color={state.color}

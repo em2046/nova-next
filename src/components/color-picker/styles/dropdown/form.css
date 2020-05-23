@@ -68,9 +68,11 @@
 .nova-color-picker-hex {
   width: 115px;
 }
+
 .nova-color-picker-panel-has-alpha .nova-color-picker-hex {
   width: 85px;
 }
+
 .nova-color-picker-labels-switch {
   width: 20px;
   height: 25px;
