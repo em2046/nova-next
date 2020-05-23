@@ -3,6 +3,7 @@
   box-sizing: border-box;
   width: 40px;
   height: 40px;
+  will-change: background-color;
 }
 
 .nova-color-picker-preview {

@@ -1,6 +1,7 @@
 .nova-color-picker-form {
   margin-top: 5px;
   margin-right: 10px;
+  will-change: transform;
 }
 
 .nova-color-picker-labels {
@@ -47,6 +48,7 @@
   width: 100%;
   font-family: 'Sarasa Mono SC', Iosevka, 'Fira Code', Monaco, Consolas,
     monospace;
+  will-change: contents;
 }
 
 .nova-color-picker-number input:focus,

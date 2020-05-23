@@ -11,4 +11,5 @@
   grid-template-columns: 220px auto;
   grid-column-gap: 10px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  will-change: transform;
 }

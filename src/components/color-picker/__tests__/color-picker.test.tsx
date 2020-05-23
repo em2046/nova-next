@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import NovaColorPicker from '../NovaColorPicker';
 import { reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
+import DomUtils from '../../../utils/dom-utils';
 
 describe('color-picker', () => {
   test('render', async () => {
@@ -163,5 +164,50 @@ describe('color-picker', () => {
     expect(dropdownClassList).toContain('array-dropdown-class');
     expect(dropdownClassList).toContain('object-dropdown-class');
     expect(wrapper.html()).toMatchSnapshot();
+  });
+
+  test('style', async () => {
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          color: '#808080',
+        });
+
+        const style = {
+          backgroundColor: '#808080',
+        };
+        const dropdownStyle = {
+          backgroundColor: '#808080',
+        };
+
+        return () => {
+          return (
+            <div>
+              <NovaColorPicker
+                value={state.color}
+                style={style}
+                dropdownStyle={dropdownStyle}
+                teleportToBody={false}
+              />
+            </div>
+          );
+        };
+      },
+    });
+
+    const picker = wrapper.find('.nova-color-picker');
+    const bg = DomUtils.getStyleOf(
+      picker.element as HTMLElement,
+      'background-color'
+    );
+    expect(bg).toEqual('rgb(128, 128, 128)');
+
+    await wrapper.find('.nova-color-picker-trigger').trigger('click');
+    const panel = wrapper.find('.nova-color-picker-panel');
+    const dropdownBg = DomUtils.getStyleOf(
+      panel.element as HTMLElement,
+      'background-color'
+    );
+    expect(dropdownBg).toEqual('rgb(128, 128, 128)');
   });
 });

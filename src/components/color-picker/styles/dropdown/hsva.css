@@ -4,6 +4,7 @@
   background-clip: content-box;
   padding: 5px;
   margin: 5px;
+  will-change: background-color;
 }
 
 .nova-color-picker-saturation {
@@ -33,6 +34,7 @@
   margin-left: -5px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
   transform: translate(100px, 100px);
+  will-change: transform;
 }
 
 .nova-color-picker-slides {
@@ -73,6 +75,7 @@
 
 .nova-color-picker-alpha-bar {
   height: 200px;
+  will-change: background-image;
 }
 
 .nova-color-picker-hue-thumb,
@@ -84,4 +87,5 @@
   margin-left: 2px;
   background-color: #ffffff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  will-change: transform;
 }
