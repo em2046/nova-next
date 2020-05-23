@@ -49,8 +49,10 @@ export default function useMousemove(options: UseMousemoveParams): void {
     border.left = DomUtils.getPaddingLeft(target);
     border.top = DomUtils.getPaddingTop(target);
 
-    const x = e.pageX - rect.x - window.pageXOffset - border.left;
-    const y = e.pageY - rect.y - window.pageYOffset - border.top;
+    const rectX = rect.x || 0;
+    const rectY = rect.y || 0;
+    const x = e.pageX - rectX - window.pageXOffset - border.left;
+    const y = e.pageY - rectY - window.pageYOffset - border.top;
 
     start && start.call(null);
     move && move.call(null, { x, y });

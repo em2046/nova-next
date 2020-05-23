@@ -26,26 +26,26 @@ export interface UpdateParams {
 
 export function intNormalize(value: number, max: number): number {
   const text = value.toString().replace(/[^\d]/g, '');
-  let number = parseInt(text, 10);
+  let intNumber = parseInt(text, 10);
 
-  if (Number.isNaN(number)) {
-    number = 0;
+  if (Number.isNaN(intNumber)) {
+    intNumber = 0;
   }
 
-  number = Utils.numberLimit(number, 0, max);
-  return number;
+  intNumber = Utils.numberLimit(intNumber, 0, max);
+  return intNumber;
 }
 
 export function alphaNormalize(value: number): number {
   const text = value.toString().replace(/[^\d.]/g, '');
-  let number = Utils.numberFixed(parseFloat(text));
+  let floatNumber = Utils.numberFixed(parseFloat(text));
 
-  if (Number.isNaN(number)) {
-    number = 1;
+  if (Number.isNaN(floatNumber)) {
+    floatNumber = 1;
   }
 
-  number = Utils.numberLimit(number, 0, 1);
-  return number;
+  floatNumber = Utils.numberLimit(floatNumber, 0, 1);
+  return floatNumber;
 }
 
 export function createChannel(options: ChannelParams): JSX.Element {

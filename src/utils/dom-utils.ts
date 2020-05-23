@@ -47,6 +47,10 @@ export default class DomUtils {
   }
 
   static getPixelNumber(pixel: string): number {
+    if (!pixel) {
+      return 0;
+    }
+
     if (pixel.indexOf('px') !== pixel.length - 2) {
       throw new Error('Can only get pixel type');
     }

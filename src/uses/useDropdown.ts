@@ -102,15 +102,24 @@ export default function useDropdown(
     }
   }
 
+  function toggleDropdown(): void {
+    const opened = state.dropdown.opened;
+    if (opened) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
+  }
+
   onMounted(() => {
     const trigger = triggerRef.value as HTMLElement;
-    trigger.addEventListener('click', openDropdown);
+    trigger.addEventListener('click', toggleDropdown);
   });
 
   onBeforeUnmount(() => {
     closeDropdown();
     const trigger = triggerRef.value as HTMLElement;
-    trigger.removeEventListener('click', openDropdown);
+    trigger.removeEventListener('click', toggleDropdown);
   });
 
   const dropdownStyle = computed(() => {
