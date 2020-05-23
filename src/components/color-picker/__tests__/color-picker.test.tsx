@@ -34,7 +34,7 @@ describe('color-picker', () => {
     const wrapper = mount({
       setup() {
         const state = reactive({
-          color: '#ff0000',
+          color: '#808080',
         });
 
         function onUpdate(value: string): void {
@@ -55,7 +55,7 @@ describe('color-picker', () => {
     });
 
     const print = wrapper.find('#print');
-    expect(print.text()).toEqual('#ff0000');
+    expect(print.text()).toEqual('#808080');
 
     const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
     await pickerTrigger.trigger('click');
@@ -76,7 +76,7 @@ describe('color-picker', () => {
     const wrapper = mount({
       setup() {
         const state = reactive({
-          color: '#ff0000',
+          color: '#808080',
           disabled: true,
         });
 
