@@ -306,4 +306,105 @@ describe('color-picker', () => {
     await pickerTrigger.trigger('click');
     expect(print.text()).toEqual('#808080');
   });
+
+  test('format', async () => {
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          format: 'hex',
+          color: '#80808080',
+        });
+
+        function onUpdate(value: string): void {
+          state.color = value;
+        }
+
+        function toggleRgb(): void {
+          state.format = 'rgb';
+        }
+
+        function toggleHsl(): void {
+          state.format = 'hsl';
+        }
+
+        return () => {
+          return (
+            <div>
+              <button id="rgb" onClick={toggleRgb} />
+              <button id="hsl" onClick={toggleHsl} />
+              <span id="print">{state.color}</span>
+              <NovaColorPicker
+                value={state.color}
+                onUpdate={onUpdate}
+                alpha={true}
+                format={state.format}
+                teleportToBody={false}
+              />
+            </div>
+          );
+        };
+      },
+    });
+
+    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const print = wrapper.find('#print');
+    const rgb = wrapper.find('#rgb');
+    const hsl = wrapper.find('#hsl');
+
+    await rgb.trigger('click');
+    await pickerTrigger.trigger('click');
+    await wrapper.find('.nova-color-picker-hex input').trigger('blur');
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('rgba(128, 128, 128, 0.5)');
+
+    await hsl.trigger('click');
+    await pickerTrigger.trigger('click');
+    await wrapper.find('.nova-color-picker-hex input').trigger('blur');
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('hsla(0, 0%, 50%, 0.5)');
+  });
+
+  test('preset', async () => {
+    const preset = ['#ffa500', '#663399'];
+
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          color: '#80808080',
+        });
+
+        function onUpdate(value: string): void {
+          state.color = value;
+        }
+
+        return () => {
+          return (
+            <div>
+              <span id="print">{state.color}</span>
+              <NovaColorPicker
+                value={state.color}
+                alpha={true}
+                teleportToBody={false}
+                preset={preset}
+                onUpdate={onUpdate}
+              />
+            </div>
+          );
+        };
+      },
+    });
+
+    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const print = wrapper.find('#print');
+    await pickerTrigger.trigger('click');
+    expect(wrapper.html()).toMatchSnapshot();
+
+    const pickerPreset = wrapper.findAll('.nova-color-picker-preset');
+    expect(pickerPreset.length).toEqual(2);
+
+    const rebeccapurple = pickerPreset[1];
+    await rebeccapurple.trigger('click');
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual(preset[1]);
+  });
 });

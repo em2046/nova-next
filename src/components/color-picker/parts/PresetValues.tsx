@@ -50,7 +50,7 @@ export default defineComponent({
 
     return (): JSX.Element => {
       return (
-        <div class="nova-color-picker-presets">
+        <div class="nova-color-picker-preset-list">
           {props.preset.map((value) => createPreset(value as string))}
         </div>
       );
