@@ -74,9 +74,6 @@ const colorPickerProps = {
 
 export default defineComponent({
   name: 'NovaColorPicker',
-  model: {
-    event: 'update',
-  },
   props: colorPickerProps,
   setup(props, context) {
     const emit = context.emit;
@@ -225,30 +222,32 @@ export default defineComponent({
     });
 
     return (): JSX.Element => {
-      function onAssignRef(assignedRef: Ref<HTMLElement | null>): void {
-        triggerRef.value = assignedRef.value;
+      function createTrigger() {
+        function onAssignRef(assignedRef: Ref<HTMLElement | null>): void {
+          triggerRef.value = assignedRef.value;
+        }
+
+        return <Trigger color={state.color} onAssignRef={onAssignRef} />;
       }
 
-      const triggerNode = (
-        <Trigger color={state.color} onAssignRef={onAssignRef} />
-      );
+      function createHsvPanel() {
+        function onHsvMove(position: MousePosition): void {
+          state.position.saturation = Utils.numberLimit(position.x, 0, 200);
+          state.position.value = Utils.numberLimit(position.y, 0, 200);
+          setColorFromPosition();
+        }
 
-      function getOnMove(position: MousePosition): void {
-        state.position.saturation = Utils.numberLimit(position.x, 0, 200);
-        state.position.value = Utils.numberLimit(position.y, 0, 200);
-        setColorFromPosition();
+        return (
+          <HsvPanel
+            hueReg={hueDegrees.value}
+            saturation={state.position.saturation}
+            value={state.position.value}
+            onMove={onHsvMove}
+          />
+        );
       }
 
-      const hsvPanelNode = (
-        <HsvPanel
-          hueReg={hueDegrees.value}
-          saturation={state.position.saturation}
-          value={state.position.value}
-          onMove={getOnMove}
-        />
-      );
-
-      function createPreset(): JSX.Element | null {
+      function createPreset() {
         if (!props.preset.length) {
           return null;
         }
@@ -262,18 +261,16 @@ export default defineComponent({
         );
       }
 
-      const presetNode = createPreset();
+      function createHue() {
+        function onHueMove(position: MousePosition): void {
+          state.position.hue = Utils.numberLimit(position.y, 0, 200);
+          setColorFromPosition();
+        }
 
-      function onAlphaMove(position: MousePosition): void {
-        state.position.hue = Utils.numberLimit(position.y, 0, 200);
-        setColorFromPosition();
+        return <HueSlide hue={state.position.hue} onMove={onHueMove} />;
       }
 
-      const hueSlideNode = (
-        <HueSlide hue={state.position.hue} onMove={onAlphaMove} />
-      );
-
-      function createAlpha(): JSX.Element | null {
+      function createAlpha() {
         if (!props.alpha) {
           return null;
         }
@@ -292,16 +289,19 @@ export default defineComponent({
         );
       }
 
-      const alphaSlideNode = createAlpha();
+      function createSlides() {
+        const alphaSlideNode = createAlpha();
+        const hueSlideNode = createHue();
 
-      const slidesNode = (
-        <div class="nova-color-picker-slides">
-          {hueSlideNode}
-          {alphaSlideNode}
-        </div>
-      );
+        return (
+          <div class="nova-color-picker-slides">
+            {hueSlideNode}
+            {alphaSlideNode}
+          </div>
+        );
+      }
 
-      function createLabels(): JSX.Element | null {
+      function createLabels() {
         const CurrLabels = labelsMap.get(state.mode);
         if (!CurrLabels) {
           return null;
@@ -317,27 +317,37 @@ export default defineComponent({
         );
       }
 
-      const labelsNode = createLabels();
-      const formNode = (
-        <div class="nova-color-picker-form">
-          {labelsNode}
-          <div class="nova-color-picker-labels-switch" onClick={switchMode} />
-          <HexLabel
-            color={state.color}
-            onColorInput={setColorAndPosition}
-            onColorBlur={setColorAndPosition}
-          />
-        </div>
-      );
+      function createForm() {
+        const labelsNode = createLabels();
+        return (
+          <div class="nova-color-picker-form">
+            {labelsNode}
+            <div class="nova-color-picker-labels-switch" onClick={switchMode} />
+            <HexLabel
+              color={state.color}
+              onColorInput={setColorAndPosition}
+              onColorBlur={setColorAndPosition}
+            />
+          </div>
+        );
+      }
 
-      const previewNode = (
-        <Preview color={state.color} value={props.value} onReset={init} />
-      );
+      function createPreview() {
+        return (
+          <Preview color={state.color} value={props.value} onReset={init} />
+        );
+      }
 
-      function createDropdown(): JSX.Element | null {
+      function createDropdown() {
         if (!dropdown.opened || props.disabled) {
           return null;
         }
+
+        const hsvPanelNode = createHsvPanel();
+        const slidesNode = createSlides();
+        const formNode = createForm();
+        const previewNode = createPreview();
+        const presetNode = createPreset();
 
         const style = Object.assign(
           {},
@@ -362,6 +372,7 @@ export default defineComponent({
         );
       }
 
+      const triggerNode = createTrigger();
       const dropdownNode = createDropdown();
 
       return (

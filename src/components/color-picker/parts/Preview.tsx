@@ -3,6 +3,7 @@ import Color from '../color';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 export default defineComponent({
+  name: 'Preview',
   props: {
     color: {
       type: Object,

@@ -14,6 +14,7 @@ import { vueJsxCompat } from '../../../../vue-jsx-compat';
 type hslChannel = 'h' | 's' | 'l';
 
 export default defineComponent({
+  name: 'HslaLabels',
   props: {
     alpha: {
       type: Boolean,

@@ -6,6 +6,7 @@ import { vueJsxCompat } from '../../../vue-jsx-compat';
 import Color from '../color';
 
 export default defineComponent({
+  name: 'HsvPanel',
   props: {
     hueReg: {
       type: Number,

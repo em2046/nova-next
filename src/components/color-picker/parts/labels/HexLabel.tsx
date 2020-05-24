@@ -51,6 +51,7 @@ function calcTuned(
 }
 
 export default defineComponent({
+  name: 'HexLabel',
   props: {
     color: {
       type: Object,

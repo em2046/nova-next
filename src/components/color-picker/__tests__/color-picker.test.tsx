@@ -12,7 +12,7 @@ describe('color-picker', () => {
           color: '#808080',
         });
 
-        return (): JSX.Element => {
+        return () => {
           return (
             <div>
               <NovaColorPicker value={state.color} teleportToBody={false} />
@@ -38,7 +38,7 @@ describe('color-picker', () => {
           state.color = value;
         }
 
-        return (): JSX.Element => (
+        return () => (
           <div>
             <span id="print">{state.color}</span>
             <NovaColorPicker
@@ -92,7 +92,7 @@ describe('color-picker', () => {
           state.disabled = !state.disabled;
         }
 
-        return (): JSX.Element => (
+        return () => (
           <div>
             <button id="toggle" onClick={toggleDisabled} />
             <NovaColorPicker
@@ -226,7 +226,7 @@ describe('color-picker', () => {
           state.teleport = !state.teleport;
         }
 
-        return (): JSX.Element => {
+        return () => {
           return (
             <div>
               <button id="toggle" onClick={toggleTeleport} />
@@ -266,7 +266,7 @@ describe('color-picker', () => {
           state.alpha = !state.alpha;
         }
 
-        return (): JSX.Element => (
+        return () => (
           <div>
             <span id="print">{state.color}</span>
             <button id="toggle" onClick={toggleAlpha} />
@@ -419,7 +419,7 @@ describe('color-picker', () => {
           state.color = value;
         }
 
-        return (): JSX.Element => (
+        return () => (
           <div>
             <span id="print">{state.color}</span>
             <NovaColorPicker
@@ -487,7 +487,7 @@ describe('color-picker', () => {
           state.color = '#ffff00';
         }
 
-        return (): JSX.Element => (
+        return () => (
           <div>
             <span id="print">{state.color}</span>
             <button id="init" onClick={onInit} />

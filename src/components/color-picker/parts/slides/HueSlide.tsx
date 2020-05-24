@@ -4,6 +4,7 @@ import Utils from '../../../../utils/utils';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export default defineComponent({
+  name: 'HueSlide',
   props: {
     hue: {
       type: Number,

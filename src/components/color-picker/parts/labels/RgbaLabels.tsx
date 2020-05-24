@@ -14,6 +14,7 @@ import { vueJsxCompat } from '../../../../vue-jsx-compat';
 type rgbChannel = 'r' | 'g' | 'b';
 
 export default defineComponent({
+  name: 'RgbaLabels',
   props: {
     alpha: {
       type: Boolean,

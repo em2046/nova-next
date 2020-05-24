@@ -3,6 +3,7 @@ import Color from '../color';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 export default defineComponent({
+  name: 'PresetValues',
   props: {
     color: {
       type: Object,
@@ -21,7 +22,7 @@ export default defineComponent({
       emit('select', color);
     }
 
-    function createPreset(color: string): JSX.Element {
+    function createPreset(color: string) {
       const presetHex = Color.parse(color).toCssHexString();
       const panelHex = props.color.toCssHexString();
       const selected = presetHex === panelHex;

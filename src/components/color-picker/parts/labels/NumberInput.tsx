@@ -9,6 +9,7 @@ import Utils from '../../../../utils/utils';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export default defineComponent({
+  name: 'NumberInput',
   props: {
     value: {
       type: String,

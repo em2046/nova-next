@@ -2,6 +2,7 @@ import { computed, defineComponent, onMounted, ref } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 
 export default defineComponent({
+  name: 'Trigger',
   props: {
     color: {
       type: Object,
