@@ -15,10 +15,7 @@ describe('color-picker', () => {
         return (): JSX.Element => {
           return (
             <div>
-              <NovaColorPicker
-                value={state.color}
-                teleportToBody={false}
-              />
+              <NovaColorPicker value={state.color} teleportToBody={false} />
             </div>
           );
         };
@@ -59,6 +56,13 @@ describe('color-picker', () => {
 
     const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
     await pickerTrigger.trigger('click');
+
+    const hueSlide = wrapper.find('.nova-color-picker-hue-slide');
+    await hueSlide.trigger('mousedown', {
+      pageX: 10,
+      pageY: 100,
+    });
+    await hueSlide.trigger('mouseup');
     const pickerValue = wrapper.find('.nova-color-picker-value');
     await pickerValue.trigger('mousedown', {
       pageX: 100,
@@ -69,7 +73,7 @@ describe('color-picker', () => {
 
     await pickerTrigger.trigger('click');
     expect(wrapper.html()).toMatchSnapshot();
-    expect(print.text()).toEqual('#804040');
+    expect(print.text()).toEqual('#408080');
   });
 
   test('disabled', async () => {

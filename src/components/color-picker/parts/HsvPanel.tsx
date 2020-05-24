@@ -3,6 +3,7 @@ import useMousemove from '../../../uses/useMousemove';
 import Utils from '../../../utils/utils';
 
 import { vueJsxCompat } from '../../../vue-jsx-compat';
+import Color from '../color';
 
 export default defineComponent({
   props: {
@@ -33,8 +34,10 @@ export default defineComponent({
     });
 
     const hsvStyle = computed(() => {
+      const bg = Color.fromHsva(props.hueReg, 1, 1).toCssRgbaString();
+
       return {
-        backgroundColor: `hsl(${props.hueReg} ,100%, 50%)`,
+        backgroundColor: bg,
       };
     });
 
