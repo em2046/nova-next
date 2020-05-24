@@ -9,7 +9,7 @@ describe('color-picker', () => {
     const wrapper = mount({
       setup() {
         const state = reactive({
-          color: '#80808080',
+          color: '#808080',
         });
 
         return (): JSX.Element => {
@@ -17,7 +17,6 @@ describe('color-picker', () => {
             <div>
               <NovaColorPicker
                 value={state.color}
-                alpha={true}
                 teleportToBody={false}
               />
             </div>
@@ -215,7 +214,7 @@ describe('color-picker', () => {
     const wrapper = mount({
       setup() {
         const state = reactive({
-          color: '#80808080',
+          color: '#808080',
           teleport: true,
         });
 
@@ -229,7 +228,6 @@ describe('color-picker', () => {
               <button id="toggle" onClick={toggleTeleport} />
               <NovaColorPicker
                 value={state.color}
-                alpha={true}
                 teleportToBody={state.teleport}
               />
             </div>
