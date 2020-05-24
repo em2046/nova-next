@@ -407,4 +407,152 @@ describe('color-picker', () => {
     await pickerTrigger.trigger('click');
     expect(print.text()).toEqual(preset[1]);
   });
+
+  test('input', async () => {
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          color: '#80808080',
+        });
+
+        function onUpdate(value: string): void {
+          state.color = value;
+        }
+
+        return (): JSX.Element => (
+          <div>
+            <span id="print">{state.color}</span>
+            <NovaColorPicker
+              value={state.color}
+              onUpdate={onUpdate}
+              alpha={true}
+              teleportToBody={false}
+            />
+          </div>
+        );
+      },
+    });
+
+    const print = wrapper.find('#print');
+    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+
+    await pickerTrigger.trigger('click');
+    const rgbNumberList = wrapper.findAll('.nova-color-picker-number input');
+    await rgbNumberList[0].setValue(255);
+    await rgbNumberList[1].setValue(0);
+    await rgbNumberList[2].setValue(255);
+    await rgbNumberList[3].setValue(0.2);
+    await rgbNumberList[0].trigger('blur');
+    await rgbNumberList[1].trigger('blur');
+    await rgbNumberList[2].trigger('blur');
+    await rgbNumberList[3].trigger('blur');
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#ff00ff33');
+
+    await pickerTrigger.trigger('click');
+    const pickerSwitch = wrapper.find('.nova-color-picker-labels-switch');
+    await pickerSwitch.trigger('click');
+    const hslNumberList = wrapper.findAll('.nova-color-picker-number input');
+    await hslNumberList[0].setValue(120);
+    await hslNumberList[1].setValue(100);
+    await hslNumberList[2].setValue(50);
+    await hslNumberList[3].setValue(0.8);
+    await hslNumberList[0].trigger('blur');
+    await hslNumberList[1].trigger('blur');
+    await hslNumberList[2].trigger('blur');
+    await hslNumberList[3].trigger('blur');
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#00ff00cc');
+
+    await pickerTrigger.trigger('click');
+    const hex = wrapper.find('.nova-color-picker-hex input');
+    await hex.setValue('#ff0');
+    await hex.trigger('blur');
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#ffff00');
+  });
+
+  test('keydown', async () => {
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          color: '#80808080',
+        });
+
+        function onUpdate(value: string): void {
+          state.color = value;
+        }
+
+        function onInit(): void {
+          state.color = '#ffff00';
+        }
+
+        return (): JSX.Element => (
+          <div>
+            <span id="print">{state.color}</span>
+            <button id="init" onClick={onInit} />
+            <NovaColorPicker
+              value={state.color}
+              onUpdate={onUpdate}
+              alpha={true}
+              teleportToBody={false}
+            />
+          </div>
+        );
+      },
+    });
+
+    const print = wrapper.find('#print');
+    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const init = wrapper.find('#init');
+
+    await pickerTrigger.trigger('click');
+    const rgbNumberList = wrapper.findAll('.nova-color-picker-number input');
+    await rgbNumberList[0].trigger('keydown', {
+      key: 'ArrowUp',
+      ctrlKey: true,
+    });
+    await rgbNumberList[1].trigger('keydown', {
+      key: 'ArrowDown',
+      shiftKey: true,
+    });
+    await rgbNumberList[2].trigger('keydown', { key: 'ArrowUp' });
+    await rgbNumberList[3].trigger('keydown', {
+      key: 'ArrowDown',
+      altKey: true,
+    });
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#e4768166');
+
+    await init.trigger('click');
+    await pickerTrigger.trigger('click');
+    const pickerSwitch = wrapper.find('.nova-color-picker-labels-switch');
+    await pickerSwitch.trigger('click');
+    const hslNumberList = wrapper.findAll('.nova-color-picker-number input');
+    await hslNumberList[0].trigger('keydown', {
+      key: 'ArrowUp',
+      ctrlKey: true,
+    });
+    await hslNumberList[1].trigger('keydown', {
+      key: 'ArrowDown',
+      shiftKey: true,
+    });
+    await hslNumberList[2].trigger('keydown', { key: 'ArrowUp' });
+    await hslNumberList[3].trigger('keydown', {
+      key: 'ArrowDown',
+      altKey: true,
+    });
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#12f3a8e6');
+
+    await init.trigger('click');
+    await pickerTrigger.trigger('click');
+    const hexInput = wrapper.find('.nova-color-picker-hex input');
+    await hexInput.trigger('keydown', { key: 'ArrowDown', ctrlKey: true });
+    await hexInput.trigger('keydown', { key: 'ArrowDown', shiftKey: true });
+    await hexInput.trigger('keydown', { key: 'ArrowUp' });
+    await hexInput.trigger('keydown', { key: 'ArrowUp', altKey: true });
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#fefe02');
+  });
 });
