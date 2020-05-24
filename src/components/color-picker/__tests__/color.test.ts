@@ -1,6 +1,7 @@
 import Color from '../color';
 import x11Colors from '../assets/x11-colors';
 import hslData from '../assets/css-wg/hsl';
+import mdnColors from '../assets/mdn-colors';
 
 function valueToPercent(value: number, max: number): number {
   return Math.round((value / max) * 100);
@@ -29,7 +30,7 @@ function almostSameHex(a: string, b: string): boolean {
 }
 
 function almostSameValue(a: number, b: number, max: number): boolean {
-  const error = Math.ceil(max / 100);
+  const error = max / 100;
   return Math.abs(a - b) <= error;
 }
 
@@ -38,15 +39,29 @@ function hexNormalize(hex: string): string {
 }
 
 function almostSameHsl(a: string, b: string): boolean {
-  const useless = /[^\d,]/g;
-  const [aH, aS, aL] = a.replace(useless, '').split(',');
-  const [bH, bS, bL] = b.replace(useless, '').split(',');
+  const useless = /[^\d.,]/g;
+  const [aH, aS, aL, aA = '1'] = a.replace(useless, '').split(',');
+  const [bH, bS, bL, bA = '1'] = b.replace(useless, '').split(',');
 
   const sameH = almostSameValue(parseInt(aH), parseInt(bH), 360);
   const sameS = almostSameValue(parseInt(aS), parseInt(bS), 100);
   const sameL = almostSameValue(parseInt(aL), parseInt(bL), 100);
+  const sameA = almostSameValue(parseFloat(aA), parseFloat(bA), 1);
 
-  return sameH && sameS && sameL;
+  return sameH && sameS && sameL && sameA;
+}
+
+function almostSameRgb(a: string, b: string): boolean {
+  const useless = /[^\d.,]/g;
+  const [aR, aG, aB, aA = '1'] = a.replace(useless, '').split(',');
+  const [bR, bG, bB, bA = '1'] = b.replace(useless, '').split(',');
+
+  const sameR = almostSameValue(parseInt(aR), parseInt(bR), 255);
+  const sameG = almostSameValue(parseInt(aG), parseInt(bG), 255);
+  const sameB = almostSameValue(parseInt(aB), parseInt(bB), 255);
+  const sameA = almostSameValue(parseFloat(aA), parseFloat(bA), 1);
+
+  return sameR && sameG && sameB && sameA;
 }
 
 describe('x11-colors', () => {
@@ -147,6 +162,27 @@ describe('css-wg-colors', () => {
 
     hslData.forEach((data, index) => {
       validateHsl(data, 30 * index);
+    });
+  });
+});
+
+describe('mdn-colors', () => {
+  test('parse', () => {
+    mdnColors.forEach((mdnColor) => {
+      if (mdnColor.error) {
+        expect(() => {
+          Color.parse(mdnColor.css);
+        }).toThrowError();
+        return;
+      }
+
+      if (!mdnColor.rgb) {
+        return;
+      }
+
+      const color = Color.parse(mdnColor.css);
+      const sameRgb = almostSameRgb(color.toCssRgbaString(), mdnColor.rgb);
+      expect(sameRgb).toBeTruthy();
     });
   });
 });

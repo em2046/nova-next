@@ -133,6 +133,7 @@ function cssColorNormalize(text: string): string {
 }
 
 /**
+ * Immutable color
  * @property r [0, 1]
  * @property g [0, 1]
  * @property b [0, 1]
@@ -145,10 +146,10 @@ export default class Color {
   static hslRule = /^hsl\(\d{1,3}(,\d{1,3}%){2}\)$/;
   static hslaRule = /^hsla\(\d{1,3}(,\d{1,3}%){2},(\d+(\.\d{1,2})?)\)$/;
 
-  r: number;
-  g: number;
-  b: number;
-  a: number;
+  readonly r: number;
+  readonly g: number;
+  readonly b: number;
+  readonly a: number;
 
   /**
    * Create
@@ -447,10 +448,7 @@ export default class Color {
   }
 
   toHsva(): Hsva {
-    const r = this.r;
-    const g = this.g;
-    const b = this.b;
-    const a = this.a;
+    const { r, g, b, a } = this;
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
@@ -475,10 +473,7 @@ export default class Color {
   }
 
   toHsla(): Hsla {
-    const r = this.r;
-    const g = this.g;
-    const b = this.b;
-    const a = this.a;
+    const { r, g, b, a } = this;
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
