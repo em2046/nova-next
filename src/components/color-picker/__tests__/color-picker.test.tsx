@@ -210,4 +210,41 @@ describe('color-picker', () => {
     );
     expect(dropdownBg).toEqual('rgb(128, 128, 128)');
   });
+
+  test('teleport to body', async () => {
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          color: '#80808080',
+          teleport: true,
+        });
+
+        function toggleTeleport() {
+          state.teleport = !state.teleport;
+        }
+
+        return (): JSX.Element => {
+          return (
+            <div>
+              <button id="toggle" onClick={toggleTeleport} />
+              <NovaColorPicker
+                value={state.color}
+                alpha={true}
+                teleportToBody={state.teleport}
+              />
+            </div>
+          );
+        };
+      },
+    });
+
+    const trigger = wrapper.find('.nova-color-picker-trigger');
+    await trigger.trigger('click');
+    expect(wrapper.html()).toMatchSnapshot();
+
+    await trigger.trigger('click');
+    await wrapper.find('#toggle').trigger('click');
+    await trigger.trigger('click');
+    expect(wrapper.html()).toMatchSnapshot();
+  });
 });
