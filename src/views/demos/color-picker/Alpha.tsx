@@ -63,6 +63,7 @@ export default defineComponent({
 
     const state = reactive({
       color: defaultColor,
+      alpha: true,
       colorCustomValue: getRandomNumber(),
       colorDropdownClass: 'custom-dropdown-class-name' + getRandomNumber(),
     });
@@ -73,6 +74,10 @@ export default defineComponent({
 
     function onReset(): void {
       state.color = defaultColor;
+    }
+
+    function toggleAlpha(): void {
+      state.alpha = !state.alpha;
     }
 
     function onClick(): void {
@@ -88,7 +93,7 @@ export default defineComponent({
     return (): JSX.Element => {
       const pickerProps = {
         format: 'rgb',
-        alpha: true,
+        alpha: state.alpha,
         value: state.color,
         onUpdate,
         onClick,
@@ -106,6 +111,7 @@ export default defineComponent({
           <div>
             {state.color}
             <button onClick={onReset}>Reset</button>
+            <button onClick={toggleAlpha}>Toggle alpha</button>
           </div>
           <NovaColorPicker {...pickerProps} />
         </div>

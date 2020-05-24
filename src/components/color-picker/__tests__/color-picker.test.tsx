@@ -249,4 +249,61 @@ describe('color-picker', () => {
     await trigger.trigger('click');
     expect(wrapper.html()).toMatchSnapshot();
   });
+
+  test('alpha', async () => {
+    const wrapper = mount({
+      setup() {
+        const state = reactive({
+          color: '#80808080',
+          alpha: true,
+        });
+
+        function onUpdate(value: string): void {
+          state.color = value;
+        }
+
+        function toggleAlpha(): void {
+          state.alpha = !state.alpha;
+        }
+
+        return (): JSX.Element => (
+          <div>
+            <span id="print">{state.color}</span>
+            <button id="toggle" onClick={toggleAlpha} />
+            <NovaColorPicker
+              value={state.color}
+              alpha={state.alpha}
+              onUpdate={onUpdate}
+              teleportToBody={false}
+            />
+          </div>
+        );
+      },
+    });
+
+    const print = wrapper.find('#print');
+    expect(print.text()).toEqual('#80808080');
+
+    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    await pickerTrigger.trigger('click');
+    expect(wrapper.html()).toMatchSnapshot();
+
+    const alphaSlide = wrapper.find('.nova-color-picker-alpha-slide');
+    await alphaSlide.trigger('mousedown', {
+      pageX: 10,
+      pageY: 200,
+    });
+    expect(wrapper.html()).toMatchSnapshot();
+
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#80808000');
+
+    await wrapper.find('#toggle').trigger('click');
+    await pickerTrigger.trigger('click');
+    await wrapper.find('.nova-color-picker-hex input').trigger('blur');
+    expect(wrapper.html()).toMatchSnapshot();
+
+    await pickerTrigger.trigger('click');
+    expect(print.text()).toEqual('#808080');
+  });
 });
