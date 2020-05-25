@@ -175,7 +175,11 @@ export default defineComponent({
     }
 
     function changePropsValue(color: Color): void {
+      // JSX onUpdate
       emit('update', color.toString(props.format));
+
+      // Template v-model:value
+      emit('update:value', color.toString(props.format));
     }
 
     function switchMode(): void {
@@ -243,20 +247,6 @@ export default defineComponent({
             saturation={state.position.saturation}
             value={state.position.value}
             onMove={onHsvMove}
-          />
-        );
-      }
-
-      function createPreset() {
-        if (!props.preset.length) {
-          return null;
-        }
-
-        return (
-          <PresetValues
-            preset={props.preset}
-            color={state.color}
-            onSelect={setColorAndPosition}
           />
         );
       }
@@ -335,6 +325,20 @@ export default defineComponent({
       function createPreview() {
         return (
           <Preview color={state.color} value={props.value} onReset={init} />
+        );
+      }
+
+      function createPreset() {
+        if (!props.preset.length) {
+          return null;
+        }
+
+        return (
+          <PresetValues
+            preset={props.preset}
+            color={state.color}
+            onSelect={setColorAndPosition}
+          />
         );
       }
 
