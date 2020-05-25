@@ -8,20 +8,20 @@ import {
   Teleport,
   watch,
 } from 'vue';
-import Color from './color';
+import { vueJsxCompat } from '../../vue-jsx-compat';
+import { MovePosition } from '../../uses/useMove';
+import useDropdown from '../../uses/useDropdown';
 import Utils from '../../utils/utils';
-import { MousePosition } from '../../uses/useMousemove';
+import Color from './color';
+import Trigger from './parts/Trigger';
 import HsvPanel from './parts/HsvPanel';
 import HueSlide from './parts/slides/HueSlide';
 import AlphaSlide from './parts/slides/AlphaSlide';
-import Preview from './parts/Preview';
 import RgbaLabels from './parts/labels/RgbaLabels';
 import HslaLabels from './parts/labels/HslaLabels';
 import HexLabel from './parts/labels/HexLabel';
-import Trigger from './parts/Trigger';
+import Preview from './parts/Preview';
 import PresetValues from './parts/PresetValues';
-import useDropdown from '../../uses/useDropdown';
-import { vueJsxCompat } from '../../vue-jsx-compat';
 
 //region mode
 const modeRgba = Symbol('rgba');
@@ -235,7 +235,7 @@ export default defineComponent({
       }
 
       function createHsvPanel() {
-        function onHsvMove(position: MousePosition): void {
+        function onHsvMove(position: MovePosition): void {
           state.position.saturation = Utils.numberLimit(position.x, 0, 200);
           state.position.value = Utils.numberLimit(position.y, 0, 200);
           setColorFromPosition();
@@ -252,7 +252,7 @@ export default defineComponent({
       }
 
       function createHue() {
-        function onHueMove(position: MousePosition): void {
+        function onHueMove(position: MovePosition): void {
           state.position.hue = Utils.numberLimit(position.y, 0, 200);
           setColorFromPosition();
         }
@@ -265,7 +265,7 @@ export default defineComponent({
           return null;
         }
 
-        function onAlphaMove(position: MousePosition): void {
+        function onAlphaMove(position: MovePosition): void {
           state.position.alpha = Utils.numberLimit(position.y, 0, 200);
           setColorFromPosition();
         }

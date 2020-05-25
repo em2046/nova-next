@@ -1,7 +1,7 @@
 import { computed, defineComponent, ref } from 'vue';
-import useMousemove from '../../../../uses/useMousemove';
-import Utils from '../../../../utils/utils';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
+import useMove from '../../../../uses/useMove';
+import Utils from '../../../../utils/utils';
 
 export default defineComponent({
   name: 'AlphaSlide',
@@ -27,7 +27,7 @@ export default defineComponent({
       };
     });
 
-    useMousemove({
+    useMove({
       ref: alphaSlideRef,
       move: (position) => {
         emit('move', position);

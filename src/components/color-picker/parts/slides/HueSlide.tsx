@@ -1,7 +1,7 @@
 import { computed, defineComponent, ref } from 'vue';
-import useMousemove from '../../../../uses/useMousemove';
-import Utils from '../../../../utils/utils';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
+import useMove from '../../../../uses/useMove';
+import Utils from '../../../../utils/utils';
 
 export default defineComponent({
   name: 'HueSlide',
@@ -18,12 +18,13 @@ export default defineComponent({
 
     const hueThumbStyle = computed(() => {
       const y = Utils.numberFixed(props.hue);
+
       return {
         transform: `translate(0, ${y}px)`,
       };
     });
 
-    useMousemove({
+    useMove({
       ref: hueSlideRef,
       move: (position) => {
         emit('move', position);

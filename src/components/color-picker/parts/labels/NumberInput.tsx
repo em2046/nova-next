@@ -1,12 +1,12 @@
 import { defineComponent, ref, Ref } from 'vue';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
+import Utils from '../../../../utils/utils';
 import DomUtils, {
   Direction,
   down,
   FunctionKeys,
   up,
 } from '../../../../utils/dom-utils';
-import Utils from '../../../../utils/utils';
-import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export default defineComponent({
   name: 'NumberInput',

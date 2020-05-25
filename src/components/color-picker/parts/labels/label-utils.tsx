@@ -1,6 +1,6 @@
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import Utils from '../../../../utils/utils';
 import NumberInput from './NumberInput';
-import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
 
@@ -48,8 +48,8 @@ export function alphaNormalize(value: number): number {
   return floatNumber;
 }
 
-export function createChannel(options: ChannelParams): JSX.Element {
-  const { label, value, onInput, onUpdate, onBlur } = options;
+export function createChannel(params: ChannelParams): JSX.Element {
+  const { label, value, onInput, onUpdate, onBlur } = params;
 
   return (
     <label class="nova-color-picker-label">
@@ -66,8 +66,8 @@ export function createChannel(options: ChannelParams): JSX.Element {
   );
 }
 
-export function createAlpha(options: AlphaParams): JSX.Element | null {
-  const { alpha, value, onInput, onUpdate, onBlur } = options;
+export function createAlpha(params: AlphaParams): JSX.Element | null {
+  const { alpha, value, onInput, onUpdate, onBlur } = params;
 
   if (!alpha) {
     return null;

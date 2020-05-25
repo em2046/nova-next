@@ -1,8 +1,8 @@
-import { mount } from '@vue/test-utils';
-import NovaColorPicker from '../NovaColorPicker';
 import { reactive } from 'vue';
+import { mount } from '@vue/test-utils';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import DomUtils from '../../../utils/dom-utils';
+import NovaColorPicker from '../NovaColorPicker';
 
 describe('color-picker', () => {
   test('render', async () => {

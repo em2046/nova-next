@@ -1,20 +1,9 @@
-import { onBeforeUnmount, onMounted, Ref } from 'vue';
+import { onBeforeUnmount, onMounted } from 'vue';
 import DomUtils from '../utils/dom-utils';
+import { MoveParams } from './useMove';
 
-export interface MousePosition {
-  x: number;
-  y: number;
-}
-
-interface UseMousemoveParams {
-  ref: Ref<HTMLElement | null>;
-  start?: () => void;
-  move?: (position: MousePosition) => void;
-  finish?: () => void;
-}
-
-export default function useMousemove(options: UseMousemoveParams): void {
-  const { ref, start, move, finish } = options;
+export default function useMousemove(params: MoveParams): void {
+  const { ref, start, move, finish } = params;
 
   let rect = {} as DOMRect;
   const border = { top: 0, left: 0 };

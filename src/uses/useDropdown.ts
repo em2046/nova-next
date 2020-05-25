@@ -36,7 +36,7 @@ interface UseDropdownReturn {
 }
 
 export default function useDropdown(
-  options: UseDropdownParams
+  params: UseDropdownParams
 ): UseDropdownReturn {
   const state = reactive({
     dropdown: {
@@ -48,7 +48,7 @@ export default function useDropdown(
     },
   });
 
-  const { triggerRef, dropdownRef, props, onOpen, onClose } = options;
+  const { triggerRef, dropdownRef, props, onOpen, onClose } = params;
   const dropdownProps = props as DropdownProps;
 
   function onVirtualMaskMousedown(e: MouseEvent): void {

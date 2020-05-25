@@ -1,8 +1,7 @@
 import { computed, defineComponent, ref } from 'vue';
-import useMousemove from '../../../uses/useMousemove';
-import Utils from '../../../utils/utils';
-
 import { vueJsxCompat } from '../../../vue-jsx-compat';
+import useMove from '../../../uses/useMove';
+import Utils from '../../../utils/utils';
 import Color from '../color';
 
 export default defineComponent({
@@ -42,7 +41,7 @@ export default defineComponent({
       };
     });
 
-    useMousemove({
+    useMove({
       ref: hsvRef,
       move: (position) => {
         emit('move', position);

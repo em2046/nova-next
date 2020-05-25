@@ -1,13 +1,13 @@
 import { defineComponent, reactive, ref, Ref } from 'vue';
-import Color from '../../color';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
+import Utils from '../../../../utils/utils';
 import DomUtils, {
   Direction,
   down,
   FunctionKeys,
   up,
 } from '../../../../utils/dom-utils';
-import Utils from '../../../../utils/utils';
-import { vueJsxCompat } from '../../../../vue-jsx-compat';
+import Color from '../../color';
 
 interface TuningParams {
   r: number;

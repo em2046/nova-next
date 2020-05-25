@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
-import Color from '../color';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
+import Color from '../color';
 
 export default defineComponent({
   name: 'PresetValues',

@@ -1,6 +1,7 @@
 import { defineComponent, reactive, watch } from 'vue';
-import Color from '../../color';
+import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import DomUtils from '../../../../utils/dom-utils';
+import Color from '../../color';
 import {
   alphaNormalize,
   alphaRule,
@@ -9,7 +10,6 @@ import {
   intNormalize,
   UpdateParams,
 } from './label-utils';
-import { vueJsxCompat } from '../../../../vue-jsx-compat';
 
 type rgbChannel = 'r' | 'g' | 'b';
 

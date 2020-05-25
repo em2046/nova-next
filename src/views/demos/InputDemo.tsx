@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
-import { NovaInput } from '../../index';
 import { vueJsxCompat } from '../../vue-jsx-compat';
+import { NovaInput } from '../../index';
 
 export default defineComponent({
   setup() {

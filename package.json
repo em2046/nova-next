@@ -18,7 +18,7 @@
     "build-rollup": "rollup --config build/rollup/rollup.config.es.js -m",
     "build": "yarn build-style && yarn build-rollup",
     "test": "yarn jest",
-    "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css}",
+    "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css,vue}",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
     "format": "yarn prettier && yarn lint",
     "prepublishOnly": "yarn format && yarn build"
