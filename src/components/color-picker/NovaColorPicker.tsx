@@ -151,10 +151,7 @@ export default defineComponent({
       state.position.hue = hue;
       state.position.saturation = saturation;
       state.position.value = value;
-
-      if (props.alpha) {
-        state.position.alpha = alpha;
-      }
+      state.position.alpha = alpha;
     }
 
     function setColor(color: Color): void {
@@ -213,6 +210,17 @@ export default defineComponent({
       (value) => {
         const color = Color.parse(value);
         setColorAndPosition(color);
+      }
+    );
+
+    watch(
+      () => props.alpha,
+      (value) => {
+        if (!value) {
+          const { r, g, b } = state.color;
+          const color = new Color(r, g, b);
+          setColorAndPosition(color);
+        }
       }
     );
 

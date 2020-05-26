@@ -43,6 +43,11 @@ export default defineComponent({
       const a = alphaNormalize(state.a);
 
       const color = Color.fromCssRgba(r, g, b, a);
+      const sameColor = Color.sameColor(props.color as Color, color);
+      if (sameColor) {
+        return;
+      }
+
       emit(eventName, color);
     }
 

@@ -132,6 +132,14 @@ function cssColorNormalize(text: string): string {
   return text.replace(/[^\drgb,hsl%a.()]/g, '');
 }
 
+function sameValue(a: number, b: number): boolean {
+  if (a === b) {
+    return true;
+  }
+
+  return Math.abs(a - b) < Number.EPSILON;
+}
+
 /**
  * Immutable color
  * @property r [0, 1]
@@ -390,6 +398,15 @@ export default class Color {
     return new Color();
   }
 
+  static sameColor(a: Color, b: Color): boolean {
+    return (
+      sameValue(a.r, b.r) &&
+      sameValue(a.g, b.g) &&
+      sameValue(a.b, b.b) &&
+      sameValue(a.a, b.a)
+    );
+  }
+
   toCssRgba(): CssRgba {
     const r = Math.round(this.r * 255);
     const g = Math.round(this.g * 255);
@@ -488,6 +505,7 @@ export default class Color {
     } else if (l > 1 / 2) {
       s = (max - min) / (2 - 2 * l);
     }
+    s = Utils.numberLimit(s, 0, 1);
 
     const h = rgbToHue(max, min, r, g, b);
 

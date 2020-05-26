@@ -43,6 +43,11 @@ export default defineComponent({
       const a = alphaNormalize(state.a);
 
       const color = Color.fromCssHsla(h, s, l, a);
+      const sameColor = Color.sameColor(props.color as Color, color);
+      if (sameColor) {
+        return;
+      }
+
       emit(eventName, color);
     }
 

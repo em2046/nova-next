@@ -70,7 +70,13 @@ export default defineComponent({
     function updateColor(eventName: string, hex: string): void {
       if (Color.hexRule.test(hex)) {
         state.hexShort = hex.replace('#', '').length === 3;
+
         const color = Color.fromHex(hex);
+        const sameColor = Color.sameColor(props.color as Color, color);
+        if (sameColor) {
+          return;
+        }
+
         emit(eventName, color);
       }
     }
