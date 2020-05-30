@@ -44,15 +44,17 @@ interface Offset {
   top: number;
 }
 
-interface OffsetParams {
+interface GetDropdownOffsetParams {
   triggerRect: DOMRect;
   dropdownRect: DOMRect;
   visualViewport: VisualViewport;
 }
 
-interface StyleParams extends OffsetParams {
+interface GetCollapseStyleParams extends GetDropdownOffsetParams {
   offset: Offset;
 }
+
+const duration = 200;
 
 export default function useDropdown(
   params: UseDropdownParams
@@ -69,6 +71,8 @@ export default function useDropdown(
     },
   });
 
+  let openTimer: number;
+  let closeTimer: number;
   const { triggerRef, dropdownRef, props, onOpen, onClose } = params;
   const dropdownProps = props as DropdownProps;
 
@@ -91,7 +95,20 @@ export default function useDropdown(
     closeDropdown();
   }
 
+  function onClosed() {
+    state.dropdown.style = {
+      display: 'none',
+    };
+  }
+
+  function onOpened() {
+    state.dropdown.style = {};
+  }
+
   function closeDropdown(): void {
+    clearTimeout(closeTimer);
+    clearTimeout(openTimer);
+
     if (dropdownProps.disabled) {
       return;
     }
@@ -103,26 +120,34 @@ export default function useDropdown(
       const dropdownRect = DomUtils.getElementPosition(dropdown);
       const visualViewport: VisualViewport = DomUtils.getVisualViewport();
 
-      const styleBefore = getThumbStyle({
+      const collapseStyle = getCollapseStyle({
         offset: state.dropdown.offset,
         triggerRect,
         dropdownRect,
         visualViewport,
       });
 
-      state.dropdown.style = Object.assign({}, styleBefore, getTransition());
+      state.dropdown.style = Object.assign(
+        {},
+        collapseStyle,
+        getTransitionStyle()
+      );
     }
 
     document.removeEventListener('mousedown', onVirtualMaskMousedown);
     const openedOld = state.dropdown.opened;
     state.dropdown.opened = false;
 
+    closeTimer = window.setTimeout(() => {
+      onClosed();
+    }, duration);
+
     if (openedOld) {
       onClose && onClose.call(null);
     }
   }
 
-  function getOffset(params: OffsetParams) {
+  function getDropdownOffset(params: GetDropdownOffsetParams) {
     const { triggerRect, dropdownRect, visualViewport } = params;
 
     const viewportWidth = visualViewport.width;
@@ -156,7 +181,7 @@ export default function useDropdown(
     };
   }
 
-  function getThumbStyle(params: StyleParams) {
+  function getCollapseStyle(params: GetCollapseStyleParams) {
     const { offset, triggerRect, dropdownRect, visualViewport } = params;
 
     const pageLeft = visualViewport.pageLeft;
@@ -178,18 +203,18 @@ export default function useDropdown(
     }
 
     const [x, y] = Geometry.lineLineIntersection(
-      triggerRect.left,
-      triggerRect.top,
+      triggerRect.left + pageLeft,
+      triggerRect.top + pageTop,
       offset.left,
       offset.top,
-      triggerRect.right,
-      triggerRect.top + dropdownInitHeight,
+      triggerRect.right + pageLeft,
+      triggerRect.top + dropdownInitHeight + pageTop,
       dropdownRect.width + offset.left,
       dropdownRect.height + offset.top
     );
 
-    const originX = x - offset.left + pageLeft;
-    const originY = y - offset.top + pageTop;
+    const originX = x - offset.left;
+    const originY = y - offset.top;
 
     return {
       opacity: `0`,
@@ -199,17 +224,16 @@ export default function useDropdown(
     };
   }
 
-  function getFullStyle() {
+  function getExpandStyle() {
     return {
       opacity: `1`,
       transform: `scale(1)`,
-      pointerEvents: `unset`,
     };
   }
 
-  function getTransition() {
+  function getTransitionStyle() {
     return {
-      transition: `transform 200ms linear, opacity 200ms linear`,
+      transition: `transform ${duration}ms linear, opacity ${duration}ms linear`,
     };
   }
 
@@ -218,6 +242,9 @@ export default function useDropdown(
   }
 
   async function openDropdown(): Promise<void> {
+    clearTimeout(closeTimer);
+    clearTimeout(openTimer);
+
     if (dropdownProps.disabled) {
       return;
     }
@@ -226,11 +253,10 @@ export default function useDropdown(
       state.dropdown.loaded = true;
     }
 
+    resetStyle();
     document.addEventListener('mousedown', onVirtualMaskMousedown);
     const openedOld = state.dropdown.opened;
     state.dropdown.opened = true;
-    resetStyle();
-
     await nextTick();
 
     const trigger = triggerRef.value as HTMLElement;
@@ -241,31 +267,30 @@ export default function useDropdown(
 
     const visualViewport: VisualViewport = DomUtils.getVisualViewport();
 
-    const offset = getOffset({
+    const params = {
       triggerRect,
       dropdownRect,
       visualViewport,
-    });
-
-    const styleBefore = getThumbStyle({
-      offset,
-      triggerRect,
-      dropdownRect,
-      visualViewport,
-    });
+    };
+    const offset = getDropdownOffset(params);
+    const collapseStyle = getCollapseStyle({ offset, ...params });
 
     state.dropdown.offset = offset;
-    state.dropdown.style = styleBefore;
+    state.dropdown.style = collapseStyle;
 
-    setTimeout(() => {
-      const styleAfter = getFullStyle();
+    window.setTimeout(() => {
+      const expandStyle = getExpandStyle();
       state.dropdown.style = Object.assign(
         {},
-        styleBefore,
-        styleAfter,
-        getTransition()
+        collapseStyle,
+        expandStyle,
+        getTransitionStyle()
       );
     });
+
+    openTimer = window.setTimeout(() => {
+      onOpened();
+    }, duration);
 
     if (!openedOld) {
       onOpen && onOpen.call(null);
@@ -288,6 +313,7 @@ export default function useDropdown(
 
   onBeforeUnmount(() => {
     closeDropdown();
+
     const trigger = triggerRef.value as HTMLElement;
     trigger.removeEventListener('click', toggleDropdown);
   });
