@@ -1,7 +1,7 @@
 {
   "name": "@em2046/nova-next",
   "description": "Experimental Vue components",
-  "version": "2.0.0-alpha.5",
+  "version": "2.0.0-alpha.6",
   "author": {
     "name": "em2046",
     "email": "em2046@qq.com"
@@ -19,7 +19,7 @@
     "build": "yarn build-style && yarn build-rollup",
     "test": "yarn jest",
     "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css,vue}",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx,.vue",
     "format": "yarn prettier && yarn lint",
     "prepublishOnly": "yarn format && yarn build"
   },
@@ -41,7 +41,7 @@
     "@vue/compiler-sfc": "^3.0.0-beta.14",
     "@vue/test-utils": "^2.0.0-alpha.6",
     "eslint": "^7.0.0",
-    "eslint-plugin-vue": "^7.0.0-alpha.3",
+    "eslint-plugin-vue": "^7.0.0-alpha.5",
     "esm": "^3.2.25",
     "glob": "^7.1.6",
     "gulp": "^4.0.2",
@@ -51,7 +51,7 @@
     "rollup-plugin-css-only": "^2.0.0",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.3",
-    "vite": "^0.18.1",
+    "vite": "^0.19.0",
     "vue-router": "^4.0.0-alpha.12"
   }
 }

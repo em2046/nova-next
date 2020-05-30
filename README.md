@@ -4,12 +4,12 @@
 
 ### Prerequisites
 
-- Node & NPM
+- Node & Yarn
 
 ### Install
 
 ```sh
-npm install
+yarn
 ```
 
 ### Usage
@@ -17,13 +17,13 @@ npm install
 ##### Develop
 
 ```sh
-# run dev server at localhost:8080
-npm run dev
+# run dev server at localhost:3000
+yarn dev
 ```
 
 ##### Build
 
 ```sh
-# transpile js for deployment
-npm run build
+# rollup js to library
+yarn build
 ```
