@@ -1,3 +1,5 @@
+import { VisualViewport } from '../shims/visual-viewport';
+
 const defaultSearchLimit = 1024;
 
 export interface FunctionKeys {
@@ -68,5 +70,28 @@ export default class DomUtils {
     const borderLeftWidth = DomUtils.getStyleOf(element, 'padding-left');
 
     return DomUtils.getPixelNumber(borderLeftWidth);
+  }
+
+  static getVisualViewport(): VisualViewport {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const visualViewport = window.visualViewport;
+
+    if (visualViewport) {
+      return visualViewport;
+    }
+
+    return {
+      addEventListener: window.addEventListener,
+      dispatchEvent: window.dispatchEvent,
+      removeEventListener: window.removeEventListener,
+      height: window.innerHeight,
+      offsetLeft: 0,
+      offsetTop: 0,
+      pageLeft: window.pageXOffset,
+      pageTop: window.pageYOffset,
+      scale: 1,
+      width: document.documentElement.clientWidth,
+    };
   }
 }

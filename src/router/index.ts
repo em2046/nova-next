@@ -4,6 +4,7 @@ import About from '../views/About';
 import ButtonDemo from '../views/demos/ButtonDemo';
 import InputDemo from '../views/demos/InputDemo';
 import ColorPickerDemo from '../views/demos/ColorPickerDemo';
+import DropdownDemo from '../views/demos/DropdownDemo';
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     path: '/color-picker',
     component: ColorPickerDemo,
     name: 'ColorPicker',
+  },
+  {
+    path: '/dropdown',
+    component: DropdownDemo,
+    name: 'Dropdown',
   },
   {
     path: '/input',

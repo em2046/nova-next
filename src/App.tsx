@@ -17,6 +17,9 @@ export default defineComponent({
               </RouterLink>
             </li>
             <li>
+              <RouterLink to="/dropdown">{(): string => 'Dropdown'}</RouterLink>
+            </li>
+            <li>
               <RouterLink to="/button">{(): string => 'Button'}</RouterLink>
             </li>
             <li>
