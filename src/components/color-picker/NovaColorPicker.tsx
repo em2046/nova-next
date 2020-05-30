@@ -351,7 +351,7 @@ export default defineComponent({
       }
 
       function createDropdown() {
-        if (!dropdown.opened || props.disabled) {
+        if (!dropdown.loaded || props.disabled) {
           return null;
         }
 
