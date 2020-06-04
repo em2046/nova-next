@@ -4,8 +4,8 @@
   box-sizing: border-box;
   padding: 10px;
   font-size: 12px;
-  color: #ffffff;
-  background-color: #333333;
+  color: var(--nova-color);
+  background-color: var(--nova-dropdown-bg);
   width: 330px;
   display: grid;
   grid-template-columns: 220px auto;

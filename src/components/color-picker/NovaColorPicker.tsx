@@ -22,6 +22,7 @@ import HslaLabels from './parts/labels/HslaLabels';
 import HexLabel from './parts/labels/HexLabel';
 import Preview from './parts/Preview';
 import PresetValues from './parts/PresetValues';
+import useEnvironment, { environmentProps } from '../../uses/useEnvironment';
 
 //region mode
 const modeRgba = Symbol('rgba');
@@ -38,6 +39,7 @@ const modeSize = modeList.length;
 //endregion
 
 const colorPickerProps = {
+  ...environmentProps,
   value: {
     type: String,
     default: '#ff0000',
@@ -77,6 +79,8 @@ export default defineComponent({
   props: colorPickerProps,
   setup(props, context) {
     const emit = context.emit;
+
+    const environment = useEnvironment(props);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
@@ -370,6 +374,7 @@ export default defineComponent({
         return (
           <Teleport to="body" disabled={!props.teleportToBody}>
             <div
+              data-theme={environment.themeRef.value}
               ref={dropdownRef}
               class={dropdownClassList.value}
               style={style}
@@ -388,7 +393,7 @@ export default defineComponent({
       const dropdownNode = createDropdown();
 
       return (
-        <div class={classList.value}>
+        <div class={classList.value} data-theme={environment.themeRef.value}>
           {triggerNode}
           {dropdownNode}
         </div>

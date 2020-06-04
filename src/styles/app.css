@@ -30,3 +30,8 @@ body {
 #main a {
   color: #2299ee;
 }
+
+.color-picker-demo {
+  padding: 10px;
+  min-height: 800px;
+}

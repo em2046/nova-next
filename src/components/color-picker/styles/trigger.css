@@ -1,5 +1,5 @@
 .nova-color-picker-trigger {
-  background: var(--checkerboard-bg);
+  background: var(--nova-checkerboard-bg);
   box-sizing: border-box;
   box-shadow: inset 0 0 0 1px #cccccc;
   padding: 5px;

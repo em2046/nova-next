@@ -24,7 +24,7 @@
 
 .nova-color-picker-preview-fill-right,
 .nova-color-picker-preview-fill-left {
-  background: var(--checkerboard-bg);
+  background: var(--nova-checkerboard-bg);
   background-color: #333333;
   width: 40px;
   height: 40px;

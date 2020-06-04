@@ -1,0 +1,7 @@
+[data-theme='light'] {
+  --nova-color: #333333;
+  --nova-dropdown-bg: #ffffff;
+  --nova-bg: #ffffff;
+  color: var(--nova-color);
+  background-color: var(--nova-bg);
+}

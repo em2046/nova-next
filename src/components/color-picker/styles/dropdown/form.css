@@ -7,7 +7,6 @@
 .nova-color-picker-labels {
   justify-content: flex-end;
   display: flex;
-  color: #cccccc;
 }
 
 .nova-color-picker-label {
@@ -37,7 +36,7 @@
 
 .nova-color-picker-number input,
 .nova-color-picker-hex input {
-  color: #cccccc;
+  color: var(--nova-color);
   border: none;
   background: none;
   height: 23px;

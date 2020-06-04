@@ -68,7 +68,7 @@
 }
 
 .nova-color-picker-alpha-slide {
-  background: var(--checkerboard-bg);
+  background: var(--nova-checkerboard-bg);
   background-color: #333333;
   background-clip: content-box;
 }

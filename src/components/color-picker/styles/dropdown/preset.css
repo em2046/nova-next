@@ -7,7 +7,7 @@
 }
 
 .nova-color-picker-preset {
-  background: var(--checkerboard-bg);
+  background: var(--nova-checkerboard-bg);
   background-color: #333333;
 }
 
