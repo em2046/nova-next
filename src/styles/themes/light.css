@@ -1,7 +1,10 @@
 [data-theme='light'] {
-  --nova-color: #333333;
-  --nova-dropdown-bg: #ffffff;
-  --nova-bg: #ffffff;
+  --nova-color: hsl(0, 0%, 20%);
+  --nova-dropdown-bg: hsl(0, 0%, 80%);
+  --nova-bg: hsl(0, 0%, 90%);
+  --nova-border-color: hsla(0, 0%, 0%, 0.1);
+  --nova-shadow-color: hsla(0, 0%, 0%, 0.2);
+  --nova-symbol-color: hsla(0, 0%, 0%, 0.5);
   color: var(--nova-color);
   background-color: var(--nova-bg);
 }

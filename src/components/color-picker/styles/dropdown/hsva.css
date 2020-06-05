@@ -29,10 +29,10 @@
   box-sizing: border-box;
   width: 10px;
   height: 10px;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--nova-white);
   margin-top: -205px;
   margin-left: -5px;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--nova-cursor-shadow);
   transform: translate(100px, 100px);
   will-change: transform;
 }
@@ -68,8 +68,8 @@
 }
 
 .nova-color-picker-alpha-slide {
-  background: var(--nova-checkerboard-bg);
-  background-color: #333333;
+  background-image: var(--nova-checkerboard-bg);
+  background-color: var(--nova-bg);
   background-clip: content-box;
 }
 
@@ -85,7 +85,7 @@
   height: 6px;
   margin-top: -203px;
   margin-left: 2px;
-  background-color: #ffffff;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  background-color: var(--nova-white);
+  box-shadow: var(--nova-cursor-shadow);
   will-change: transform;
 }

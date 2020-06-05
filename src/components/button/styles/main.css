@@ -7,6 +7,6 @@
   padding: 4px 14px;
   font-size: 14px;
   border-radius: 3px;
-  border: 1px solid #cccccc;
-  background-color: #ffffff;
+  border: 1px solid var(--nova-border-color);
+  background-color: var(--nova-bg);
 }

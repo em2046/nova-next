@@ -7,8 +7,8 @@
 }
 
 .nova-color-picker-preset {
-  background: var(--nova-checkerboard-bg);
-  background-color: #333333;
+  background-image: var(--nova-checkerboard-bg);
+  background-color: var(--nova-bg);
 }
 
 .nova-color-picker-preset-inner {
@@ -16,9 +16,9 @@
 }
 
 .nova-color-picker-preset:hover {
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 1px var(--nova-symbol-color);
 }
 
 .nova-color-picker-preset.nova-color-picker-preset-selected {
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 2px var(--nova-symbol-color);
 }

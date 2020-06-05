@@ -29,7 +29,7 @@
 
 .nova-color-picker-number,
 .nova-color-picker-hex {
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--nova-border-color);
   box-sizing: border-box;
   height: 25px;
 }
@@ -53,7 +53,7 @@
 .nova-color-picker-number input:focus,
 .nova-color-picker-hex input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 3px var(--nova-shadow-color);
 }
 
 .nova-color-picker-number {
@@ -96,24 +96,24 @@
 
 .nova-color-picker-labels-switch:before {
   border-width: 0 3px 3px 3px;
-  border-color: transparent transparent #cccccc transparent;
+  border-color: transparent transparent var(--nova-symbol-color) transparent;
   margin-bottom: 2px;
 }
 
 .nova-color-picker-labels-switch:after {
   border-width: 3px 3px 0 3px;
-  border-color: #cccccc transparent transparent transparent;
+  border-color: var(--nova-symbol-color) transparent transparent transparent;
   margin-top: 2px;
 }
 
 .nova-color-picker-labels-switch:hover {
-  background-color: #1a1a1a;
+  background-color: var(--nova-bg);
 }
 
 .nova-color-picker-labels-switch:hover:before {
-  border-color: transparent transparent #ffffff transparent;
+  border-color: transparent transparent var(--nova-color) transparent;
 }
 
 .nova-color-picker-labels-switch:hover:after {
-  border-color: #ffffff transparent transparent transparent;
+  border-color: var(--nova-color) transparent transparent transparent;
 }
