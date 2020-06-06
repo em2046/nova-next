@@ -1,6 +1,9 @@
 import { defineComponent } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
-import useEnvironment, { environmentProps } from '../../uses/useEnvironment';
+import useEnvironment, {
+  EnvironmentProps,
+  environmentProps,
+} from '../../uses/useEnvironment';
 
 export default defineComponent({
   name: 'NovaButton',
@@ -10,7 +13,7 @@ export default defineComponent({
   setup(props, context) {
     const { slots } = context;
 
-    const environment = useEnvironment(props);
+    const environment = useEnvironment((props as unknown) as EnvironmentProps);
 
     return (): JSX.Element => {
       const children = slots.default && slots.default();

@@ -1,4 +1,5 @@
 .nova-input {
+  font-family: var(--nova-sans-serif);
   font-size: 14px;
   line-height: 20px;
   box-sizing: border-box;
@@ -6,6 +7,17 @@
   padding: 5px;
   width: 200px;
   vertical-align: top;
-  border: 1px solid var(--nova-border-color);
-  background-color: var(--nova-bg);
+  border: 1px solid var(--nova-shadow-color);
+  background-color: var(--nova-component-bg);
+  color: var(--nova-color);
+}
+
+.nova-input:focus {
+  outline: none;
+  border: 1px solid var(--nova-primary-color);
+  box-shadow: 0 0 0 2px var(--nova-primary-shadow-color);
+}
+
+.nova-input:hover {
+  border: 1px solid var(--nova-primary-color);
 }

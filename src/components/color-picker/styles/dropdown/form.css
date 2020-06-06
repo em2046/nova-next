@@ -36,6 +36,7 @@
 
 .nova-color-picker-number input,
 .nova-color-picker-hex input {
+  vertical-align: top;
   color: var(--nova-color);
   border: none;
   background: none;

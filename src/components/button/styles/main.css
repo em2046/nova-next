@@ -1,4 +1,5 @@
 .nova-button {
+  font-family: var(--nova-sans-serif);
   vertical-align: top;
   text-align: center;
   display: inline-block;
@@ -7,6 +8,17 @@
   padding: 4px 14px;
   font-size: 14px;
   border-radius: 3px;
-  border: 1px solid var(--nova-border-color);
-  background-color: var(--nova-bg);
+  border: 1px solid var(--nova-shadow-color);
+  background-color: var(--nova-component-bg);
+}
+
+.nova-button:focus {
+  outline: none;
+  border: 1px solid var(--nova-primary-color);
+  box-shadow: 0 0 0 2px var(--nova-primary-shadow-color);
+}
+
+.nova-button:hover {
+  border: 1px solid var(--nova-primary-color);
+  color: var(--nova-primary-color);
 }

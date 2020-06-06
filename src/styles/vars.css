@@ -1,7 +1,15 @@
 :root {
+  --nova-primary-color: hsl(200, 100%, 50%);
+  --nova-primary-shadow-color: hsla(200, 100%, 50%, 0.2);
   --nova-white: hsl(0, 0%, 100%);
-  --nova-cursor-shadow: 0 0 2px 0 hsla(0, 0%, 0%, 0.5);
-  --nova-dropdown-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  --nova-cursor-shadow: 0 0 2px 0 hsla(0, 0%, 0%, 0.5),
+    inset 0 0 2px 0 hsla(0, 0%, 0%, 0.5);
+  --nova-thumb-shadow: 0 0 2px 0 hsla(0, 0%, 0%, 0.5);
+  --nova-dropdown-shadow: 2px 2px 8px hsla(0, 0%, 0%, 0.1);
   --nova-checkerboard-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M15 20v-5h-5v-5H5V5h5v5h5v5h5v5zM5 20v-5H0v-5h5v5h5v5zm10-10V5h-5V0h5v5h5v5zM0 5V0h5v5z' fill='rgba(0,0,0,0.5)'/%3E%3C/svg%3E");
   --nova-bezier-out-cubic: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --nova-sans-serif: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  --nova-monospace: 'Sarasa Mono SC', Iosevka, 'Fira Code', Monaco, Consolas,
+    monospace;
 }

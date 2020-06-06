@@ -6,6 +6,7 @@ export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
 
 interface Params {
   value: number;
+  title: string;
   onInput: (e: Event) => void;
   onBlur: (e: Event) => void;
   onUpdate: (params: UpdateParams) => void;
@@ -49,11 +50,13 @@ export function alphaNormalize(value: number): number {
 }
 
 export function createChannel(params: ChannelParams): JSX.Element {
-  const { label, value, onInput, onUpdate, onBlur } = params;
+  const { label, title, value, onInput, onUpdate, onBlur } = params;
 
   return (
     <label class="nova-color-picker-label">
-      <div class="nova-color-picker-label-text">{label}</div>
+      <div class="nova-color-picker-label-text" title={title}>
+        {label}
+      </div>
       <div class="nova-color-picker-number">
         <NumberInput
           value={value.toString()}
@@ -67,7 +70,7 @@ export function createChannel(params: ChannelParams): JSX.Element {
 }
 
 export function createAlpha(params: AlphaParams): JSX.Element | null {
-  const { alpha, value, onInput, onUpdate, onBlur } = params;
+  const { alpha, title, value, onInput, onUpdate, onBlur } = params;
 
   if (!alpha) {
     return null;
@@ -75,6 +78,7 @@ export function createAlpha(params: AlphaParams): JSX.Element | null {
 
   return createChannel({
     label: 'A',
+    title,
     value: value,
     onInput: onInput,
     onUpdate: onUpdate,

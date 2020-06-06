@@ -24,6 +24,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    environment: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props, context) {
     const emit = context.emit;
@@ -94,8 +98,11 @@ export default defineComponent({
     );
 
     return (): JSX.Element => {
+      const language = props.environment.languageRef.value.colorPicker;
+
       const rNode = createChannel({
         label: 'R',
+        title: language.red,
         value: state.r,
         onInput: (e) => {
           onRgbInput(e.target as HTMLInputElement, 'r');
@@ -108,6 +115,7 @@ export default defineComponent({
 
       const gNode = createChannel({
         label: 'G',
+        title: language.green,
         value: state.g,
         onInput: (e) => {
           onRgbInput(e.target as HTMLInputElement, 'g');
@@ -120,6 +128,7 @@ export default defineComponent({
 
       const bNode = createChannel({
         label: 'B',
+        title: language.blue,
         value: state.b,
         onInput: (e) => {
           onRgbInput(e.target as HTMLInputElement, 'b');
@@ -132,6 +141,7 @@ export default defineComponent({
 
       const aNode = createAlpha({
         alpha: !!props.alpha,
+        title: language.alpha,
         value: state.a,
         onInput: (e) => {
           onAlphaInput(e.target as HTMLInputElement);

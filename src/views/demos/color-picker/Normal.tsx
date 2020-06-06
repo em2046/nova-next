@@ -1,6 +1,6 @@
 import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import { NovaColorPicker } from '../../../index';
+import { NovaButton, NovaColorPicker } from '../../../index';
 
 export default defineComponent({
   setup() {
@@ -43,8 +43,10 @@ export default defineComponent({
         <div>
           <div>
             {state.color}
-            <button onClick={onReset}>Reset</button>
-            <button onClick={onToggleDisable}>Toggle disable</button>
+            <NovaButton onClick={onReset}>{() => 'Reset'}</NovaButton>
+            <NovaButton onClick={onToggleDisable}>
+              {() => 'Toggle disable'}
+            </NovaButton>
           </div>
           <NovaColorPicker {...pickerProps} />
         </div>

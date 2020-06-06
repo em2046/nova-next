@@ -1,22 +1,45 @@
-import { defineComponent, provide, ref, VNode, watchEffect } from 'vue';
-import { Theme } from '../../utils/symbols';
+import { defineComponent, provide, ref, VNode, watch } from 'vue';
+import { languageKey, themeKey } from '../../utils/symbols';
+import {
+  environmentProps,
+  languageDefault,
+  themeDefault,
+} from '../../uses/useEnvironment';
 
 export default defineComponent({
-  props: {
-    theme: {
-      type: String,
-      default: 'light',
-    },
-  },
+  props: environmentProps,
   setup(props, context) {
     const { slots } = context;
-    const themeRef = ref(props.theme);
 
-    provide(Theme, themeRef);
+    const themeRef = props.theme ? ref(props.theme) : ref(themeDefault);
+    const languageRef = props.language
+      ? ref(props.language)
+      : ref(languageDefault);
 
-    watchEffect(() => {
-      themeRef.value = props.theme;
-    });
+    provide(themeKey, themeRef);
+    provide(languageKey, languageRef);
+
+    watch(
+      () => props.theme,
+      (theme) => {
+        if (!theme) {
+          themeRef.value = themeDefault;
+        } else {
+          themeRef.value = theme;
+        }
+      }
+    );
+
+    watch(
+      () => props.language,
+      (language) => {
+        if (!language) {
+          languageRef.value = languageDefault;
+        } else {
+          languageRef.value = language;
+        }
+      }
+    );
 
     return (): VNode[] | null => {
       const children = slots.default && slots.default();

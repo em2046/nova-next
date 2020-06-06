@@ -1,11 +1,12 @@
 .nova-color-picker-panel {
+  font-family: var(--nova-sans-serif);
   user-select: none;
   position: absolute;
   box-sizing: border-box;
   padding: 10px;
   font-size: 12px;
   color: var(--nova-color);
-  background-color: var(--nova-dropdown-bg);
+  background-color: var(--nova-component-bg);
   width: 330px;
   display: grid;
   grid-template-columns: 220px auto;

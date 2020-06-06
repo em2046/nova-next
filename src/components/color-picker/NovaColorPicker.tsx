@@ -22,7 +22,10 @@ import HslaLabels from './parts/labels/HslaLabels';
 import HexLabel from './parts/labels/HexLabel';
 import Preview from './parts/Preview';
 import PresetValues from './parts/PresetValues';
-import useEnvironment, { environmentProps } from '../../uses/useEnvironment';
+import useEnvironment, {
+  EnvironmentProps,
+  environmentProps,
+} from '../../uses/useEnvironment';
 
 //region mode
 const modeRgba = Symbol('rgba');
@@ -80,7 +83,7 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    const environment = useEnvironment(props);
+    const environment = useEnvironment((props as unknown) as EnvironmentProps);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
@@ -315,6 +318,7 @@ export default defineComponent({
             alpha={props.alpha}
             onColorInput={setColorAndPosition}
             onColorBlur={setColorAndPosition}
+            environment={environment}
           />
         );
       }

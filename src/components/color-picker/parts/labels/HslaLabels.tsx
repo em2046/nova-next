@@ -24,6 +24,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    environment: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props, context) {
     const emit = context.emit;
@@ -94,8 +98,11 @@ export default defineComponent({
     );
 
     return (): JSX.Element => {
+      const language = props.environment.languageRef.value.colorPicker;
+
       const hNode = createChannel({
         label: 'H',
+        title: language.hue,
         value: state.h,
         onInput: (e) => {
           onHslInput(e.target as HTMLInputElement, 'h');
@@ -108,6 +115,7 @@ export default defineComponent({
 
       const sNode = createChannel({
         label: 'S',
+        title: language.saturation,
         value: state.s,
         onInput: (e) => {
           onHslInput(e.target as HTMLInputElement, 's');
@@ -120,6 +128,7 @@ export default defineComponent({
 
       const lNode = createChannel({
         label: 'L',
+        title: language.lightness,
         value: state.l,
         onInput: (e) => {
           onHslInput(e.target as HTMLInputElement, 'l');
@@ -132,6 +141,7 @@ export default defineComponent({
 
       const aNode = createAlpha({
         alpha: !!props.alpha,
+        title: language.alpha,
         value: state.a,
         onInput: (e) => {
           onAlphaInput(e.target as HTMLInputElement);

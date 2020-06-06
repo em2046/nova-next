@@ -1,6 +1,6 @@
 [data-nova-theme='light'] {
   --nova-color: hsl(0, 0%, 20%);
-  --nova-dropdown-bg: hsl(0, 0%, 80%);
+  --nova-component-bg: hsl(0, 0%, 100%);
   --nova-bg: hsl(0, 0%, 90%);
   --nova-border-color: hsla(0, 0%, 0%, 0.1);
   --nova-shadow-color: hsla(0, 0%, 0%, 0.2);

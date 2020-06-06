@@ -1,4 +1,5 @@
 .nova-color-picker {
+  font-family: var(--nova-sans-serif);
   display: inline-block;
   vertical-align: top;
 }
