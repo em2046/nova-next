@@ -4,6 +4,10 @@ body {
     'Microsoft YaHei', sans-serif;
 }
 
+#page {
+  min-height: 100vh;
+}
+
 #header {
   padding: 10px;
 }

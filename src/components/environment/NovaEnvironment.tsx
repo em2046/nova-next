@@ -5,7 +5,7 @@ export default defineComponent({
   props: {
     theme: {
       type: String,
-      default: 'dark',
+      default: 'light',
     },
   },
   setup(props, context) {

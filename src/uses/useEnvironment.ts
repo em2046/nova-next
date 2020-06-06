@@ -16,7 +16,7 @@ export default function useEnvironment(props: Props): Environment {
   if (props.theme) {
     themeRef = ref(props.theme);
   } else {
-    themeRef = inject(Theme, ref('dark'));
+    themeRef = inject(Theme, ref('light'));
   }
 
   return {

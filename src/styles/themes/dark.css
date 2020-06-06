@@ -1,4 +1,4 @@
-[data-theme='dark'] {
+[data-nova-theme='dark'] {
   --nova-color: hsl(0, 0%, 80%);
   --nova-dropdown-bg: hsl(0, 0%, 20%);
   --nova-bg: hsl(0, 0%, 10%);

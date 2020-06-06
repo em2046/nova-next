@@ -374,7 +374,7 @@ export default defineComponent({
         return (
           <Teleport to="body" disabled={!props.teleportToBody}>
             <div
-              data-theme={environment.themeRef.value}
+              data-nova-theme={environment.themeRef.value}
               ref={dropdownRef}
               class={dropdownClassList.value}
               style={style}
@@ -393,7 +393,10 @@ export default defineComponent({
       const dropdownNode = createDropdown();
 
       return (
-        <div class={classList.value} data-theme={environment.themeRef.value}>
+        <div
+          class={classList.value}
+          data-nova-theme={environment.themeRef.value}
+        >
           {triggerNode}
           {dropdownNode}
         </div>
