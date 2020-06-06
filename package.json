@@ -1,7 +1,7 @@
 {
   "name": "@em2046/nova-next",
   "description": "Experimental Vue components",
-  "version": "2.0.0-alpha.7",
+  "version": "2.0.0-alpha.8",
   "author": {
     "name": "em2046",
     "email": "em2046@qq.com"
@@ -14,9 +14,10 @@
   "module": "dist/nova.esm.js",
   "scripts": {
     "dev": "vite",
-    "build-style": "gulp -f gulpfile.esm.js style",
-    "build-rollup": "rollup --config build/rollup/rollup.config.es.js -m",
-    "build": "yarn build-style && yarn build-rollup",
+    "build:demo": "vite build",
+    "build:style": "gulp -f gulpfile.esm.js style",
+    "build:lib": "rollup --config build/rollup/rollup.config.es.js -m",
+    "build": "yarn build:style && yarn build:lib",
     "test": "yarn jest",
     "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css,vue}",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx,.vue",

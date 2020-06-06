@@ -47,7 +47,8 @@ async function components() {
 }
 
 async function bundle() {
-  return await component('./src/styles/index.ts', './dist/nova.css');
+  await component('./src/styles/index.ts', './dist/nova.css');
+  await component('./src/styles/themes/index.ts', './dist/css/themes.css');
 }
 
 export default series(components, bundle);
