@@ -9,7 +9,6 @@ import {
 } from 'vue';
 import DomUtils from '../utils/dom-utils';
 import { VisualViewport } from '../shims/visual-viewport';
-import Geometry from '../utils/geometry';
 
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
@@ -54,7 +53,13 @@ interface GetCollapseStyleParams extends GetDropdownOffsetParams {
   offset: Offset;
 }
 
-const duration = 200;
+interface CollapseStyle {
+  opacity: string;
+  transform: string;
+  pointerEvents: string;
+}
+
+const duration = 300;
 
 export default function useDropdown(
   params: UseDropdownParams
@@ -75,6 +80,7 @@ export default function useDropdown(
   let closeTimer: number;
   const { triggerRef, dropdownRef, props, onOpen, onClose } = params;
   const dropdownProps = props as DropdownProps;
+  let collapseStyleCache: CollapseStyle | null = null;
 
   function onVirtualMaskMousedown(e: MouseEvent): void {
     if (dropdownProps.disabled) {
@@ -113,26 +119,11 @@ export default function useDropdown(
       return;
     }
 
-    const trigger = triggerRef.value as HTMLElement;
-    const dropdown = dropdownRef.value as HTMLElement;
-    if (trigger && dropdown) {
-      const triggerRect = DomUtils.getElementPosition(trigger);
-      const dropdownRect = DomUtils.getElementPosition(dropdown);
-      const visualViewport: VisualViewport = DomUtils.getVisualViewport();
-
-      const collapseStyle = getCollapseStyle({
-        offset: state.dropdown.offset,
-        triggerRect,
-        dropdownRect,
-        visualViewport,
-      });
-
-      state.dropdown.style = Object.assign(
-        {},
-        collapseStyle,
-        getTransitionStyle()
-      );
-    }
+    state.dropdown.style = Object.assign(
+      {},
+      collapseStyleCache,
+      getTransitionStyle()
+    );
 
     document.removeEventListener('mousedown', onVirtualMaskMousedown);
     const openedOld = state.dropdown.opened;
@@ -181,7 +172,7 @@ export default function useDropdown(
     };
   }
 
-  function getCollapseStyle(params: GetCollapseStyleParams) {
+  function getCollapseStyle(params: GetCollapseStyleParams): CollapseStyle {
     const { offset, triggerRect, dropdownRect, visualViewport } = params;
 
     const pageLeft = visualViewport.pageLeft;
@@ -196,30 +187,17 @@ export default function useDropdown(
       heightProportion = triggerRect.height / dropdownRect.height;
     }
 
-    let dropdownInitHeight = triggerRect.height;
-    if (heightProportion) {
-      dropdownInitHeight =
-        (triggerRect.width * widthProportion) / heightProportion;
-    }
+    const dropdownXCenter = dropdownRect.width / 2 + offset.left;
+    const triggerXCenter = pageLeft + triggerRect.left + triggerRect.width / 2;
+    const dropdownYCenter = dropdownRect.height / 2 + offset.top;
+    const triggerYCenter = pageTop + triggerRect.top + triggerRect.height / 2;
 
-    const [x, y] = Geometry.lineLineIntersection(
-      triggerRect.left + pageLeft,
-      triggerRect.top + pageTop,
-      offset.left,
-      offset.top,
-      triggerRect.right + pageLeft,
-      triggerRect.top + dropdownInitHeight + pageTop,
-      dropdownRect.width + offset.left,
-      dropdownRect.height + offset.top
-    );
-
-    const originX = x - offset.left;
-    const originY = y - offset.top;
+    const translateX = triggerXCenter - dropdownXCenter;
+    const translateY = triggerYCenter - dropdownYCenter;
 
     return {
       opacity: `0`,
-      transform: `scale(${widthProportion})`,
-      transformOrigin: `${originX}px ${originY}px`,
+      transform: `translate(${translateX}px, ${translateY}px) scale(${widthProportion}, ${heightProportion}) `,
       pointerEvents: `none`,
     };
   }
@@ -227,13 +205,13 @@ export default function useDropdown(
   function getExpandStyle() {
     return {
       opacity: `1`,
-      transform: `scale(1)`,
+      transform: `translate(0, 0) scale(1)`,
     };
   }
 
   function getTransitionStyle() {
     return {
-      transition: `transform ${duration}ms linear, opacity ${duration}ms linear`,
+      transition: `transform ${duration}ms var(--nova-bezier-out-cubic), opacity ${duration}ms var(--nova-bezier-out-cubic)`,
     };
   }
 
@@ -275,6 +253,8 @@ export default function useDropdown(
     const offset = getDropdownOffset(params);
     const collapseStyle = getCollapseStyle({ offset, ...params });
 
+    collapseStyleCache = collapseStyle;
+
     state.dropdown.offset = offset;
     state.dropdown.style = collapseStyle;
 
@@ -302,7 +282,9 @@ export default function useDropdown(
     if (opened) {
       closeDropdown();
     } else {
-      openDropdown();
+      openDropdown().then(() => {
+        // do nothing
+      });
     }
   }
 
