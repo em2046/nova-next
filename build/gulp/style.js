@@ -1,8 +1,7 @@
 import fs from 'fs';
-import { series } from 'gulp';
-import { rollup } from 'rollup';
-import rollupTypescript from '@rollup/plugin-typescript';
-import css from 'rollup-plugin-css-only';
+import { dest, series, src } from 'gulp';
+import concatCss from 'gulp-concat-css';
+
 import glob from 'glob';
 
 const cssPath = './dist/css';
@@ -11,28 +10,13 @@ if (!fs.existsSync(cssPath)) {
 }
 
 async function component(inputPath, outputPath) {
-  const bundle = await rollup({
-    input: inputPath,
-    plugins: [
-      rollupTypescript(),
-      css({
-        output: (styles) => {
-          fs.writeFileSync(outputPath, styles);
-        },
-      }),
-    ],
-  });
-
-  return await bundle.generate({
-    format: 'esm',
-    sourcemap: true,
-  });
+  src(inputPath).pipe(concatCss(outputPath)).pipe(dest('.'));
 }
 
 async function components() {
   let list = [];
 
-  glob('src/components/*/styles/index.ts', (er, files) => {
+  glob('src/components/*/styles/index.css', (er, files) => {
     files.forEach((file) => {
       const componentName = file.replace(
         /^.+components\/(.+)\/styles.+$/,
@@ -47,8 +31,8 @@ async function components() {
 }
 
 async function bundle() {
-  await component('./src/styles/index.ts', './dist/nova.css');
-  await component('./src/styles/themes/index.ts', './dist/css/themes.css');
+  await component('./src/styles/index.css', './dist/nova.css');
+  await component('./src/styles/themes/index.css', './dist/css/themes.css');
 }
 
 export default series(components, bundle);
