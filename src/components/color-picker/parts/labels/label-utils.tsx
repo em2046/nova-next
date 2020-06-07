@@ -57,14 +57,13 @@ export function createChannel(params: ChannelParams): JSX.Element {
       <div class="nova-color-picker-label-text" title={title}>
         {label}
       </div>
-      <div class="nova-color-picker-number">
-        <NumberInput
-          value={value.toString()}
-          onInput={onInput}
-          onUpdate={onUpdate}
-          onBlur={onBlur}
-        />
-      </div>
+
+      <NumberInput
+        value={value.toString()}
+        onInput={onInput}
+        onUpdate={onUpdate}
+        onBlur={onBlur}
+      />
     </label>
   );
 }

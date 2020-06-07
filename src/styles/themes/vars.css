@@ -14,11 +14,13 @@
   --nova-font-size: 14px;
   --nova-line-height: 20px;
 
-  --nova-focus-shadow: 0 0 0 2px var(--nova-primary-shadow-color);
+  --nova-primary-shadow: 0 0 0 2px var(--nova-primary-shadow-color);
   --nova-dropdown-shadow: 2px 2px 8px hsla(0, 0%, 0%, 0.1);
   --nova-thumb-shadow: 0 0 2px 0 hsla(0, 0%, 0%, 0.5);
   --nova-cursor-shadow: 0 0 2px 0 hsla(0, 0%, 0%, 0.5),
     inset 0 0 2px 0 hsla(0, 0%, 0%, 0.5);
 
   --nova-border-radius: 2px;
+  --nova-border: 1px solid var(--nova-border-color);
+  --nova-primary-border: 1px solid var(--nova-primary-color);
 }

@@ -88,12 +88,15 @@ export default defineComponent({
 
     return (): JSX.Element => {
       return (
-        <input
-          type="text"
-          value={props.value}
-          ref={inputRef}
-          onKeydown={onKeydown}
-        />
+        <div class="nova-color-picker-input">
+          <input
+            type="text"
+            value={props.value}
+            ref={inputRef}
+            onKeydown={onKeydown}
+          />
+          <div class="nova-color-picker-input-border" />
+        </div>
       );
     };
   },

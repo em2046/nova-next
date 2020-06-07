@@ -2,7 +2,8 @@
   background-position: center center;
   background-image: var(--nova-checkerboard-bg);
   background-clip: content-box;
-  padding: 4px;
+  padding: 5px;
+  margin-top: -30px;
 }
 
 .nova-color-picker-trigger-inner {

@@ -124,6 +124,7 @@ export default defineComponent({
         'nova-color-picker',
         {
           ['nova-color-picker-disabled']: props.disabled,
+          ['nova-color-picker-opened']: dropdown.opened,
         },
       ];
     });
@@ -402,6 +403,7 @@ export default defineComponent({
           data-nova-theme={environment.themeRef.value}
           tabindex={0}
         >
+          <div class="nova-color-picker-border" />
           {triggerNode}
           {dropdownNode}
         </div>

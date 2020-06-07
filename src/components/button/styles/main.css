@@ -8,18 +8,18 @@
   padding: 4px 14px;
   font-size: var(--nova-font-size);
   border-radius: var(--nova-border-radius);
-  border: 1px solid var(--nova-border-color);
+  border: var(--nova-border);
   background-color: var(--nova-component-bg);
   color: var(--nova-color);
 }
 
 .nova-button:focus {
   outline: none;
-  border: 1px solid var(--nova-primary-color);
-  box-shadow: var(--nova-focus-shadow);
+  border: var(--nova-primary-border);
+  box-shadow: var(--nova-primary-shadow);
 }
 
 .nova-button:hover {
-  border: 1px solid var(--nova-primary-color);
+  border: var(--nova-primary-border);
   color: var(--nova-primary-color);
 }

@@ -178,6 +178,7 @@ export default defineComponent({
               onBlur={onHexBlur}
               onKeydown={onHexKeydown}
             />
+            <div class="nova-color-picker-input-border" />
           </div>
         </div>
       );

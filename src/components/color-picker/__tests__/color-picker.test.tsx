@@ -437,7 +437,7 @@ describe('color-picker', () => {
     const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
 
     await pickerTrigger.trigger('click');
-    const rgbNumberList = wrapper.findAll('.nova-color-picker-number input');
+    const rgbNumberList = wrapper.findAll('.nova-color-picker-input input');
     await rgbNumberList[0].setValue(255);
     await rgbNumberList[1].setValue(0);
     await rgbNumberList[2].setValue(255);
@@ -452,7 +452,7 @@ describe('color-picker', () => {
     await pickerTrigger.trigger('click');
     const pickerSwitch = wrapper.find('.nova-color-picker-labels-switch');
     await pickerSwitch.trigger('click');
-    const hslNumberList = wrapper.findAll('.nova-color-picker-number input');
+    const hslNumberList = wrapper.findAll('.nova-color-picker-input input');
     await hslNumberList[0].setValue(120);
     await hslNumberList[1].setValue(100);
     await hslNumberList[2].setValue(50);
@@ -507,7 +507,7 @@ describe('color-picker', () => {
     const init = wrapper.find('#init');
 
     await pickerTrigger.trigger('click');
-    const rgbNumberList = wrapper.findAll('.nova-color-picker-number input');
+    const rgbNumberList = wrapper.findAll('.nova-color-picker-input input');
     await rgbNumberList[0].trigger('keydown', {
       key: 'ArrowUp',
       ctrlKey: true,
@@ -528,7 +528,7 @@ describe('color-picker', () => {
     await pickerTrigger.trigger('click');
     const pickerSwitch = wrapper.find('.nova-color-picker-labels-switch');
     await pickerSwitch.trigger('click');
-    const hslNumberList = wrapper.findAll('.nova-color-picker-number input');
+    const hslNumberList = wrapper.findAll('.nova-color-picker-input input');
     await hslNumberList[0].trigger('keydown', {
       key: 'ArrowUp',
       ctrlKey: true,

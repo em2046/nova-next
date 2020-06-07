@@ -101,7 +101,7 @@ export default defineComponent({
         teleportToBody: false,
         dropdownClass: [state.colorDropdownClass],
         class: 'custom-class-name',
-        style: { background: '#333333' },
+        style: { margin: '10px' },
         ['data-custom']: state.colorCustomValue,
         preset,
       };

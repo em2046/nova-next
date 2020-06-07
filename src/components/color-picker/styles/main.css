@@ -2,9 +2,6 @@
   font-family: var(--nova-sans-serif);
   display: inline-block;
   vertical-align: top;
-  border-radius: var(--nova-border-radius);
-  border: 1px solid var(--nova-border-color);
-  background-color: var(--nova-component-bg);
   width: 30px;
   height: 30px;
   box-sizing: border-box;
@@ -16,12 +13,27 @@
   cursor: not-allowed;
 }
 
-.nova-color-picker:hover {
-  border: 1px solid var(--nova-primary-color);
+.nova-color-picker:not(.nova-color-picker-disabled):hover
+  .nova-color-picker-border {
+  border: var(--nova-primary-border);
 }
 
 .nova-color-picker:focus {
-  border: 1px solid var(--nova-primary-color);
-  box-shadow: var(--nova-focus-shadow);
   outline: none;
+}
+
+.nova-color-picker:not(.nova-color-picker-disabled):focus
+  .nova-color-picker-border,
+.nova-color-picker.nova-color-picker-opened .nova-color-picker-border {
+  border: var(--nova-primary-border);
+  box-shadow: var(--nova-primary-shadow);
+}
+
+.nova-color-picker-border {
+  background-color: var(--nova-component-bg);
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--nova-border-radius);
+  border: var(--nova-border);
 }

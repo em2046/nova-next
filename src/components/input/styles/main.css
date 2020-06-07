@@ -28,14 +28,14 @@
   margin-top: -30px;
   background-color: var(--nova-component-bg);
   border-radius: var(--nova-border-radius);
-  border: 1px solid var(--nova-border-color);
+  border: var(--nova-border);
 }
 
 .nova-input-text:hover + .nova-input-border {
-  border: 1px solid var(--nova-primary-color);
+  border: var(--nova-primary-border);
 }
 
 .nova-input-text:focus + .nova-input-border {
-  border: 1px solid var(--nova-primary-color);
-  box-shadow: var(--nova-focus-shadow);
+  border: var(--nova-primary-border);
+  box-shadow: var(--nova-primary-shadow);
 }
