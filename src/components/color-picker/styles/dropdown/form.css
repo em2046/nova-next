@@ -22,14 +22,14 @@
 }
 
 .nova-color-picker-label-text {
-  line-height: 20px;
+  line-height: var(--nova-line-height);
   height: 20px;
   text-align: center;
 }
 
 .nova-color-picker-number,
 .nova-color-picker-hex {
-  border: 1px solid var(--nova-border-color);
+  border: 1px solid var(--nova-cpmponent-border-color);
   box-sizing: border-box;
   height: 25px;
 }
@@ -44,7 +44,7 @@
   line-height: 23px;
   padding: 0;
   text-align: center;
-  font-size: 14px;
+  font-size: var(--nova-font-size);
   width: 100%;
   font-family: 'Sarasa Mono SC', Iosevka, 'Fira Code', Monaco, Consolas,
     monospace;
@@ -54,7 +54,7 @@
 .nova-color-picker-number input:focus,
 .nova-color-picker-hex input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px var(--nova-shadow-color);
+  box-shadow: 0 0 0 3px var(--nova-cpmponent-border-color);
 }
 
 .nova-color-picker-number {

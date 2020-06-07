@@ -2,9 +2,26 @@
   font-family: var(--nova-sans-serif);
   display: inline-block;
   vertical-align: top;
+  border-radius: var(--nova-border-radius);
+  border: 1px solid var(--nova-border-color);
+  background-color: var(--nova-component-bg);
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+  line-height: var(--nova-line-height);
 }
 
 .nova-color-picker-disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.nova-color-picker:hover {
+  border: 1px solid var(--nova-primary-color);
+}
+
+.nova-color-picker:focus {
+  border: 1px solid var(--nova-primary-color);
+  box-shadow: var(--nova-focus-shadow);
+  outline: none;
 }

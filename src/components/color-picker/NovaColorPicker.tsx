@@ -400,6 +400,7 @@ export default defineComponent({
         <div
           class={classList.value}
           data-nova-theme={environment.themeRef.value}
+          tabindex={0}
         >
           {triggerNode}
           {dropdownNode}

@@ -15,11 +15,9 @@ export default defineComponent({
 
     return (): JSX.Element => {
       return (
-        <div
-          class="nova-input-wrap"
-          data-nova-theme={environment.themeRef.value}
-        >
-          <input type="text" class="nova-input" />
+        <div class="nova-input" data-nova-theme={environment.themeRef.value}>
+          <input type="text" class="nova-input-text" />
+          <div class="nova-input-border" />
         </div>
       );
     };

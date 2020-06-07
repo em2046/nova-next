@@ -26,7 +26,7 @@ export default defineComponent({
 
     return (): JSX.Element => {
       return (
-        <div class="nova-color-picker-trigger" ref={triggerRef} tabindex={0}>
+        <div class="nova-color-picker-trigger" ref={triggerRef}>
           <div
             class="nova-color-picker-trigger-inner"
             style={triggerInnerStyle.value}

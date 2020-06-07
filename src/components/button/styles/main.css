@@ -4,18 +4,19 @@
   text-align: center;
   display: inline-block;
   cursor: pointer;
-  line-height: 20px;
+  line-height: var(--nova-line-height);
   padding: 4px 14px;
-  font-size: 14px;
-  border-radius: 3px;
-  border: 1px solid var(--nova-shadow-color);
+  font-size: var(--nova-font-size);
+  border-radius: var(--nova-border-radius);
+  border: 1px solid var(--nova-border-color);
   background-color: var(--nova-component-bg);
+  color: var(--nova-color);
 }
 
 .nova-button:focus {
   outline: none;
   border: 1px solid var(--nova-primary-color);
-  box-shadow: 0 0 0 2px var(--nova-primary-shadow-color);
+  box-shadow: var(--nova-focus-shadow);
 }
 
 .nova-button:hover {

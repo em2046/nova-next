@@ -2,25 +2,13 @@
   background-position: center center;
   background-image: var(--nova-checkerboard-bg);
   background-clip: content-box;
-  border: 1px solid var(--nova-border-color);
-  box-sizing: border-box;
   padding: 4px;
-  width: 40px;
-  height: 40px;
 }
 
 .nova-color-picker-trigger-inner {
   box-sizing: border-box;
-  padding: 5px;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   display: inline-block;
   vertical-align: top;
-}
-
-.nova-color-picker-trigger:focus {
-  outline: none;
-}
-
-.nova-color-picker-trigger:focus .nova-color-picker-trigger-inner {
 }

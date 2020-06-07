@@ -1,23 +1,41 @@
 .nova-input {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.nova-input-text {
   font-family: var(--nova-sans-serif);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: var(--nova-font-size);
+  line-height: var(--nova-line-height);
   box-sizing: border-box;
   height: 30px;
   padding: 5px;
   width: 200px;
   vertical-align: top;
-  border: 1px solid var(--nova-shadow-color);
-  background-color: var(--nova-component-bg);
+  border: none;
+  background: none;
   color: var(--nova-color);
 }
 
-.nova-input:focus {
+.nova-input-text:focus {
   outline: none;
-  border: 1px solid var(--nova-primary-color);
-  box-shadow: 0 0 0 2px var(--nova-primary-shadow-color);
 }
 
-.nova-input:hover {
+.nova-input-border {
+  box-sizing: border-box;
+  height: 30px;
+  pointer-events: none;
+  margin-top: -30px;
+  background-color: var(--nova-component-bg);
+  border-radius: var(--nova-border-radius);
+  border: 1px solid var(--nova-border-color);
+}
+
+.nova-input-text:hover + .nova-input-border {
   border: 1px solid var(--nova-primary-color);
+}
+
+.nova-input-text:focus + .nova-input-border {
+  border: 1px solid var(--nova-primary-color);
+  box-shadow: var(--nova-focus-shadow);
 }

@@ -33,7 +33,7 @@
   box-sizing: border-box;
   width: 10px;
   height: 10px;
-  border: 2px solid var(--nova-white);
+  border: 2px solid var(--nova-white-color);
   margin-top: -205px;
   margin-left: -5px;
   box-shadow: var(--nova-cursor-shadow);
@@ -89,7 +89,7 @@
   height: 6px;
   margin-top: -203px;
   margin-left: 2px;
-  background-color: var(--nova-white);
+  background-color: var(--nova-white-color);
   box-shadow: var(--nova-thumb-shadow);
   will-change: transform;
 }

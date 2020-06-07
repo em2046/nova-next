@@ -2,6 +2,8 @@ body {
   margin: 0;
   line-height: 30px;
   font-family: var(--nova-sans-serif);
+  background-color: var(--nova-bg);
+  color: var(--nova-color);
 }
 
 #page {
@@ -35,6 +37,7 @@ body {
   color: #2299ee;
 }
 
-.nova-button {
+.nova-button,
+.nova-input {
   margin-left: 5px;
 }
