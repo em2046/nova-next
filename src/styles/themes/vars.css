@@ -21,6 +21,5 @@
     inset 0 0 2px 0 hsla(0, 0%, 0%, 0.5);
 
   --nova-border-radius: 2px;
-  --nova-border: 1px solid var(--nova-border-color);
   --nova-primary-border: 1px solid var(--nova-primary-color);
 }

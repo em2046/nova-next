@@ -18,8 +18,8 @@ export default defineComponent({
       const theme = localStorage.getItem(storageThemeKey);
       if (theme) {
         state.theme = theme;
-        setBodyTheme(theme);
       }
+      setBodyTheme(state.theme);
     }
 
     initTheme();
