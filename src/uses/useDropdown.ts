@@ -134,7 +134,7 @@ export default function useDropdown(
     }, duration);
 
     if (openedOld) {
-      onClose && onClose.call(null);
+      onClose?.call(null);
     }
   }
 
@@ -273,7 +273,7 @@ export default function useDropdown(
     }, duration);
 
     if (!openedOld) {
-      onOpen && onOpen.call(null);
+      onOpen?.call(null);
     }
   }
 

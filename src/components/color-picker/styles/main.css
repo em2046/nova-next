@@ -30,6 +30,7 @@
 }
 
 .nova-color-picker-border {
+  pointer-events: none;
   background-color: var(--nova-component-bg);
   box-sizing: border-box;
   width: 30px;

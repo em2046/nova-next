@@ -56,13 +56,13 @@ export default function useTouchmove(params: MoveParams): void {
     border.left = DomUtils.getPaddingLeft(target);
     border.top = DomUtils.getPaddingTop(target);
 
-    const rectX = rect.x || 0;
-    const rectY = rect.y || 0;
+    const rectX = rect.x ?? 0;
+    const rectY = rect.y ?? 0;
     const x = firstFinger.pageX - rectX - window.pageXOffset - border.left;
     const y = firstFinger.pageY - rectY - window.pageYOffset - border.top;
 
-    start && start.call(null);
-    move && move.call(null, { x, y });
+    start?.call(null);
+    move?.call(null, { x, y });
 
     target.addEventListener('touchmove', onTouchmove);
     target.addEventListener('touchend', onTouchend);

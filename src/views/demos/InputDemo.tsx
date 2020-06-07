@@ -1,13 +1,46 @@
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
-import { NovaInput } from '../../index';
+import { NovaButton, NovaInput } from '../../index';
 
 export default defineComponent({
   setup() {
+    const state = reactive({
+      required: false,
+    });
+
+    function toggleRequired() {
+      state.required = !state.required;
+    }
+
+    function handleInput(e: InputEvent) {
+      console.log(e);
+    }
+
     return (): JSX.Element => (
       <section>
-        <NovaInput />
-        <NovaInput />
+        <div>
+          <NovaInput
+            wrapClass="my-custom-wrap-class-name"
+            class="my-custom-class-name"
+            wrapStyle={{ margin: '10px' }}
+            style={{ fontSize: '12px' }}
+            id="name"
+            name="name"
+            required={state.required}
+            minlength="4"
+            maxlength="4"
+            size="10"
+            onInput={handleInput}
+          />
+          <NovaButton onClick={toggleRequired}>
+            {() => 'Toggle required'}
+          </NovaButton>
+        </div>
+        <div>
+          <NovaInput disabled />
+          <NovaInput readonly value="Text" />
+          <NovaInput value="✒" />
+        </div>
       </section>
     );
   },

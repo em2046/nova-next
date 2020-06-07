@@ -22,14 +22,14 @@ export default function useMousemove(params: MoveParams): void {
     const x = e.pageX - rect.x - window.pageXOffset - border.left;
     const y = e.pageY - rect.y - window.pageYOffset - border.top;
 
-    move && move.call(null, { x, y });
+    move?.call(null, { x, y });
   }
 
   function onMouseup(): void {
     document.removeEventListener('mousemove', onMousemove);
     document.removeEventListener('mouseup', onMouseup);
 
-    finish && finish.call(null);
+    finish?.call(null);
   }
 
   function onMousedown(e: MouseEvent): void {
@@ -38,13 +38,13 @@ export default function useMousemove(params: MoveParams): void {
     border.left = DomUtils.getPaddingLeft(target);
     border.top = DomUtils.getPaddingTop(target);
 
-    const rectX = rect.x || 0;
-    const rectY = rect.y || 0;
+    const rectX = rect.x ?? 0;
+    const rectY = rect.y ?? 0;
     const x = e.pageX - rectX - window.pageXOffset - border.left;
     const y = e.pageY - rectY - window.pageYOffset - border.top;
 
-    start && start.call(null);
-    move && move.call(null, { x, y });
+    start?.call(null);
+    move?.call(null, { x, y });
 
     document.addEventListener('mousemove', onMousemove);
     document.addEventListener('mouseup', onMouseup);

@@ -5,6 +5,7 @@
   display: inline-block;
   cursor: pointer;
   line-height: var(--nova-line-height);
+  min-height: 30px;
   padding: 4px 14px;
   font-size: var(--nova-font-size);
   border-radius: var(--nova-border-radius);
@@ -13,13 +14,18 @@
   color: var(--nova-color);
 }
 
-.nova-button:focus {
+.nova-button:not([disabled]):focus {
   outline: none;
   border: var(--nova-primary-border);
   box-shadow: var(--nova-primary-shadow);
 }
 
-.nova-button:hover {
+.nova-button:not([disabled]):hover {
   border: var(--nova-primary-border);
   color: var(--nova-primary-color);
+}
+
+.nova-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
 }

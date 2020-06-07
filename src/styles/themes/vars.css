@@ -8,7 +8,7 @@
   --nova-bezier-out-cubic: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   --nova-sans-serif: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica,
-    Arial, sans-serif;
+    Arial, source-han-sans-simplified-c, 'Segoe UI Emoji', sans-serif;
   --nova-monospace: 'Sarasa Mono SC', Iosevka, 'Fira Code', Monaco, Consolas,
     monospace;
   --nova-font-size: 14px;

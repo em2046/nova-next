@@ -42,7 +42,7 @@ export default defineComponent({
     );
 
     return (): VNode[] | null => {
-      const children = slots.default && slots.default();
+      const children = slots.default?.();
 
       if (!children) {
         return null;

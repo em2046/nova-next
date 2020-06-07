@@ -53,11 +53,11 @@ const colorPickerProps = {
   },
   dropdownClass: {
     type: [String, Array, Object],
-    default: '',
+    default: null,
   },
   dropdownStyle: {
     type: Object,
-    default: {},
+    default: null,
   },
   teleportToBody: {
     type: Boolean,
@@ -73,7 +73,7 @@ const colorPickerProps = {
   },
   preset: {
     type: Array,
-    default: [],
+    default: null,
   },
 };
 
@@ -346,7 +346,7 @@ export default defineComponent({
       }
 
       function createPreset() {
-        if (!props.preset.length) {
+        if (!props.preset?.length) {
           return null;
         }
 
@@ -401,7 +401,7 @@ export default defineComponent({
         <div
           class={classList.value}
           data-nova-theme={environment.themeRef.value}
-          tabindex={0}
+          tabindex={props.disabled ? -1 : 0}
         >
           <div class="nova-color-picker-border" />
           {triggerNode}

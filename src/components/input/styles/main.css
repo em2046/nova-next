@@ -3,6 +3,10 @@
   vertical-align: top;
 }
 
+.nova-input-disabled {
+  opacity: 0.5;
+}
+
 .nova-input-text {
   font-family: var(--nova-sans-serif);
   font-size: var(--nova-font-size);
@@ -15,6 +19,7 @@
   border: none;
   background: none;
   color: var(--nova-color);
+  border-radius: var(--nova-border-radius);
 }
 
 .nova-input-text:focus {
@@ -31,11 +36,15 @@
   border: var(--nova-border);
 }
 
-.nova-input-text:hover + .nova-input-border {
+.nova-input:not(.nova-input-disabled)
+  .nova-input-text:hover
+  + .nova-input-border {
   border: var(--nova-primary-border);
 }
 
-.nova-input-text:focus + .nova-input-border {
+.nova-input:not(.nova-input-disabled)
+  .nova-input-text:focus
+  + .nova-input-border {
   border: var(--nova-primary-border);
   box-shadow: var(--nova-primary-shadow);
 }

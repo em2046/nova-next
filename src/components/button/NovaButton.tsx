@@ -16,7 +16,7 @@ export default defineComponent({
     const environment = useEnvironment((props as unknown) as EnvironmentProps);
 
     return (): JSX.Element => {
-      const children = slots.default && slots.default();
+      const children = slots.default?.();
       return (
         <button
           class="nova-button"

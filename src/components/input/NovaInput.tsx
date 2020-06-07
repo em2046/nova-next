@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import useEnvironment, {
   EnvironmentProps,
@@ -7,16 +7,56 @@ import useEnvironment, {
 
 export default defineComponent({
   name: 'NovaInput',
+  inheritAttrs: false,
   props: {
     ...environmentProps,
+    class: {
+      type: [String, Array, Object],
+      default: null,
+    },
+    wrapClass: {
+      type: [String, Array, Object],
+      default: null,
+    },
+    wrapStyle: {
+      type: Object,
+      default: null,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
-  setup(props) {
+  setup(props, context) {
     const environment = useEnvironment((props as unknown) as EnvironmentProps);
+
+    const wrapClassList = computed(() => {
+      return [
+        {
+          'nova-input': true,
+          'nova-input-disabled': !!props.disabled,
+        },
+        props.wrapClass,
+      ];
+    });
+
+    const classList = computed(() => {
+      return ['nova-input-text', props.class];
+    });
 
     return (): JSX.Element => {
       return (
-        <div class="nova-input" data-nova-theme={environment.themeRef.value}>
-          <input type="text" class="nova-input-text" />
+        <div
+          class={wrapClassList.value}
+          style={props.wrapStyle}
+          data-nova-theme={environment.themeRef.value}
+        >
+          <input
+            type="text"
+            class={classList.value}
+            {...context.attrs}
+            disabled={!!props.disabled}
+          />
           <div class="nova-input-border" />
         </div>
       );
