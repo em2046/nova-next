@@ -10,7 +10,6 @@
   background-color: var(--nova-component-bg);
   width: 330px;
   display: grid;
-  visibility: hidden;
   grid-template-columns: 220px auto;
   grid-column-gap: 10px;
   box-shadow: var(--nova-dropdown-shadow);

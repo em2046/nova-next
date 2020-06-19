@@ -57,7 +57,6 @@ interface CollapseStyle {
   opacity: string;
   transform: string;
   pointerEvents: string;
-  visibility: string;
 }
 
 const duration = 300;
@@ -79,7 +78,6 @@ export default function useDropdown(
 
   let openTimer: number;
   let closeTimer: number;
-  let preloadHandle: number;
   const { triggerRef, dropdownRef, props, onOpen, onClose } = params;
   const dropdownProps = props as DropdownProps;
   let collapseStyleCache: CollapseStyle | null = null;
@@ -110,9 +108,7 @@ export default function useDropdown(
   }
 
   function onOpened() {
-    state.dropdown.style = {
-      visibility: 'visible',
-    };
+    state.dropdown.style = {};
   }
 
   function closeDropdown(): void {
@@ -203,7 +199,6 @@ export default function useDropdown(
       opacity: `0`,
       transform: `translate(${translateX}px, ${translateY}px) scale(${widthProportion}, ${heightProportion}) `,
       pointerEvents: `none`,
-      visibility: 'visible',
     };
   }
 
@@ -211,7 +206,6 @@ export default function useDropdown(
     return {
       opacity: `1`,
       transform: `translate(0, 0) scale(1)`,
-      visibility: 'visible',
     };
   }
 
@@ -294,52 +288,16 @@ export default function useDropdown(
     }
   }
 
-  function preloadDropdown(): void {
-    const trigger = triggerRef.value as HTMLElement;
-    trigger.removeEventListener('mouseenter', preloadDropdown);
-
-    if (dropdownProps.disabled) {
-      return;
-    }
-
-    if (state.dropdown.loaded) {
-      return;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (window.requestIdleCallback) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      preloadHandle = window.requestIdleCallback(() => {
-        state.dropdown.loaded = true;
-      });
-    }
-  }
-
-  function cancelPreloadDropdown() {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (window.cancelIdleCallback && preloadHandle) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.cancelIdleCallback(preloadHandle);
-    }
-  }
-
   onMounted(() => {
     const trigger = triggerRef.value as HTMLElement;
     trigger.addEventListener('click', toggleDropdown);
-    trigger.addEventListener('mouseenter', preloadDropdown);
   });
 
   onBeforeUnmount(() => {
     closeDropdown();
-    cancelPreloadDropdown();
 
     const trigger = triggerRef.value as HTMLElement;
     trigger.removeEventListener('click', toggleDropdown);
-    trigger.removeEventListener('mouseenter', preloadDropdown);
   });
 
   const dropdownStyle = computed(() => {
