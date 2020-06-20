@@ -28,7 +28,7 @@ export default defineComponent({
     },
   },
   setup(props, context) {
-    const environment = useEnvironment((props as unknown) as EnvironmentProps);
+    const environment = useEnvironment(props as EnvironmentProps);
 
     const wrapClassList = computed(() => {
       return [

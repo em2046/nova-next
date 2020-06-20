@@ -23,9 +23,6 @@ export default defineComponent({
     <div id="print">
       {{ state.color }}
     </div>
-    <NovaColorPicker
-      v-model:value="state.color"
-      theme="dark"
-    />
+    <NovaColorPicker v-model:value="state.color" theme="dark" />
   </div>
 </template>

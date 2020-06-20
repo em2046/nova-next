@@ -5,6 +5,7 @@
     "jsxFactory": "vueJsxCompat",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "ES6"

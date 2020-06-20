@@ -18,7 +18,7 @@
     "build:style": "gulp -f gulpfile.esm.js style",
     "build:lib": "rollup --config build/rollup/rollup.config.es.js -m",
     "build": "yarn build:style && yarn build:lib",
-    "test": "yarn jest",
+    "test": "jest",
     "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css,vue}",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx,.vue",
     "format": "yarn prettier && yarn lint",
@@ -32,16 +32,18 @@
     "url": "https://github.com/em2046/nova-next/issues"
   },
   "dependencies": {
+    "@em2046/material-design-icons-vue-next": "^1.0.0-alpha.3",
     "vue": "^3.0.0-beta.14"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^4.1.2",
-    "@types/jest": "^25.2.3",
-    "@typescript-eslint/eslint-plugin": "^3.0.2",
-    "@typescript-eslint/parser": "^3.0.2",
+    "@types/jest": "^26.0.0",
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
     "@vue/compiler-sfc": "^3.0.0-beta.14",
     "@vue/test-utils": "^2.0.0-alpha.6",
-    "eslint": "^7.2.0",
+    "eslint": "^7.3.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-vue": "^7.0.0-alpha.5",
     "esm": "^3.2.25",
     "glob": "^7.1.6",
@@ -49,10 +51,10 @@
     "gulp-concat-css": "^3.1.0",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
-    "rollup": "2.14.0",
+    "rollup": "2.17.1",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.5",
-    "vite": "^0.20.5",
+    "vite": "^1.0.0-beta.1",
     "vue-router": "^4.0.0-alpha.12"
   }
 }

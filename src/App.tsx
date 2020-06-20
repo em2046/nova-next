@@ -1,11 +1,12 @@
 import { defineComponent, reactive, watch } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { vueJsxCompat } from './vue-jsx-compat';
-import { storageThemeKey } from './utils/symbols';
 import NovaEnvironment from './components/environment/NovaEnvironment';
 import { NovaButton } from './index';
 import zhCN from './environments/languages/zh-CN';
 import enUS from './environments/languages/en-US';
+
+const storageThemeKey = 'nova-theme';
 
 export default defineComponent({
   setup() {
@@ -35,16 +36,17 @@ export default defineComponent({
       }
     );
 
-    function setLight() {
-      const theme = 'light';
+    function setTheme(theme: string) {
       state.theme = theme;
       localStorage.setItem(storageThemeKey, theme);
     }
 
+    function setLight() {
+      setTheme('light');
+    }
+
     function setDark() {
-      const theme = 'dark';
-      state.theme = theme;
-      localStorage.setItem(storageThemeKey, theme);
+      setTheme('dark');
     }
 
     function setZhCn() {

@@ -26,8 +26,9 @@ import useEnvironment, {
   EnvironmentProps,
   environmentProps,
 } from '../../uses/useEnvironment';
+import { PropClass, PropStyle } from '../../utils/type';
 
-//region mode
+//region Mode
 const modeRgba = Symbol('rgba');
 const modeHsla = Symbol('hsla');
 
@@ -52,11 +53,11 @@ const colorPickerProps = {
     default: false,
   },
   dropdownClass: {
-    type: [String, Array, Object],
+    type: [String, Array, Object] as PropClass,
     default: null,
   },
   dropdownStyle: {
-    type: Object,
+    type: Object as PropStyle,
     default: null,
   },
   teleportToBody: {
@@ -83,7 +84,7 @@ export default defineComponent({
   setup(props, context) {
     const emit = context.emit;
 
-    const environment = useEnvironment((props as unknown) as EnvironmentProps);
+    const environment = useEnvironment(props as EnvironmentProps);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);

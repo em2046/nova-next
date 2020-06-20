@@ -13,7 +13,7 @@ export default defineComponent({
   setup(props, context) {
     const { slots } = context;
 
-    const environment = useEnvironment((props as unknown) as EnvironmentProps);
+    const environment = useEnvironment(props as EnvironmentProps);
 
     return (): JSX.Element => {
       const children = slots.default?.();

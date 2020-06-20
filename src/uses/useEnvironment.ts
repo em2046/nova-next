@@ -1,4 +1,4 @@
-import { inject, ref, Ref } from 'vue';
+import { inject, PropType, Ref, ref } from 'vue';
 import { languageKey, themeKey } from '../utils/symbols';
 import { Language } from '../environments/languages';
 import enUS from '../environments/languages/en-US';
@@ -12,7 +12,7 @@ export const environmentProps = {
     default: null,
   },
   language: {
-    type: Object,
+    type: Object as PropType<Language>,
     default: null,
   },
 };

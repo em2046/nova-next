@@ -1,6 +1,9 @@
 import { defineComponent } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import { NovaButton } from '../../index';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { MDI3DRotation } from '@em2046/material-design-icons-vue-next';
 
 export default defineComponent({
   setup() {
@@ -17,6 +20,7 @@ export default defineComponent({
         <NovaButton disabled>{(): string => 'Link'}</NovaButton>
         <NovaButton>{(): string => '简体中文'}</NovaButton>
         <NovaButton>{(): string => '🚀'}</NovaButton>
+        <NovaButton>{() => <MDI3DRotation />}</NovaButton>
         <NovaButton />
       </section>
     );
