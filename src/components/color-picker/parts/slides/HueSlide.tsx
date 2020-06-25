@@ -34,7 +34,10 @@ export default defineComponent({
     return (): JSX.Element => {
       return (
         <div class="nova-color-picker-hue-slide" ref={hueSlideRef}>
-          <div class="nova-color-picker-hue-bar" />
+          <div class="nova-color-picker-hue-inner">
+            <div class="nova-color-picker-hue-bar" />
+          </div>
+
           <div
             class="nova-color-picker-hue-thumb"
             style={hueThumbStyle.value}

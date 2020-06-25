@@ -45,7 +45,9 @@ export default defineComponent({
 
       return (
         <div class="nova-color-picker-alpha-slide" ref={alphaSlideRef}>
-          <div class="nova-color-picker-alpha-bar" style={barStyle} />
+          <div class="nova-color-picker-alpha-inner">
+            <div class="nova-color-picker-alpha-bar" style={barStyle} />
+          </div>
           <div
             class="nova-color-picker-alpha-thumb"
             style={alphaThumbStyle.value}

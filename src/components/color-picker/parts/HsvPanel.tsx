@@ -50,13 +50,12 @@ export default defineComponent({
 
     return (): JSX.Element => {
       return (
-        <div
-          class={'nova-color-picker-hsv'}
-          style={hsvStyle.value}
-          ref={hsvRef}
-        >
-          <div class="nova-color-picker-saturation" />
-          <div class="nova-color-picker-value" />
+        <div class="nova-color-picker-hsv" ref={hsvRef}>
+          <div class="nova-color-picker-hsv-inner">
+            <div class="nova-color-picker-hue" style={hsvStyle.value} />
+            <div class="nova-color-picker-saturation" />
+            <div class="nova-color-picker-value" />
+          </div>
           <div class="nova-color-picker-cursor" style={cursorStyle.value} />
         </div>
       );

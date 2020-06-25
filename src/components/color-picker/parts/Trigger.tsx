@@ -27,10 +27,12 @@ export default defineComponent({
     return (): JSX.Element => {
       return (
         <div class="nova-color-picker-trigger" ref={triggerRef}>
-          <div
-            class="nova-color-picker-trigger-inner"
-            style={triggerInnerStyle.value}
-          />
+          <div class="nova-color-picker-trigger-inner">
+            <div
+              class="nova-color-picker-trigger-bg"
+              style={triggerInnerStyle.value}
+            />
+          </div>
         </div>
       );
     };

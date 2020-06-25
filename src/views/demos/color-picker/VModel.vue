@@ -24,5 +24,6 @@ export default defineComponent({
       {{ state.color }}
     </div>
     <NovaColorPicker v-model:value="state.color" theme="dark" />
+    <NovaColorPicker v-model:value="state.color" theme="light" />
   </div>
 </template>

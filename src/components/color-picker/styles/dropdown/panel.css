@@ -7,12 +7,13 @@
   padding: 10px;
   font-size: var(--nova-font-size);
   color: var(--nova-color);
-  background-color: var(--nova-component-bg);
+  background-color: var(--nova-dropdown-bg);
+  backdrop-filter: var(--nova-component-backdrop-filter);
   width: 330px;
   display: grid;
   grid-template-columns: 220px auto;
   grid-column-gap: 10px;
   box-shadow: var(--nova-dropdown-shadow);
   will-change: transform;
-  border-radius: var(--nova-border-radius);
+  border-radius: var(--nova-component-border-radius);
 }

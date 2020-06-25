@@ -36,10 +36,16 @@
 .nova-color-picker-input-border {
   box-sizing: border-box;
   height: 25px;
+  background-color: var(--nova-component-bg);
   border: 1px solid var(--nova-cpmponent-border-color);
   pointer-events: none;
   margin-top: -25px;
   border-radius: var(--nova-border-radius);
+}
+
+.nova-color-picker-input input:hover + .nova-color-picker-input-border,
+.nova-color-picker-hex input:hover + .nova-color-picker-input-border {
+  border: var(--nova-primary-border);
 }
 
 .nova-color-picker-input input,
@@ -121,7 +127,7 @@
 }
 
 .nova-color-picker-labels-switch:hover {
-  background-color: var(--nova-bg);
+  background-color: var(--nova-border-color);
 }
 
 .nova-color-picker-labels-switch:hover:before {

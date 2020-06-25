@@ -1,15 +1,22 @@
 .nova-color-picker-trigger {
   background-position: center center;
-  background-image: var(--nova-checkerboard-bg);
   background-clip: content-box;
   padding: 5px;
   margin-top: -30px;
 }
 
 .nova-color-picker-trigger-inner {
+  background-image: var(--nova-checkerboard-bg);
+  border-radius: var(--nova-tiny-border-radius);
   box-sizing: border-box;
   width: 20px;
   height: 20px;
   display: inline-block;
   vertical-align: top;
+  overflow: hidden;
+}
+
+.nova-color-picker-trigger-bg {
+  width: 20px;
+  height: 20px;
 }
