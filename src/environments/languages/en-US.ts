@@ -1,4 +1,4 @@
-import { Language } from './index';
+import { Language } from './type';
 
 const enUS: Language = {
   name: 'English, United States',

@@ -1,6 +1,6 @@
 import { inject, PropType, Ref, ref } from 'vue';
 import { languageKey, themeKey } from '../utils/symbols';
-import { Language } from '../environments/languages';
+import { Language } from '../environments/languages/type';
 import enUS from '../environments/languages/en-US';
 
 export const themeDefault = 'light';
