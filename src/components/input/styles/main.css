@@ -1,6 +1,23 @@
 .nova-input {
   display: inline-block;
   vertical-align: top;
+
+  &:not(.nova-input-disabled) {
+    .nova-input-text {
+      &:hover,
+      &:focus {
+        + .nova-input-border {
+          border: var(--nova-border-primary);
+        }
+      }
+
+      &:focus {
+        + .nova-input-border {
+          box-shadow: var(--nova-shadow-primary);
+        }
+      }
+    }
+  }
 }
 
 .nova-input-disabled {
@@ -8,7 +25,7 @@
 }
 
 .nova-input-text {
-  font-family: var(--nova-sans-serif);
+  font-family: var(--nova-font-sans-serif);
   font-size: var(--nova-font-size);
   line-height: var(--nova-line-height);
   box-sizing: border-box;
@@ -18,12 +35,12 @@
   vertical-align: top;
   border: none;
   background: none;
-  color: var(--nova-color);
-  border-radius: var(--nova-border-radius);
-}
+  color: var(--nova-color-font);
+  border-radius: var(--nova-radius);
 
-.nova-input-text:focus {
-  outline: none;
+  &:focus {
+    outline: none;
+  }
 }
 
 .nova-input-border {
@@ -31,20 +48,7 @@
   height: 30px;
   pointer-events: none;
   margin-top: -30px;
-  background-color: var(--nova-component-bg);
-  border-radius: var(--nova-border-radius);
+  background-color: var(--nova-color-bg-component);
+  border-radius: var(--nova-radius);
   border: var(--nova-border);
-}
-
-.nova-input:not(.nova-input-disabled)
-  .nova-input-text:hover
-  + .nova-input-border {
-  border: var(--nova-primary-border);
-}
-
-.nova-input:not(.nova-input-disabled)
-  .nova-input-text:focus
-  + .nova-input-border {
-  border: var(--nova-primary-border);
-  box-shadow: var(--nova-primary-shadow);
 }

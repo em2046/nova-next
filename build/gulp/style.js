@@ -1,6 +1,9 @@
 import fs from 'fs';
 import { dest, series, src } from 'gulp';
-import concatCss from 'gulp-concat-css';
+import autoprefixer from 'autoprefixer';
+import postcss from 'gulp-postcss';
+import atImport from 'postcss-import';
+import rename from 'gulp-rename';
 
 import glob from 'glob';
 
@@ -10,7 +13,10 @@ if (!fs.existsSync(cssPath)) {
 }
 
 async function component(inputPath, outputPath) {
-  src(inputPath).pipe(concatCss(outputPath)).pipe(dest('.'));
+  src(inputPath)
+    .pipe(postcss([atImport(), autoprefixer()]))
+    .pipe(rename(outputPath))
+    .pipe(dest('.'));
 }
 
 async function components() {

@@ -211,7 +211,7 @@ export default function useDropdown(
 
   function getTransitionStyle() {
     return {
-      transition: `transform ${duration}ms var(--nova-bezier-out-cubic), opacity ${duration}ms var(--nova-bezier-out-cubic)`,
+      transition: `transform ${duration}ms var(--nova-cubic-bezier-out-cubic), opacity ${duration}ms var(--nova-cubic-bezier-out-cubic)`,
     };
   }
 

@@ -1,6 +1,6 @@
 .nova-color-picker-preview-prev,
 .nova-color-picker-preview-curr {
-  border-radius: var(--nova-tiny-border-radius);
+  border-radius: var(--nova-radius-tiny);
   box-sizing: border-box;
   width: 40px;
   height: 40px;
@@ -13,21 +13,21 @@
 }
 
 .nova-color-picker-preview-prev {
-  border: 1px solid var(--nova-symbol-color);
+  border: 1px solid var(--nova-color-symbol);
   margin-top: -60px;
 }
 
 .nova-color-picker-preview-curr {
   margin-top: -20px;
   margin-left: 20px;
-  border: 1px solid var(--nova-symbol-color);
+  border: 1px solid var(--nova-color-symbol);
 }
 
 .nova-color-picker-preview-fill-right,
 .nova-color-picker-preview-fill-left {
-  border-radius: var(--nova-tiny-border-radius);
-  background-image: var(--nova-checkerboard-bg);
-  background-color: var(--nova-bg);
+  border-radius: var(--nova-radius-tiny);
+  background-image: var(--nova-bg-checkerboard);
+  background-color: var(--nova-color-bg);
   width: 40px;
   height: 40px;
 }

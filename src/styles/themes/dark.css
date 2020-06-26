@@ -1,11 +1,13 @@
 [data-nova-theme='dark'] {
-  --nova-color: hsla(0, 0%, 100%, 0.9);
-  --nova-component-bg: hsl(0, 0%, 20%);
-  --nova-dropdown-bg: hsla(0, 0%, 20%, 0.5);
-  --nova-bg: hsl(0, 0%, 10%);
-  --nova-cpmponent-border-color: hsla(0, 0%, 100%, 0.2);
-  --nova-border-color: hsla(0, 0%, 100%, 0.3);
-  --nova-border: 1px solid var(--nova-border-color);
-  --nova-symbol-color: hsla(0, 0%, 100%, 0.5);
-  --nova-component-backdrop-filter: blur(20px) brightness(80%);
+  --nova-color-font: hsla(0, 0%, 100%, 0.9);
+  --nova-color-bg-component: hsl(0, 0%, 20%);
+  --nova-color-bg-dropdown: hsla(0, 0%, 20%, 0.5);
+  --nova-color-bg: hsl(0, 0%, 10%);
+  --nova-color-border-component: hsla(0, 0%, 100%, 0.2);
+  --nova-color-border: hsla(0, 0%, 100%, 0.3);
+  --nova-color-symbol: hsla(0, 0%, 100%, 0.5);
+
+  --nova-border: 1px solid var(--nova-color-border);
+
+  --nova-backdrop-filter-component: blur(20px) brightness(80%);
 }

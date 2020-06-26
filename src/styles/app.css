@@ -1,9 +1,9 @@
 body {
   margin: 0;
   line-height: 30px;
-  font-family: var(--nova-sans-serif);
-  background-color: var(--nova-bg);
-  color: var(--nova-color);
+  font-family: var(--nova-font-sans-serif);
+  background-color: var(--nova-color-bg);
+  color: var(--nova-color-font);
 }
 
 #page {

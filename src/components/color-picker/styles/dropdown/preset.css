@@ -7,20 +7,20 @@
 }
 
 .nova-color-picker-preset {
-  background-image: var(--nova-checkerboard-bg);
-  background-color: var(--nova-bg);
-  border-radius: var(--nova-tiny-border-radius);
+  background-image: var(--nova-bg-checkerboard);
+  background-color: var(--nova-color-bg);
+  border-radius: var(--nova-radius-tiny);
   overflow: hidden;
+
+  &:hover {
+    box-shadow: 0 0 0 1px var(--nova-color-primary);
+  }
+
+  &.nova-color-picker-preset-selected {
+    box-shadow: 0 0 0 2px var(--nova-color-primary);
+  }
 }
 
 .nova-color-picker-preset-inner {
   height: 20px;
-}
-
-.nova-color-picker-preset:hover {
-  box-shadow: 0 0 0 1px var(--nova-primary-color);
-}
-
-.nova-color-picker-preset.nova-color-picker-preset-selected {
-  box-shadow: 0 0 0 2px var(--nova-primary-color);
 }

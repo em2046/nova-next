@@ -2,9 +2,9 @@
   font-size: 20px;
   vertical-align: top;
   display: inline-block;
-}
 
-.md-icon svg {
-  vertical-align: top;
-  display: inline-block;
+  svg {
+    vertical-align: top;
+    display: inline-block;
+  }
 }

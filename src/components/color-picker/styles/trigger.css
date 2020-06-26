@@ -6,8 +6,8 @@
 }
 
 .nova-color-picker-trigger-inner {
-  background-image: var(--nova-checkerboard-bg);
-  border-radius: var(--nova-tiny-border-radius);
+  background-image: var(--nova-bg-checkerboard);
+  border-radius: var(--nova-radius-tiny);
   box-sizing: border-box;
   width: 20px;
   height: 20px;

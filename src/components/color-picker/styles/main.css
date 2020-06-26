@@ -1,11 +1,31 @@
 .nova-color-picker {
-  font-family: var(--nova-sans-serif);
+  font-family: var(--nova-font-sans-serif);
   display: inline-block;
   vertical-align: top;
   width: 30px;
   height: 30px;
   box-sizing: border-box;
   line-height: var(--nova-line-height);
+
+  &:not(.nova-color-picker-disabled) {
+    &:hover {
+      .nova-color-picker-border {
+        border: var(--nova-border-primary);
+      }
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:not(.nova-color-picker-disabled):focus,
+  &.nova-color-picker-opened {
+    .nova-color-picker-border {
+      border: var(--nova-border-primary);
+      box-shadow: var(--nova-shadow-primary);
+    }
+  }
 }
 
 .nova-color-picker-disabled {
@@ -13,28 +33,12 @@
   cursor: not-allowed;
 }
 
-.nova-color-picker:not(.nova-color-picker-disabled):hover
-  .nova-color-picker-border {
-  border: var(--nova-primary-border);
-}
-
-.nova-color-picker:focus {
-  outline: none;
-}
-
-.nova-color-picker:not(.nova-color-picker-disabled):focus
-  .nova-color-picker-border,
-.nova-color-picker.nova-color-picker-opened .nova-color-picker-border {
-  border: var(--nova-primary-border);
-  box-shadow: var(--nova-primary-shadow);
-}
-
 .nova-color-picker-border {
   pointer-events: none;
-  background-color: var(--nova-component-bg);
+  background-color: var(--nova-color-bg-component);
   box-sizing: border-box;
   width: 30px;
   height: 30px;
-  border-radius: var(--nova-border-radius);
+  border-radius: var(--nova-radius);
   border: var(--nova-border);
 }

@@ -1,5 +1,5 @@
 .nova-button {
-  font-family: var(--nova-sans-serif);
+  font-family: var(--nova-font-sans-serif);
   vertical-align: top;
   text-align: center;
   display: inline-block;
@@ -8,24 +8,26 @@
   min-height: 30px;
   padding: 4px 14px;
   font-size: var(--nova-font-size);
-  border-radius: var(--nova-border-radius);
+  border-radius: var(--nova-radius);
   border: var(--nova-border);
-  background-color: var(--nova-component-bg);
-  color: var(--nova-color);
-}
+  background-color: var(--nova-color-bg-component);
+  color: var(--nova-color-font);
 
-.nova-button:not([disabled]):focus {
-  outline: none;
-  border: var(--nova-primary-border);
-  box-shadow: var(--nova-primary-shadow);
-}
+  &:not([disabled]) {
+    &:focus {
+      outline: none;
+      border: var(--nova-border-primary);
+      box-shadow: var(--nova-shadow-primary);
+    }
 
-.nova-button:not([disabled]):hover {
-  border: var(--nova-primary-border);
-  color: var(--nova-primary-color);
-}
+    &:hover {
+      border: var(--nova-border-primary);
+      color: var(--nova-color-primary);
+    }
+  }
 
-.nova-button[disabled] {
-  cursor: not-allowed;
-  opacity: 0.5;
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }

@@ -1,19 +1,19 @@
 .nova-color-picker-panel {
   line-height: var(--nova-line-height);
-  font-family: var(--nova-sans-serif);
+  font-family: var(--nova-font-sans-serif);
   user-select: none;
   position: absolute;
   box-sizing: border-box;
   padding: 10px;
   font-size: var(--nova-font-size);
-  color: var(--nova-color);
-  background-color: var(--nova-dropdown-bg);
-  backdrop-filter: var(--nova-component-backdrop-filter);
+  color: var(--nova-color-font);
+  background-color: var(--nova-color-bg-dropdown);
+  backdrop-filter: var(--nova-backdrop-filter-component);
   width: 330px;
   display: grid;
   grid-template-columns: 220px auto;
   grid-column-gap: 10px;
-  box-shadow: var(--nova-dropdown-shadow);
+  box-shadow: var(--nova-shadow-dropdown);
   will-change: transform;
-  border-radius: var(--nova-component-border-radius);
+  border-radius: var(--nova-radius-component);
 }
