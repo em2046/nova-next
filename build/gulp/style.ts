@@ -4,23 +4,25 @@ import autoprefixer from 'autoprefixer';
 import postcss from 'gulp-postcss';
 import atImport from 'postcss-import';
 import rename from 'gulp-rename';
-
+import postcssNested from 'postcss-nested';
 import glob from 'glob';
+import prettierFormat from './prettier-format';
 
 const cssPath = './dist/css';
 if (!fs.existsSync(cssPath)) {
   fs.mkdirSync(cssPath, { recursive: true });
 }
 
-async function component(inputPath, outputPath) {
+async function component(inputPath: string, outputPath: string): Promise<void> {
   src(inputPath)
-    .pipe(postcss([atImport(), autoprefixer()]))
+    .pipe(postcss([atImport(), autoprefixer(), postcssNested()]))
     .pipe(rename(outputPath))
+    .pipe(prettierFormat({ parser: 'css' }))
     .pipe(dest('.'));
 }
 
 async function components() {
-  let list = [];
+  let list: Promise<void>[] = [];
 
   glob('src/components/*/styles/index.css', (er, files) => {
     files.forEach((file) => {

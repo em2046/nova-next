@@ -5,6 +5,6 @@ dist
 # don't lint build scripts
 build
 # don't lint gulpfile
-gulpfile.esm.js
+gulpfile.ts
 # don't lint vue jsx compat
 src/vue-jsx-compat.ts
