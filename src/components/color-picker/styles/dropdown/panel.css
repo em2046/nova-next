@@ -13,7 +13,17 @@
   display: grid;
   grid-template-columns: 220px auto;
   grid-column-gap: 10px;
-  box-shadow: var(--nova-shadow-dropdown);
   will-change: transform;
+  border-radius: var(--nova-radius-component);
+}
+
+.nova-color-picker-panel-border {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  box-shadow: var(--nova-shadow-dropdown);
   border-radius: var(--nova-radius-component);
 }

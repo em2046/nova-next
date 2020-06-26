@@ -390,6 +390,7 @@ export default defineComponent({
               {formNode}
               {previewNode}
               {presetNode}
+              <div class="nova-color-picker-panel-border"></div>
             </div>
           </Teleport>
         );

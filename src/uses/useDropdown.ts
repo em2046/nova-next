@@ -258,7 +258,7 @@ export default function useDropdown(
     state.dropdown.offset = offset;
     state.dropdown.style = collapseStyle;
 
-    window.setTimeout(() => {
+    requestAnimationFrame(() => {
       const expandStyle = getExpandStyle();
       state.dropdown.style = Object.assign(
         {},
