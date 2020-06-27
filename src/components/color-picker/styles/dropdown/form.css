@@ -10,7 +10,6 @@
 }
 
 .nova-color-picker-label {
-  box-sizing: border-box;
   width: 55px;
   margin-left: 5px;
   display: flex;
@@ -35,7 +34,6 @@
 
 .nova-color-picker-input,
 .nova-color-picker-hex {
-  box-sizing: border-box;
   height: 25px;
 
   input {
@@ -74,7 +72,6 @@
 }
 
 .nova-color-picker-input-border {
-  box-sizing: border-box;
   height: 25px;
   background-color: var(--nova-color-bg-component);
   border: 1px solid var(--nova-color-border-component);

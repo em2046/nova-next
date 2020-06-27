@@ -10,17 +10,23 @@
   background-image: var(--nova-bg-checkerboard);
   background-color: var(--nova-color-bg);
   border-radius: var(--nova-radius-tiny);
-  overflow: hidden;
 
   &:hover {
-    box-shadow: 0 0 0 1px var(--nova-color-primary);
+    .nova-color-picker-preset-inner {
+      border: 1px solid var(--nova-color-font);
+      box-shadow: inset 0 0 0 1px var(--nova-color-bg);
+    }
   }
 
   &.nova-color-picker-preset-selected {
-    box-shadow: 0 0 0 2px var(--nova-color-primary);
+    .nova-color-picker-preset-inner {
+      border: 2px solid var(--nova-color-font);
+      box-shadow: inset 0 0 0 1px var(--nova-color-bg);
+    }
   }
 }
 
 .nova-color-picker-preset-inner {
+  border-radius: var(--nova-radius-tiny);
   height: 20px;
 }

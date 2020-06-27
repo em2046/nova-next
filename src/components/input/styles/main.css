@@ -28,7 +28,6 @@
   font-family: var(--nova-font-sans-serif);
   font-size: var(--nova-font-size);
   line-height: var(--nova-line-height);
-  box-sizing: border-box;
   height: 30px;
   padding: 5px;
   width: 200px;
@@ -44,7 +43,6 @@
 }
 
 .nova-input-border {
-  box-sizing: border-box;
   height: 30px;
   pointer-events: none;
   margin-top: -30px;

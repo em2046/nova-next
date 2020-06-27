@@ -37,7 +37,7 @@ export default defineComponent({
       const bg = Color.fromHsva(props.hueReg, 1, 1).toCssRgbaString();
 
       return {
-        backgroundColor: bg,
+        background: `linear-gradient(90deg, hsl(0, 0%, 100%), ${bg})`,
       };
     });
 
@@ -52,8 +52,10 @@ export default defineComponent({
       return (
         <div class="nova-color-picker-hsv" ref={hsvRef}>
           <div class="nova-color-picker-hsv-inner">
-            <div class="nova-color-picker-hue" style={hsvStyle.value} />
-            <div class="nova-color-picker-saturation" />
+            <div
+              class="nova-color-picker-hue-saturation"
+              style={hsvStyle.value}
+            />
             <div class="nova-color-picker-value" />
           </div>
           <div class="nova-color-picker-cursor" style={cursorStyle.value} />

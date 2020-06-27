@@ -4,7 +4,6 @@
   vertical-align: top;
   width: 30px;
   height: 30px;
-  box-sizing: border-box;
   line-height: var(--nova-line-height);
 
   &:not(.nova-color-picker-disabled) {
@@ -36,7 +35,6 @@
 .nova-color-picker-border {
   pointer-events: none;
   background-color: var(--nova-color-bg-component);
-  box-sizing: border-box;
   width: 30px;
   height: 30px;
   border-radius: var(--nova-radius);

@@ -1,3 +1,7 @@
+[class^='nova-'] {
+  box-sizing: border-box;
+}
+
 .md-icon {
   font-size: 20px;
   vertical-align: top;

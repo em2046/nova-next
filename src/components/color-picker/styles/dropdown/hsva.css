@@ -1,6 +1,6 @@
 .nova-color-picker-hsv {
-  width: 200px;
-  height: 200px;
+  width: 210px;
+  height: 210px;
   background-clip: content-box;
   padding: 5px;
   margin: 5px;
@@ -12,23 +12,12 @@
   height: 200px;
   border-radius: var(--nova-radius-tiny);
   overflow: hidden;
-  box-sizing: border-box;
 }
 
-.nova-color-picker-hue {
+.nova-color-picker-hue-saturation {
   width: 200px;
   height: 200px;
-}
-
-.nova-color-picker-saturation {
-  background-image: linear-gradient(
-    90deg,
-    hsl(0, 0%, 100%),
-    hsla(0, 0%, 100%, 0)
-  );
-  width: 200px;
-  height: 200px;
-  margin-top: -200px;
+  border-radius: var(--nova-radius-tiny);
 }
 
 .nova-color-picker-value {
@@ -44,11 +33,10 @@
 
 .nova-color-picker-cursor {
   pointer-events: none;
-  box-sizing: border-box;
   width: 12px;
   height: 12px;
   border: 1px solid var(--nova-color-white);
-  border-radius: 50%;
+  border-radius: var(--nova-radius-tiny);
   margin-top: -206px;
   margin-left: -6px;
   box-shadow: var(--nova-shadow-cursor);
@@ -108,7 +96,6 @@
 .nova-color-picker-alpha-thumb {
   background-clip: content-box;
   pointer-events: none;
-  box-sizing: border-box;
   width: 18px;
   height: 8px;
   margin-top: -204px;

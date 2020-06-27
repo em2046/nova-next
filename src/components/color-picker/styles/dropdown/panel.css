@@ -3,7 +3,6 @@
   font-family: var(--nova-font-sans-serif);
   user-select: none;
   position: absolute;
-  box-sizing: border-box;
   padding: 10px;
   font-size: var(--nova-font-size);
   color: var(--nova-color-font);
