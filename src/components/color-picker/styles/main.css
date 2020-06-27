@@ -38,4 +38,5 @@
   width: 30px;
   height: 30px;
   border-radius: var(--nova-radius);
+  border: var(--nova-border);
 }

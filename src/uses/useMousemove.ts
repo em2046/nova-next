@@ -10,7 +10,7 @@ export default function useMousemove(params: MoveParams): void {
   let moving = false;
 
   function onMousemove(e: MouseEvent): void {
-    e.preventDefault()
+    e.preventDefault();
 
     if (moving) {
       return;
@@ -35,7 +35,7 @@ export default function useMousemove(params: MoveParams): void {
   }
 
   function onMousedown(e: MouseEvent): void {
-    e.preventDefault()
+    e.preventDefault();
 
     const target: HTMLElement = ref.value as HTMLElement;
     rect = target.getBoundingClientRect();

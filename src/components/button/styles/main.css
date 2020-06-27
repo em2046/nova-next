@@ -9,7 +9,7 @@
   padding: 4px 14px;
   font-size: var(--nova-font-size);
   border-radius: var(--nova-radius);
-  border: 1px solid var(--nova-color-bg-component);
+  border: var(--nova-border);
   background-color: var(--nova-color-bg-component);
   color: var(--nova-color-font);
 
