@@ -12,7 +12,8 @@
 
   /* region Font */
   --nova-font-sans-serif: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue',
-    Helvetica, Arial, source-han-sans-simplified-c, 'Segoe UI Emoji', sans-serif;
+    Helvetica, Arial, source-han-sans-simplified-c, 'Apple Color Emoji',
+    'Segoe UI Emoji', sans-serif;
   --nova-font-monospace: 'Sarasa Mono SC', Iosevka, 'Fira Code', Monaco,
     Consolas, monospace;
   --nova-font-size: 14px;
