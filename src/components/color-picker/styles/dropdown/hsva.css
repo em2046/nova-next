@@ -48,16 +48,19 @@
   display: flex;
 }
 
+.nova-color-picker-hue-slide {
+  margin-left: 5px;
+}
+
 .nova-color-picker-alpha-slide {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .nova-color-picker-hue-slide,
 .nova-color-picker-alpha-slide {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  width: 20px;
-  height: 200px;
+  padding: 10px 5px;
+  width: 30px;
+  height: 220px;
 }
 
 .nova-color-picker-hue-bar {
