@@ -9,7 +9,7 @@
   padding: 4px 14px;
   font-size: var(--nova-font-size);
   border-radius: var(--nova-radius);
-  border: var(--nova-border);
+  border: 1px solid var(--nova-color-bg-component);
   background-color: var(--nova-color-bg-component);
   color: var(--nova-color-font);
 
@@ -22,7 +22,6 @@
 
     &:hover {
       border: var(--nova-border-primary);
-      color: var(--nova-color-primary);
     }
   }
 
