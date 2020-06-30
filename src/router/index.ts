@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home';
-import About from '../views/About';
-import ButtonDemo from '../views/demos/ButtonDemo';
-import InputDemo from '../views/demos/InputDemo';
-import ColorPickerDemo from '../views/demos/ColorPickerDemo';
-import DropdownDemo from '../views/demos/DropdownDemo';
+
+const Home = () => import('../views/Home');
+const About = () => import('../views/About');
+const ButtonDemo = () => import('../views/demos/ButtonDemo');
+const InputDemo = () => import('../views/demos/InputDemo');
+const ColorPickerDemo = () => import('../views/demos/ColorPickerDemo');
+const DropdownDemo = () => import('../views/demos/DropdownDemo');
 
 const routes = [
   {

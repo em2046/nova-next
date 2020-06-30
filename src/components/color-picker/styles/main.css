@@ -39,4 +39,5 @@
   height: 30px;
   border-radius: var(--nova-radius);
   border: var(--nova-border);
+  transition: var(--nova-transition-component);
 }

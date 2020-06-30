@@ -10,12 +10,25 @@
 
   --nova-cubic-bezier-out-cubic: cubic-bezier(0.22, 0.61, 0.36, 1);
 
+  /* region duration */
+  --nova-duration-short: 100ms;
+  --nova-duration-normal: 200ms;
+  --nova-duration-long: 300ms;
+  /* endregion */
+
+  /* region transition */
+  --nova-transition-component: border var(--nova-duration-short) linear,
+    box-shadow var(--nova-duration-short) linear;
+  --nova-transition-border: border var(--nova-duration-short) linear;
+  --nova-transition-bg: background var(--nova-duration-short) linear;
+  /* endregion */
+
   /* region Font */
-  --nova-font-sans-serif: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue',
-    Helvetica, Arial, source-han-sans-simplified-c, 'Apple Color Emoji',
-    'Segoe UI Emoji', sans-serif;
-  --nova-font-monospace: 'Sarasa Mono SC', Iosevka, 'Fira Code', Monaco,
-    Consolas, monospace;
+  --nova-font-sans-serif: ui-sans-serif, 'SF Pro Text', 'SF Pro Icons',
+    'Helvetica Neue', Helvetica, Arial, source-han-sans-simplified-c,
+    'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+  --nova-font-monospace: ui-monospace, 'Sarasa Mono SC', Iosevka, 'Fira Code',
+    source-code-pro, Monaco, Consolas, monospace;
   --nova-font-size: 14px;
   --nova-line-height: 20px;
   /* endregion */

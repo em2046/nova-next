@@ -29,4 +29,5 @@
 .nova-color-picker-preset-inner {
   border-radius: var(--nova-radius-tiny);
   height: 20px;
+  transition: var(--nova-transition-component);
 }

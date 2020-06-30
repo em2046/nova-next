@@ -12,6 +12,7 @@
   border: var(--nova-border);
   background-color: var(--nova-color-bg-component);
   color: var(--nova-color-font);
+  transition: var(--nova-transition-component);
 
   &:not([disabled]) {
     &:focus {

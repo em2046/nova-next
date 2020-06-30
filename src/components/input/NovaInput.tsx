@@ -26,6 +26,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, context) {
     const environment = useEnvironment(props as EnvironmentProps);
@@ -35,6 +39,7 @@ export default defineComponent({
         {
           'nova-input': true,
           'nova-input-disabled': !!props.disabled,
+          'nova-input-readonly': !!props.readonly,
         },
         props.wrapClass,
       ];
@@ -56,6 +61,7 @@ export default defineComponent({
             class={classList.value}
             {...context.attrs}
             disabled={!!props.disabled}
+            readonly={!!props.readonly}
           />
           <div class="nova-input-border" />
         </div>

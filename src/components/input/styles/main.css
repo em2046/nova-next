@@ -2,7 +2,7 @@
   display: inline-block;
   vertical-align: top;
 
-  &:not(.nova-input-disabled) {
+  &:not(.nova-input-disabled):not(.nova-input-readonly) {
     .nova-input-text {
       &:hover,
       &:focus {
@@ -49,4 +49,5 @@
   background-color: var(--nova-color-bg-component);
   border-radius: var(--nova-radius);
   border: var(--nova-border);
+  transition: var(--nova-transition-component);
 }
