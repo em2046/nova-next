@@ -1,6 +1,7 @@
 import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { NovaColorPicker } from '../../../index';
+import styles from './styles/martrix.module.css';
 
 export default defineComponent({
   setup() {
@@ -18,7 +19,7 @@ export default defineComponent({
       });
 
       return (
-        <div class="box">
+        <div class={styles.box}>
           <ul>{pickerList}</ul>
         </div>
       );

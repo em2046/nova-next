@@ -1,6 +1,9 @@
 import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import { NovaButton, NovaColorPicker } from '../../../index';
+import { Color, NovaButton, NovaColorPicker } from '../../../index';
+import styles from './styles/normal.module.css';
+import { PresetScoped } from '../../../components/color-picker/NovaColorPicker';
+import hslData from '../../../components/color-picker/assets/css-wg/hsl';
 
 export default defineComponent({
   setup() {
@@ -22,6 +25,36 @@ export default defineComponent({
     function onToggleDisable(): void {
       state.disabled = !state.disabled;
     }
+
+    const slots = {
+      preset: (scoped: PresetScoped) => {
+        function handleClick(cell: string) {
+          scoped.setColorAndPosition(Color.fromHex(cell));
+        }
+
+        const panes = hslData.map((pane) => {
+          const table = pane.slice(2, -1).map((row) => {
+            const list = row.slice(1).map((cell) => {
+              return (
+                <li
+                  class={{
+                    [`${styles.selected}`]:
+                      scoped.color.toCssHexString() === cell,
+                  }}
+                  onClick={() => handleClick(cell)}
+                  style={{ backgroundColor: cell }}
+                />
+              );
+            });
+
+            return <ul>{list}</ul>;
+          });
+          return <div class={styles.pane}>{table}</div>;
+        });
+
+        return <div class={styles.preset}>{panes}</div>;
+      },
+    };
 
     return (): JSX.Element => {
       const pickerProps = {
@@ -48,7 +81,7 @@ export default defineComponent({
               {() => 'Toggle disable'}
             </NovaButton>
           </div>
-          <NovaColorPicker {...pickerProps} />
+          <NovaColorPicker {...pickerProps}>{slots}</NovaColorPicker>
         </div>
       );
     };

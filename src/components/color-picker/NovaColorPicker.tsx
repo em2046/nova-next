@@ -2,9 +2,10 @@ import {
   computed,
   defineComponent,
   onMounted,
+  PropType,
   reactive,
-  ref,
   Ref,
+  ref,
   Teleport,
   watch,
 } from 'vue';
@@ -73,10 +74,16 @@ const colorPickerProps = {
     default: 'hex',
   },
   preset: {
-    type: Array,
+    type: Array as PropType<string[]>,
     default: null,
   },
 };
+
+export interface PresetScoped {
+  preset: string[];
+  color: Color;
+  setColorAndPosition: (color: Color) => void;
+}
 
 export default defineComponent({
   name: 'NovaColorPicker',
@@ -347,17 +354,24 @@ export default defineComponent({
       }
 
       function createPreset() {
+        const preset = context.slots.preset;
+        const presetProps = {
+          preset: props.preset,
+          color: state.color,
+        };
+
+        if (preset) {
+          return preset({
+            ...presetProps,
+            setColorAndPosition,
+          });
+        }
+
         if (!props.preset?.length) {
           return null;
         }
 
-        return (
-          <PresetValues
-            preset={props.preset}
-            color={state.color}
-            onSelect={setColorAndPosition}
-          />
-        );
+        return <PresetValues {...presetProps} onSelect={setColorAndPosition} />;
       }
 
       function createDropdown() {
@@ -390,7 +404,7 @@ export default defineComponent({
               {formNode}
               {previewNode}
               {presetNode}
-              <div class="nova-color-picker-panel-border"></div>
+              <div class="nova-color-picker-panel-border" />
             </div>
           </Teleport>
         );

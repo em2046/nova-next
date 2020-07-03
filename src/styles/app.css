@@ -26,7 +26,7 @@ body {
 }
 
 #nav li a {
-  color: #2299ee;
+  color: hsl(210, 100%, 50%);
 }
 
 #main {
@@ -34,7 +34,7 @@ body {
 }
 
 #main a {
-  color: #2299ee;
+  color: hsl(210, 100%, 50%);
 }
 
 .nova-button,
