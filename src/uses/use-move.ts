@@ -1,6 +1,6 @@
 import { Ref } from 'vue';
-import useMousemove from './useMousemove';
-import useTouchmove from './useTouchmove';
+import useMousemove from './use-mousemove';
+import useTouchmove from './use-touchmove';
 
 export interface MovePosition {
   x: number;

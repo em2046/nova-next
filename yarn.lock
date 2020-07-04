@@ -1146,10 +1146,10 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.0.0-beta.18.tgz#1326efa98fe49b9ef3effbec88189b88ed7544a7"
   integrity sha512-wRvQaTHeCt3xxqj3UpMR2JxkkU7ul/9RMqSxGJhOd4Bsp72Md4H83XkijHy8LkPKZWszmxjEpfCYuw9MU0a4kg==
 
-"@vue/test-utils@^2.0.0-alpha.6":
-  version "2.0.0-alpha.7"
-  resolved "https://registry.npmjs.org/@vue/test-utils/-/test-utils-2.0.0-alpha.7.tgz#85a3ab26d66243719692651aff06b0fd46852be5"
-  integrity sha512-o6TZ3l6Xmr0+DSbHAfIroYhWItPZ9XUtGKKCLYO9XMLTxD5Q06ty/qMZhmZr0Bgdk0TxvCfPmtyGyMZwbw1s1g==
+"@vue/test-utils@^2.0.0-alpha.8":
+  version "2.0.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.0-alpha.8.tgz#4e75f407585d6cf77bd39842365c560eb7108560"
+  integrity sha512-T2S1Op2mKdF0DmQNiGLZDZHI86Ny1hvl+ApxGUEPVydMqqz5mTFHlbW89+MsKik5cQ3ikSA1hZj0y817IqAPvw==
 
 abab@^2.0.3:
   version "2.0.3"
@@ -2593,10 +2593,10 @@ eslint-visitor-keys@^1.1.0, eslint-visitor-keys@^1.2.0:
   resolved "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-1.3.0.tgz#30ebd1ef7c2fdff01c3a4f151044af25fab0523e"
   integrity sha512-6J72N8UNa462wa/KFODt/PJ3IU60SDpC3QXC1Hjc1BXXpfL2C9R5+AU7jhe0F6GREqVMh4Juu+NY7xn+6dipUQ==
 
-eslint@^7.3.0:
-  version "7.3.1"
-  resolved "https://registry.npmjs.org/eslint/-/eslint-7.3.1.tgz#76392bd7e44468d046149ba128d1566c59acbe19"
-  integrity sha512-cQC/xj9bhWUcyi/RuMbRtC3I0eW8MH0jhRELSvpKYkWep3C6YZ2OkvcvJVUeO6gcunABmzptbXBuDoXsjHmfTA==
+eslint@^7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.4.0.tgz#4e35a2697e6c1972f9d6ef2b690ad319f80f206f"
+  integrity sha512-gU+lxhlPHu45H3JkEGgYhWhkR9wLHHEXC9FbWFnTlEkbKyZKWgWRLgf61E8zWmBuI6g5xKBph9ltg3NtZMVF8g==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.10.0"
@@ -7148,10 +7148,10 @@ vinyl@^2.0.0:
     remove-trailing-separator "^1.0.1"
     replace-ext "^1.0.0"
 
-vite@^1.0.0-beta.8:
-  version "1.0.0-beta.8"
-  resolved "https://registry.npmjs.org/vite/-/vite-1.0.0-beta.8.tgz#69828c5339675e4fc68b7eee0cdda60bd43d2406"
-  integrity sha512-OcDIRD8UsCvyxPT/Q1Cnm9B2fMNSzlfCyODVAxn+Pu7T8u8QB0ovJG2vTyyTwuc7dJ/eNSeMKtilwQqqvFzhWQ==
+vite@^1.0.0-beta.11:
+  version "1.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-1.0.0-beta.11.tgz#85c87549264d4b74a05da2c3eb1eb42fa8460197"
+  integrity sha512-etweuuPXgxwruCrcyj63fwpUlc6+HsE4n7uiOQ/fYEzjwOrUtEX4BuVAYcSkoxVA8qHS7zukG4LYzIozcD92Xw==
   dependencies:
     "@babel/parser" "^7.9.4"
     "@rollup/plugin-commonjs" "^13.0.0"

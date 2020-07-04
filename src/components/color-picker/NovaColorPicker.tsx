@@ -7,11 +7,15 @@ import {
   Ref,
   ref,
   Teleport,
+  Transition,
+  VNode,
+  vShow,
   watch,
+  withDirectives,
 } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
-import { MovePosition } from '../../uses/useMove';
-import useDropdown from '../../uses/useDropdown';
+import { MovePosition } from '../../uses/use-move';
+import useDropdown, { durationLong } from '../../uses/use-dropdown';
 import Utils from '../../utils/utils';
 import Color from './color';
 import Trigger from './parts/Trigger';
@@ -26,7 +30,7 @@ import PresetValues from './parts/PresetValues';
 import useEnvironment, {
   EnvironmentProps,
   environmentProps,
-} from '../../uses/useEnvironment';
+} from '../../uses/use-environment';
 import { PropClass, PropStyle } from '../../utils/type';
 
 //region Mode
@@ -208,7 +212,14 @@ export default defineComponent({
       state.mode = modeList[activeModeIndex];
     }
 
-    const { dropdown, dropdownStyle } = useDropdown({
+    const {
+      dropdown,
+      onBeforeEnter,
+      onAfterEnter,
+      onBeforeLeave,
+      onAfterLeave,
+      onLeaveCancelled,
+    } = useDropdown({
       triggerRef,
       dropdownRef,
       props,
@@ -379,33 +390,69 @@ export default defineComponent({
           return null;
         }
 
+        let beforeAppearFlag = false;
+        let afterAppearFlag = false;
+
         const hsvPanelNode = createHsvPanel();
         const slidesNode = createSlides();
         const formNode = createForm();
         const previewNode = createPreview();
         const presetNode = createPreset();
 
-        const style = Object.assign(
-          {},
-          props.dropdownStyle,
-          dropdownStyle.value
+        const dropdownCoreNode = (
+          <div
+            data-nova-theme={environment.themeRef.value}
+            ref={dropdownRef}
+            class={dropdownClassList.value}
+            style={props.dropdownStyle}
+          >
+            {hsvPanelNode}
+            {slidesNode}
+            {formNode}
+            {previewNode}
+            {presetNode}
+            <div class="nova-color-picker-panel-border" />
+          </div>
         );
+
+        function onBeforeAppear(el: Element) {
+          if (beforeAppearFlag) {
+            return;
+          }
+
+          beforeAppearFlag = true;
+          onBeforeEnter(el);
+        }
+
+        function onAfterAppear(el: Element) {
+          if (afterAppearFlag) {
+            return;
+          }
+
+          afterAppearFlag = true;
+          onAfterEnter(el);
+        }
 
         return (
           <Teleport to="body" disabled={!props.teleportToBody}>
-            <div
-              data-nova-theme={environment.themeRef.value}
-              ref={dropdownRef}
-              class={dropdownClassList.value}
-              style={style}
+            <Transition
+              name="nova-dropdown"
+              duration={durationLong}
+              appear
+              onBeforeAppear={onBeforeAppear}
+              onAfterAppear={onAfterAppear}
+              onBeforeEnter={onBeforeEnter}
+              onAfterEnter={onAfterEnter}
+              onBeforeLeave={onBeforeLeave}
+              onAfterLeave={onAfterLeave}
+              onLeaveCancelled={onLeaveCancelled}
             >
-              {hsvPanelNode}
-              {slidesNode}
-              {formNode}
-              {previewNode}
-              {presetNode}
-              <div class="nova-color-picker-panel-border" />
-            </div>
+              {() =>
+                withDirectives(dropdownCoreNode as VNode, [
+                  [vShow, dropdown.opened],
+                ])
+              }
+            </Transition>
           </Teleport>
         );
       }

@@ -94,4 +94,14 @@ export default class DomUtils {
       width: document.documentElement.clientWidth,
     };
   }
+
+  static setStyles(element: HTMLElement, styles: unknown): void {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    Reflect.ownKeys(styles).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      element.style[key] = styles[key];
+    });
+  }
 }

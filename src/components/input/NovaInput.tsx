@@ -3,7 +3,7 @@ import { vueJsxCompat } from '../../vue-jsx-compat';
 import useEnvironment, {
   EnvironmentProps,
   environmentProps,
-} from '../../uses/useEnvironment';
+} from '../../uses/use-environment';
 
 export default defineComponent({
   name: 'NovaInput',

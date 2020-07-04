@@ -1,6 +1,6 @@
 import { computed, defineComponent, ref } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import useMove from '../../../../uses/useMove';
+import useMove from '../../../../uses/use-move';
 import Utils from '../../../../utils/utils';
 
 export default defineComponent({

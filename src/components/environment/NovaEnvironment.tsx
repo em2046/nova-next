@@ -4,7 +4,7 @@ import {
   environmentProps,
   languageDefault,
   themeDefault,
-} from '../../uses/useEnvironment';
+} from '../../uses/use-environment';
 
 export default defineComponent({
   props: environmentProps,

@@ -1,12 +1,4 @@
-import {
-  computed,
-  ComputedRef,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  reactive,
-  Ref,
-} from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, reactive, Ref } from 'vue';
 import DomUtils from '../utils/dom-utils';
 import { VisualViewport } from '../shims/visual-viewport';
 
@@ -21,21 +13,19 @@ interface UseDropdownParams {
 interface Dropdown {
   loaded: boolean;
   opened: boolean;
-  offset: {
-    left: number;
-    top: number;
-  };
 }
 
 interface DropdownProps {
   disabled: boolean;
 }
 
-type DropdownStyle = ComputedRef<{ left: string; top: string }>;
-
 interface UseDropdownReturn {
-  dropdownStyle: DropdownStyle;
   dropdown: Dropdown;
+  onBeforeEnter: (el: Element) => void;
+  onAfterEnter: (el: Element) => void;
+  onBeforeLeave: (el: Element) => void;
+  onAfterLeave: (el: Element) => void;
+  onLeaveCancelled: (el: Element) => void;
 }
 
 interface Offset {
@@ -59,7 +49,7 @@ interface CollapseStyle {
   pointerEvents: string;
 }
 
-const duration = 300;
+export const durationLong = 300;
 
 export default function useDropdown(
   params: UseDropdownParams
@@ -68,16 +58,9 @@ export default function useDropdown(
     dropdown: {
       loaded: false,
       opened: false,
-      offset: {
-        left: 0,
-        top: 0,
-      },
-      style: {},
     },
   });
 
-  let openTimer: number;
-  let closeTimer: number;
   const { triggerRef, dropdownRef, props, onOpen, onClose } = params;
   const dropdownProps = props as DropdownProps;
   let collapseStyleCache: CollapseStyle | null = null;
@@ -101,39 +84,17 @@ export default function useDropdown(
     closeDropdown();
   }
 
-  function onClosed() {
-    state.dropdown.style = {
-      display: 'none',
-    };
-  }
-
-  function onOpened() {
-    state.dropdown.style = {};
-  }
-
   function closeDropdown(): void {
-    clearTimeout(closeTimer);
-    clearTimeout(openTimer);
+    document.removeEventListener('mousedown', onVirtualMaskMousedown);
 
     if (dropdownProps.disabled) {
       return;
     }
 
-    state.dropdown.style = Object.assign(
-      {},
-      collapseStyleCache,
-      getTransitionStyle()
-    );
-
-    document.removeEventListener('mousedown', onVirtualMaskMousedown);
-    const openedOld = state.dropdown.opened;
+    const prevOpened = state.dropdown.opened;
     state.dropdown.opened = false;
 
-    closeTimer = window.setTimeout(() => {
-      onClosed();
-    }, duration);
-
-    if (openedOld) {
+    if (prevOpened) {
       onClose?.call(null);
     }
   }
@@ -211,18 +172,22 @@ export default function useDropdown(
 
   function getTransitionStyle() {
     return {
-      transition: `transform ${duration}ms var(--nova-cubic-bezier-out-cubic), opacity ${duration}ms var(--nova-cubic-bezier-out-cubic)`,
+      transition: `transform ${durationLong}ms var(--nova-cubic-bezier-out-cubic), opacity ${durationLong}ms var(--nova-cubic-bezier-out-cubic)`,
     };
   }
 
-  function resetStyle() {
-    state.dropdown.style = {};
+  function resetStyle(el: Element | HTMLElement) {
+    DomUtils.setStyles(el as HTMLElement, {
+      left: '',
+      top: '',
+      opacity: '',
+      transform: '',
+      pointerEvents: '',
+      transition: '',
+    });
   }
 
   async function openDropdown(): Promise<void> {
-    clearTimeout(closeTimer);
-    clearTimeout(openTimer);
-
     if (dropdownProps.disabled) {
       return;
     }
@@ -231,46 +196,9 @@ export default function useDropdown(
       state.dropdown.loaded = true;
     }
 
-    resetStyle();
     document.addEventListener('mousedown', onVirtualMaskMousedown);
     const openedOld = state.dropdown.opened;
     state.dropdown.opened = true;
-    await nextTick();
-
-    const trigger = triggerRef.value as HTMLElement;
-    const triggerRect = DomUtils.getElementPosition(trigger);
-
-    const dropdown = dropdownRef.value as HTMLElement;
-    const dropdownRect = DomUtils.getElementPosition(dropdown);
-
-    const visualViewport: VisualViewport = DomUtils.getVisualViewport();
-
-    const params = {
-      triggerRect,
-      dropdownRect,
-      visualViewport,
-    };
-    const offset = getDropdownOffset(params);
-    const collapseStyle = getCollapseStyle({ offset, ...params });
-
-    collapseStyleCache = collapseStyle;
-
-    state.dropdown.offset = offset;
-    state.dropdown.style = collapseStyle;
-
-    requestAnimationFrame(() => {
-      const expandStyle = getExpandStyle();
-      state.dropdown.style = Object.assign(
-        {},
-        collapseStyle,
-        expandStyle,
-        getTransitionStyle()
-      );
-    });
-
-    openTimer = window.setTimeout(() => {
-      onOpened();
-    }, duration);
 
     if (!openedOld) {
       onOpen?.call(null);
@@ -300,19 +228,72 @@ export default function useDropdown(
     trigger.removeEventListener('click', toggleDropdown);
   });
 
-  const dropdownStyle = computed(() => {
-    const offset = state.dropdown.offset;
-    const style = state.dropdown.style;
-
+  function getOffsetStyle(offset: Offset) {
     return {
       left: `${offset.left}px`,
       top: `${offset.top}px`,
-      ...style,
     };
-  });
+  }
+
+  async function onBeforeEnter(el: Element) {
+    await nextTick();
+
+    const trigger = triggerRef.value as HTMLElement;
+    const triggerRect = DomUtils.getElementPosition(trigger);
+
+    const dropdown = dropdownRef.value as HTMLElement;
+    const dropdownRect = DomUtils.getElementPosition(dropdown);
+
+    const visualViewport: VisualViewport = DomUtils.getVisualViewport();
+
+    const params = {
+      triggerRect,
+      dropdownRect,
+      visualViewport,
+    };
+    const offset = getDropdownOffset(params);
+    const collapseStyle = getCollapseStyle({ offset, ...params });
+
+    collapseStyleCache = collapseStyle;
+
+    const offsetStyle = getOffsetStyle(offset);
+
+    DomUtils.setStyles(
+      el as HTMLElement,
+      Object.assign({}, offsetStyle, collapseStyle)
+    );
+
+    requestAnimationFrame(() => {
+      const style = Object.assign({}, getExpandStyle(), getTransitionStyle());
+      DomUtils.setStyles(el as HTMLElement, style);
+    });
+  }
+
+  function onAfterEnter(el: Element) {
+    DomUtils.setStyles(el as HTMLElement, {
+      pointerEvents: '',
+    });
+  }
+
+  function onBeforeLeave(el: Element) {
+    const style = Object.assign({}, collapseStyleCache, getTransitionStyle());
+    DomUtils.setStyles(el as HTMLElement, style);
+  }
+
+  function onAfterLeave(el: Element) {
+    resetStyle(el);
+  }
+
+  function onLeaveCancelled(el: Element) {
+    resetStyle(el);
+  }
 
   return {
-    dropdownStyle,
     dropdown: state.dropdown,
+    onBeforeEnter,
+    onAfterEnter,
+    onBeforeLeave,
+    onAfterLeave,
+    onLeaveCancelled,
   };
 }

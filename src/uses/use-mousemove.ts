@@ -1,6 +1,6 @@
 import { onBeforeUnmount, onMounted } from 'vue';
 import DomUtils from '../utils/dom-utils';
-import { MoveParams } from './useMove';
+import { MoveParams } from './use-move';
 
 export default function useMousemove(params: MoveParams): void {
   const { ref, start, move, finish } = params;

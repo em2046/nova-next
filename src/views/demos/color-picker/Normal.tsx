@@ -1,9 +1,9 @@
 import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { Color, NovaButton, NovaColorPicker } from '../../../index';
-import styles from './styles/normal.module.css';
 import { PresetScoped } from '../../../components/color-picker/NovaColorPicker';
 import hslData from '../../../components/color-picker/assets/css-wg/hsl';
+import './styles/normal.css';
 
 export default defineComponent({
   setup() {
@@ -38,7 +38,7 @@ export default defineComponent({
               return (
                 <li
                   class={{
-                    [`${styles.selected}`]:
+                    ['demo-color-picker-normal-preset-selected']:
                       scoped.color.toCssHexString() === cell,
                   }}
                   onClick={() => handleClick(cell)}
@@ -49,10 +49,10 @@ export default defineComponent({
 
             return <ul>{list}</ul>;
           });
-          return <div class={styles.pane}>{table}</div>;
+          return <div>{table}</div>;
         });
 
-        return <div class={styles.preset}>{panes}</div>;
+        return <div class="demo-color-picker-normal-preset">{panes}</div>;
       },
     };
 

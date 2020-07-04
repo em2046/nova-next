@@ -1,0 +1,13 @@
+.demo-dropdown-matrix-box {
+  ul {
+    width: 1000px;
+    height: 1000px;
+    display: grid;
+    grid-template: repeat(auto-fill, 100px) / repeat(auto-fill, 100px);
+  }
+
+  li {
+    height: 100px;
+    list-style: none;
+  }
+}
