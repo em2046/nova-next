@@ -10,9 +10,9 @@ import DomUtils, {
 import Color from '../../color';
 
 interface TuningParams {
-  r: number;
-  g: number;
-  b: number;
+  red: number;
+  green: number;
+  blue: number;
   max: number;
   length: number;
 }
@@ -27,16 +27,16 @@ function calcTuned(
 
   let step = 0;
   if (alt) {
-    step += tuningParams.b;
+    step += tuningParams.blue;
   }
   if (shift) {
-    step += tuningParams.g;
+    step += tuningParams.green;
   }
   if (ctrl) {
-    step += tuningParams.r;
+    step += tuningParams.red;
   }
   if (!(alt || ctrl || shift)) {
-    step = tuningParams.b;
+    step = tuningParams.blue;
   }
 
   let tunedNumber = originNumber;
@@ -118,18 +118,18 @@ export default defineComponent({
 
       if (pureHex.length === 3) {
         const params = {
-          b: 0x001,
-          g: 0x010,
-          r: 0x100,
+          blue: 0x001,
+          green: 0x010,
+          red: 0x100,
           max: 0xfff,
           length: 3,
         };
         tunedPureHex = calcTuned(functionKeys, hexNumber, direction, params);
       } else if (pureHex.length === 6) {
         const params = {
-          b: 0x000001,
-          g: 0x000100,
-          r: 0x010000,
+          blue: 0x000001,
+          green: 0x000100,
+          red: 0x010000,
           max: 0xffffff,
           length: 6,
         };

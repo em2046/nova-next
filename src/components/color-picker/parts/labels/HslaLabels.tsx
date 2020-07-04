@@ -11,7 +11,7 @@ import {
   UpdateParams,
 } from './label-utils';
 
-type hslChannel = 'h' | 's' | 'l';
+type hslChannel = 'hue' | 'saturation' | 'lightness';
 
 export default defineComponent({
   name: 'HslaLabels',
@@ -34,19 +34,19 @@ export default defineComponent({
 
     const hsla = props.color.toCssHsla();
     const state = reactive({
-      h: hsla.h,
-      s: hsla.s,
-      l: hsla.l,
-      a: hsla.a,
+      hue: hsla.hue,
+      saturation: hsla.saturation,
+      lightness: hsla.lightness,
+      alpha: hsla.alpha,
     });
 
     function updateColor(eventName: string): void {
-      const h = intNormalize(state.h, 360);
-      const s = intNormalize(state.s, 100);
-      const l = intNormalize(state.l, 100);
-      const a = alphaNormalize(state.a);
+      const hue = intNormalize(state.hue, 360);
+      const saturation = intNormalize(state.saturation, 100);
+      const lightness = intNormalize(state.lightness, 100);
+      const alpha = alphaNormalize(state.alpha);
 
-      const color = Color.fromCssHsla(h, s, l, a);
+      const color = Color.fromCssHsla(hue, saturation, lightness, alpha);
       const sameColor = Color.sameColor(props.color as Color, color);
       if (sameColor) {
         return;
@@ -76,7 +76,7 @@ export default defineComponent({
       }
 
       if (alphaRule.test(value)) {
-        state['a'] = value;
+        state['alpha'] = value;
         updateColor('colorInput');
       }
     }
@@ -90,10 +90,10 @@ export default defineComponent({
       () => {
         const hsla = props.color.toCssHsla();
 
-        state.h = hsla.h;
-        state.s = hsla.s;
-        state.l = hsla.l;
-        state.a = hsla.a;
+        state.hue = hsla.hue;
+        state.saturation = hsla.saturation;
+        state.lightness = hsla.lightness;
+        state.alpha = hsla.alpha;
       }
     );
 
@@ -103,12 +103,12 @@ export default defineComponent({
       const hNode = createChannel({
         label: 'H',
         title: language.hue,
-        value: state.h,
+        value: state.hue,
         onInput: (e) => {
-          onHslInput(e.target as HTMLInputElement, 'h');
+          onHslInput(e.target as HTMLInputElement, 'hue');
         },
         onUpdate: (params: UpdateParams) => {
-          onHslInput(params.target, 'h');
+          onHslInput(params.target, 'hue');
         },
         onBlur: onHslaBlur,
       });
@@ -116,12 +116,12 @@ export default defineComponent({
       const sNode = createChannel({
         label: 'S',
         title: language.saturation,
-        value: state.s,
+        value: state.saturation,
         onInput: (e) => {
-          onHslInput(e.target as HTMLInputElement, 's');
+          onHslInput(e.target as HTMLInputElement, 'saturation');
         },
         onUpdate: (params: UpdateParams) => {
-          onHslInput(params.target, 's');
+          onHslInput(params.target, 'saturation');
         },
         onBlur: onHslaBlur,
       });
@@ -129,12 +129,12 @@ export default defineComponent({
       const lNode = createChannel({
         label: 'L',
         title: language.lightness,
-        value: state.l,
+        value: state.lightness,
         onInput: (e) => {
-          onHslInput(e.target as HTMLInputElement, 'l');
+          onHslInput(e.target as HTMLInputElement, 'lightness');
         },
         onUpdate: (params: UpdateParams) => {
-          onHslInput(params.target, 'l');
+          onHslInput(params.target, 'lightness');
         },
         onBlur: onHslaBlur,
       });
@@ -142,7 +142,7 @@ export default defineComponent({
       const aNode = createAlpha({
         alpha: !!props.alpha,
         title: language.alpha,
-        value: state.a,
+        value: state.alpha,
         onInput: (e) => {
           onAlphaInput(e.target as HTMLInputElement);
         },

@@ -11,7 +11,7 @@ import {
   UpdateParams,
 } from './label-utils';
 
-type rgbChannel = 'r' | 'g' | 'b';
+type rgbChannel = 'red' | 'green' | 'blue';
 
 export default defineComponent({
   name: 'RgbaLabels',
@@ -34,19 +34,19 @@ export default defineComponent({
 
     const rgba = props.color.toCssRgba();
     const state = reactive({
-      r: rgba.r,
-      g: rgba.g,
-      b: rgba.b,
-      a: rgba.a,
+      red: rgba.red,
+      green: rgba.green,
+      blue: rgba.blue,
+      alpha: rgba.alpha,
     });
 
     function updateColor(eventName: string): void {
-      const r = intNormalize(state.r, 255);
-      const g = intNormalize(state.g, 255);
-      const b = intNormalize(state.b, 255);
-      const a = alphaNormalize(state.a);
+      const red = intNormalize(state.red, 255);
+      const green = intNormalize(state.green, 255);
+      const blue = intNormalize(state.blue, 255);
+      const alpha = alphaNormalize(state.alpha);
 
-      const color = Color.fromCssRgba(r, g, b, a);
+      const color = Color.fromCssRgba(red, green, blue, alpha);
       const sameColor = Color.sameColor(props.color as Color, color);
       if (sameColor) {
         return;
@@ -76,7 +76,7 @@ export default defineComponent({
       }
 
       if (alphaRule.test(value)) {
-        state['a'] = value;
+        state['alpha'] = value;
         updateColor('colorInput');
       }
     }
@@ -90,10 +90,10 @@ export default defineComponent({
       () => {
         const rgba = props.color.toCssRgba();
 
-        state.r = rgba.r;
-        state.g = rgba.g;
-        state.b = rgba.b;
-        state.a = rgba.a;
+        state.red = rgba.red;
+        state.green = rgba.green;
+        state.blue = rgba.blue;
+        state.alpha = rgba.alpha;
       }
     );
 
@@ -103,12 +103,12 @@ export default defineComponent({
       const rNode = createChannel({
         label: 'R',
         title: language.red,
-        value: state.r,
+        value: state.red,
         onInput: (e) => {
-          onRgbInput(e.target as HTMLInputElement, 'r');
+          onRgbInput(e.target as HTMLInputElement, 'red');
         },
         onUpdate: (params: UpdateParams) => {
-          onRgbInput(params.target, 'r');
+          onRgbInput(params.target, 'red');
         },
         onBlur: onRgbaBlur,
       });
@@ -116,12 +116,12 @@ export default defineComponent({
       const gNode = createChannel({
         label: 'G',
         title: language.green,
-        value: state.g,
+        value: state.green,
         onInput: (e) => {
-          onRgbInput(e.target as HTMLInputElement, 'g');
+          onRgbInput(e.target as HTMLInputElement, 'green');
         },
         onUpdate: (params: UpdateParams) => {
-          onRgbInput(params.target, 'g');
+          onRgbInput(params.target, 'green');
         },
         onBlur: onRgbaBlur,
       });
@@ -129,12 +129,12 @@ export default defineComponent({
       const bNode = createChannel({
         label: 'B',
         title: language.blue,
-        value: state.b,
+        value: state.blue,
         onInput: (e) => {
-          onRgbInput(e.target as HTMLInputElement, 'b');
+          onRgbInput(e.target as HTMLInputElement, 'blue');
         },
         onUpdate: (params: UpdateParams) => {
-          onRgbInput(params.target, 'b');
+          onRgbInput(params.target, 'blue');
         },
         onBlur: onRgbaBlur,
       });
@@ -142,7 +142,7 @@ export default defineComponent({
       const aNode = createAlpha({
         alpha: !!props.alpha,
         title: language.alpha,
-        value: state.a,
+        value: state.alpha,
         onInput: (e) => {
           onAlphaInput(e.target as HTMLInputElement);
         },

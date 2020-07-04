@@ -14,18 +14,18 @@ function percentToValue(percent: number, max: number): number {
 function almostSameHex(a: string, b: string): boolean {
   const error = Math.ceil(255 / 100);
 
-  const aR = parseInt(a.slice(0, 2), 16);
-  const aG = parseInt(a.slice(2, 4), 16);
-  const aB = parseInt(a.slice(4, 6), 16);
+  const aRed = parseInt(a.slice(0, 2), 16);
+  const aGreen = parseInt(a.slice(2, 4), 16);
+  const aBlue = parseInt(a.slice(4, 6), 16);
 
-  const bR = parseInt(b.slice(0, 2), 16);
-  const bG = parseInt(b.slice(2, 4), 16);
-  const bB = parseInt(b.slice(4, 6), 16);
+  const bRed = parseInt(b.slice(0, 2), 16);
+  const bGreen = parseInt(b.slice(2, 4), 16);
+  const bBlue = parseInt(b.slice(4, 6), 16);
 
   return (
-    Math.abs(aR - bR) <= error &&
-    Math.abs(aG - bG) <= error &&
-    Math.abs(aB - bB) <= error
+    Math.abs(aRed - bRed) <= error &&
+    Math.abs(aGreen - bGreen) <= error &&
+    Math.abs(aBlue - bBlue) <= error
   );
 }
 
@@ -40,37 +40,49 @@ function hexNormalize(hex: string): string {
 
 function almostSameHsl(a: string, b: string): boolean {
   const useless = /[^\d.,]/g;
-  const [aH, aS, aL, aA = '1'] = a.replace(useless, '').split(',');
-  const [bH, bS, bL, bA = '1'] = b.replace(useless, '').split(',');
+  const [aHue, aSaturation, aLightness, aAlpha = '1'] = a
+    .replace(useless, '')
+    .split(',');
+  const [bHue, bSaturation, bLightness, bAlpha = '1'] = b
+    .replace(useless, '')
+    .split(',');
 
-  const sameH = almostSameValue(parseInt(aH), parseInt(bH), 360);
-  const sameS = almostSameValue(parseInt(aS), parseInt(bS), 100);
-  const sameL = almostSameValue(parseInt(aL), parseInt(bL), 100);
-  const sameA = almostSameValue(parseFloat(aA), parseFloat(bA), 1);
+  const sameHue = almostSameValue(parseInt(aHue), parseInt(bHue), 360);
+  const sameSaturation = almostSameValue(
+    parseInt(aSaturation),
+    parseInt(bSaturation),
+    100
+  );
+  const sameLightness = almostSameValue(
+    parseInt(aLightness),
+    parseInt(bLightness),
+    100
+  );
+  const sameAlpha = almostSameValue(parseFloat(aAlpha), parseFloat(bAlpha), 1);
 
-  return sameH && sameS && sameL && sameA;
+  return sameHue && sameSaturation && sameLightness && sameAlpha;
 }
 
 function almostSameRgb(a: string, b: string): boolean {
   const useless = /[^\d.,]/g;
-  const [aR, aG, aB, aA = '1'] = a.replace(useless, '').split(',');
-  const [bR, bG, bB, bA = '1'] = b.replace(useless, '').split(',');
+  const [aRed, aGreen, aBlue, aAlpha = '1'] = a.replace(useless, '').split(',');
+  const [bRed, bGreen, bBlue, bAlpha = '1'] = b.replace(useless, '').split(',');
 
-  const sameR = almostSameValue(parseInt(aR), parseInt(bR), 255);
-  const sameG = almostSameValue(parseInt(aG), parseInt(bG), 255);
-  const sameB = almostSameValue(parseInt(aB), parseInt(bB), 255);
-  const sameA = almostSameValue(parseFloat(aA), parseFloat(bA), 1);
+  const sameRed = almostSameValue(parseInt(aRed), parseInt(bRed), 255);
+  const sameGreen = almostSameValue(parseInt(aGreen), parseInt(bGreen), 255);
+  const sameBlue = almostSameValue(parseInt(aBlue), parseInt(bBlue), 255);
+  const sameAlpha = almostSameValue(parseFloat(aAlpha), parseFloat(bAlpha), 1);
 
-  return sameR && sameG && sameB && sameA;
+  return sameRed && sameGreen && sameBlue && sameAlpha;
 }
 
 describe('x11-colors', () => {
   test('rgb to hex', () => {
     x11Colors.forEach((x11Color) => {
-      const r = percentToValue(parseInt(x11Color.red), 255);
-      const g = percentToValue(parseInt(x11Color.green), 255);
-      const b = percentToValue(parseInt(x11Color.blue), 255);
-      const hex = Color.fromCssRgba(r, g, b).toHex();
+      const red = percentToValue(parseInt(x11Color.red), 255);
+      const green = percentToValue(parseInt(x11Color.green), 255);
+      const blue = percentToValue(parseInt(x11Color.blue), 255);
+      const hex = Color.fromCssRgba(red, green, blue).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
     });
@@ -78,19 +90,19 @@ describe('x11-colors', () => {
 
   test('hex to rgb', () => {
     x11Colors.forEach((x11Color) => {
-      const { r, g, b } = Color.fromHex(x11Color.hex).toCssRgba();
-      expect(valueToPercent(r, 255).toString()).toEqual(x11Color.red);
-      expect(valueToPercent(g, 255).toString()).toEqual(x11Color.green);
-      expect(valueToPercent(b, 255).toString()).toEqual(x11Color.blue);
+      const { red, green, blue } = Color.fromHex(x11Color.hex).toCssRgba();
+      expect(valueToPercent(red, 255).toString()).toEqual(x11Color.red);
+      expect(valueToPercent(green, 255).toString()).toEqual(x11Color.green);
+      expect(valueToPercent(blue, 255).toString()).toEqual(x11Color.blue);
     });
   });
 
   test('hsl to hex', () => {
     x11Colors.forEach((x11Color) => {
-      const h = parseInt(x11Color.hue);
-      const s = parseInt(x11Color.hslSaturation);
-      const l = parseInt(x11Color.light);
-      const hex = Color.fromCssHsla(h, s, l).toHex();
+      const hue = parseInt(x11Color.hue);
+      const saturation = parseInt(x11Color.hslSaturation);
+      const lightness = parseInt(x11Color.light);
+      const hex = Color.fromCssHsla(hue, saturation, lightness).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
     });
@@ -98,10 +110,16 @@ describe('x11-colors', () => {
 
   test('hex to hsl', () => {
     x11Colors.forEach((x11Color) => {
-      const { h, s, l } = Color.fromHex(x11Color.hex).toCssHsla();
-      const sameH = almostSameValue(h, parseInt(x11Color.hue), 360);
-      const sameS = almostSameValue(s, parseInt(x11Color.hslSaturation), 100);
-      const sameL = almostSameValue(l, parseInt(x11Color.light), 100);
+      const { hue, saturation, lightness } = Color.fromHex(
+        x11Color.hex
+      ).toCssHsla();
+      const sameH = almostSameValue(hue, parseInt(x11Color.hue), 360);
+      const sameS = almostSameValue(
+        saturation,
+        parseInt(x11Color.hslSaturation),
+        100
+      );
+      const sameL = almostSameValue(lightness, parseInt(x11Color.light), 100);
       expect(sameH).toBeTruthy();
       expect(sameS).toBeTruthy();
       expect(sameL).toBeTruthy();
@@ -110,10 +128,10 @@ describe('x11-colors', () => {
 
   test('hsv to hex', () => {
     x11Colors.forEach((x11Color) => {
-      const h = parseInt(x11Color.hue);
-      const s = parseInt(x11Color.hsvSaturation);
-      const v = parseInt(x11Color.value);
-      const hex = Color.fromCssLikeHsva(h, s, v).toHex();
+      const hue = parseInt(x11Color.hue);
+      const saturation = parseInt(x11Color.hsvSaturation);
+      const value = parseInt(x11Color.value);
+      const hex = Color.fromCssLikeHsva(hue, saturation, value).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
     });
@@ -121,16 +139,24 @@ describe('x11-colors', () => {
 
   test('hex to hsv', () => {
     x11Colors.forEach((x11Color) => {
-      const { h, s, v } = Color.fromHex(x11Color.hex).toHsva();
-      const hue = parseInt(x11Color.hue);
-      const saturation = parseInt(x11Color.hsvSaturation);
-      const value = parseInt(x11Color.value);
-      const sameH = almostSameValue(h, hue, 360);
-      const sameS = almostSameValue(Math.round(s * 100), saturation, 100);
-      const sameV = almostSameValue(Math.round(v * 100), value, 100);
-      expect(sameH).toBeTruthy();
-      expect(sameS).toBeTruthy();
-      expect(sameV).toBeTruthy();
+      const { hue, saturation, value } = Color.fromHex(x11Color.hex).toHsva();
+      const originHue = parseInt(x11Color.hue);
+      const originSaturation = parseInt(x11Color.hsvSaturation);
+      const originValue = parseInt(x11Color.value);
+      const sameHue = almostSameValue(hue, originHue, 360);
+      const sameSaturation = almostSameValue(
+        Math.round(saturation * 100),
+        originSaturation,
+        100
+      );
+      const sameValue = almostSameValue(
+        Math.round(value * 100),
+        originValue,
+        100
+      );
+      expect(sameHue).toBeTruthy();
+      expect(sameSaturation).toBeTruthy();
+      expect(sameValue).toBeTruthy();
     });
   });
 });

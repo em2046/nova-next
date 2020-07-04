@@ -9,10 +9,10 @@ const colorFormatError = 'Color format error';
  * @property a [0, 1]
  */
 interface CssRgba {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
+  red: number;
+  green: number;
+  blue: number;
+  alpha: number;
 }
 
 /**
@@ -22,10 +22,10 @@ interface CssRgba {
  * @property a [0, 1]
  */
 interface Hsva {
-  h: number;
-  s: number;
-  v: number;
-  a: number;
+  hue: number;
+  saturation: number;
+  value: number;
+  alpha: number;
 }
 
 /**
@@ -35,10 +35,10 @@ interface Hsva {
  * @property a [0, 1]
  */
 interface Hsla {
-  h: number;
-  s: number;
-  l: number;
-  a: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
 }
 
 /**
@@ -48,10 +48,10 @@ interface Hsla {
  * @property a [0, 1]
  */
 interface CssHsla {
-  h: number;
-  s: number;
-  l: number;
-  a: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
 }
 
 function hexSimplify(hex: string): string {
@@ -64,23 +64,23 @@ function hexSimplify(hex: string): string {
 function rgbToHue(
   max: number,
   min: number,
-  r: number,
-  g: number,
-  b: number
+  red: number,
+  green: number,
+  blue: number
 ): number {
-  let h = 0;
+  let hue = 0;
   if (max === min) {
-    h = 0;
-  } else if (max === r && g >= b) {
-    h = 60 * ((g - b) / (max - min));
-  } else if (max === r && g < b) {
-    h = 60 * ((g - b) / (max - min)) + 360;
-  } else if (max === g) {
-    h = 60 * ((b - r) / (max - min)) + 120;
-  } else if (max === b) {
-    h = 60 * ((r - g) / (max - min)) + 240;
+    hue = 0;
+  } else if (max === red && green >= blue) {
+    hue = 60 * ((green - blue) / (max - min));
+  } else if (max === red && green < blue) {
+    hue = 60 * ((green - blue) / (max - min)) + 360;
+  } else if (max === green) {
+    hue = 60 * ((blue - red) / (max - min)) + 120;
+  } else if (max === blue) {
+    hue = 60 * ((red - green) / (max - min)) + 240;
   }
-  return Math.round(h);
+  return Math.round(hue);
 }
 
 function HslToRgbChannelLimit(tC: number): number {
@@ -154,34 +154,34 @@ export default class Color {
   static hslRule = /^hsl\(\d{1,3}(,\d{1,3}%){2}\)$/;
   static hslaRule = /^hsla\(\d{1,3}(,\d{1,3}%){2},(\d+(\.\d{1,2})?)\)$/;
 
-  readonly r: number;
-  readonly g: number;
-  readonly b: number;
-  readonly a: number;
+  readonly red: number;
+  readonly green: number;
+  readonly blue: number;
+  readonly alpha: number;
 
   /**
    * Create
-   * @param r [0, 1]
-   * @param g [0, 1]
-   * @param b [0, 1]
-   * @param a [0, 1]
+   * @param red [0, 1]
+   * @param green [0, 1]
+   * @param blue [0, 1]
+   * @param alpha [0, 1]
    */
-  constructor(r = 0, g = 0, b = 0, a = 1) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
+  constructor(red = 0, green = 0, blue = 0, alpha = 1) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    this.alpha = alpha;
   }
 
   /**
    * From CSS RGBA
-   * @param r [0, 255]
-   * @param g [0, 255]
-   * @param b [0, 255]
-   * @param a [0, 1]
+   * @param red [0, 255]
+   * @param green [0, 255]
+   * @param blue [0, 255]
+   * @param alpha [0, 1]
    */
-  static fromCssRgba(r = 0, g = 0, b = 0, a = 1): Color {
-    return new Color(r / 255, g / 255, b / 255, a);
+  static fromCssRgba(red = 0, green = 0, blue = 0, alpha = 1): Color {
+    return new Color(red / 255, green / 255, blue / 255, alpha);
   }
 
   static fromCssRgbString(text: string): Color {
@@ -192,9 +192,9 @@ export default class Color {
     }
 
     text = text.slice(4, -1);
-    const [r, g, b] = getRgbFromText(text);
+    const [red, green, blue] = getRgbFromText(text);
 
-    return new Color(r, g, b);
+    return new Color(red, green, blue);
   }
 
   static fromCssRgbaString(text: string): Color {
@@ -205,11 +205,13 @@ export default class Color {
     }
 
     text = text.slice(5, -1);
-    const [textR, textG, textB, textA] = text.split(',');
-    const [r, g, b] = getRgbFromText(`${textR},${textG},${textB}`);
-    const a = parseFloat(textA);
+    const [textRed, textGreen, textBlue, textAlpha] = text.split(',');
+    const [red, green, blue] = getRgbFromText(
+      `${textRed},${textGreen},${textBlue}`
+    );
+    const alpha = parseFloat(textAlpha);
 
-    return new Color(r, g, b, a);
+    return new Color(red, green, blue, alpha);
   }
 
   static fromCssHslString(text: string): Color {
@@ -220,9 +222,9 @@ export default class Color {
     }
 
     text = text.slice(4, -1);
-    const [h, s, l] = getHslFromText(text);
+    const [hue, saturation, lightness] = getHslFromText(text);
 
-    return Color.fromCssHsla(h, s, l);
+    return Color.fromCssHsla(hue, saturation, lightness);
   }
 
   static fromCssHslaString(text: string): Color {
@@ -233,96 +235,98 @@ export default class Color {
     }
 
     text = text.slice(5, -1);
-    const [textH, textS, textL, textA] = text.split(',');
+    const [textHue, textSaturation, textLightness, textAlpha] = text.split(',');
 
-    const [h, s, l] = getHslFromText(`${textH},${textS},${textL}`);
-    const a = parseFloat(textA);
+    const [hue, saturation, lightness] = getHslFromText(
+      `${textHue},${textSaturation},${textLightness}`
+    );
+    const alpha = parseFloat(textAlpha);
 
-    return Color.fromCssHsla(h, s, l, a);
+    return Color.fromCssHsla(hue, saturation, lightness, alpha);
   }
 
   /**
    * From HSVA
-   * @param h [0, 360]
-   * @param s [0, 1]
-   * @param v [0, 1]
-   * @param a [0, 1]
+   * @param hue [0, 360]
+   * @param saturation [0, 1]
+   * @param value [0, 1]
+   * @param alpha [0, 1]
    */
-  static fromHsva(h = 0, s = 0, v = 0, a = 1): Color {
-    const hI = Math.floor(h / 60) % 6;
-    const f = h / 60 - hI;
-    const p = v * (1 - s);
-    const q = v * (1 - f * s);
-    const t = v * (1 - (1 - f) * s);
+  static fromHsva(hue = 0, saturation = 0, value = 0, alpha = 1): Color {
+    const hI = Math.floor(hue / 60) % 6;
+    const f = hue / 60 - hI;
+    const p = value * (1 - saturation);
+    const q = value * (1 - f * saturation);
+    const t = value * (1 - (1 - f) * saturation);
 
-    let r;
-    let g;
-    let b;
+    let red;
+    let green;
+    let blue;
 
     switch (hI) {
       case 0:
-        [r, g, b] = [v, t, p];
+        [red, green, blue] = [value, t, p];
         break;
       case 1:
-        [r, g, b] = [q, v, p];
+        [red, green, blue] = [q, value, p];
         break;
       case 2:
-        [r, g, b] = [p, v, t];
+        [red, green, blue] = [p, value, t];
         break;
       case 3:
-        [r, g, b] = [p, q, v];
+        [red, green, blue] = [p, q, value];
         break;
       case 4:
-        [r, g, b] = [t, p, v];
+        [red, green, blue] = [t, p, value];
         break;
       case 5:
-        [r, g, b] = [v, p, q];
+        [red, green, blue] = [value, p, q];
         break;
     }
 
-    return new Color(r, g, b, a);
+    return new Color(red, green, blue, alpha);
   }
 
   /**
    * From CSS like HSVA
-   * @param h [0, 360]
-   * @param s [0, 100]
-   * @param v [0, 100]
-   * @param a [0, 1]
+   * @param hue [0, 360]
+   * @param saturation [0, 100]
+   * @param value [0, 100]
+   * @param alpha [0, 1]
    */
-  static fromCssLikeHsva(h = 0, s = 0, v = 0, a = 1): Color {
-    return Color.fromHsva(h, s / 100, v / 100, a);
+  static fromCssLikeHsva(hue = 0, saturation = 0, value = 0, alpha = 1): Color {
+    return Color.fromHsva(hue, saturation / 100, value / 100, alpha);
   }
 
-  static fromHsla(h = 0, s = 0, l = 0, a = 1): Color {
+  static fromHsla(hue = 0, saturation = 0, lightness = 0, alpha = 1): Color {
     let q;
-    if (l < 1 / 2) {
-      q = l * (1 + s);
+    if (lightness < 1 / 2) {
+      q = lightness * (1 + saturation);
     } else {
-      q = l + s - l * s;
+      q = lightness + saturation - lightness * saturation;
     }
 
-    const p = 2 * l - q;
+    const p = 2 * lightness - q;
 
-    const hK = h / 360;
+    const hK = hue / 360;
 
-    let tR = hK + 1 / 3;
-    let tG = hK;
-    let tB = hK - 1 / 3;
+    let tRed = hK + 1 / 3;
+    let tGreen = hK;
+    let tBlue = hK - 1 / 3;
 
-    tR = HslToRgbChannelLimit(tR);
-    tG = HslToRgbChannelLimit(tG);
-    tB = HslToRgbChannelLimit(tB);
+    tRed = HslToRgbChannelLimit(tRed);
+    tGreen = HslToRgbChannelLimit(tGreen);
+    tBlue = HslToRgbChannelLimit(tBlue);
 
-    const r = HslToRgbChannel(tR, q, p);
-    const g = HslToRgbChannel(tG, q, p);
-    const b = HslToRgbChannel(tB, q, p);
+    const red = HslToRgbChannel(tRed, q, p);
+    const green = HslToRgbChannel(tGreen, q, p);
+    const blue = HslToRgbChannel(tBlue, q, p);
 
-    return new Color(r, g, b, a);
+    return new Color(red, green, blue, alpha);
   }
 
-  static fromCssHsla(h = 0, s = 0, l = 0, a = 1): Color {
-    return Color.fromHsla(h, s / 100, l / 100, a);
+  static fromCssHsla(hue = 0, saturation = 0, lightness = 0, alpha = 1): Color {
+    return Color.fromHsla(hue, saturation / 100, lightness / 100, alpha);
   }
 
   static hexNormalize(value: string): string {
@@ -400,20 +404,20 @@ export default class Color {
 
   static sameColor(a: Color, b: Color): boolean {
     return (
-      sameValue(a.r, b.r) &&
-      sameValue(a.g, b.g) &&
-      sameValue(a.b, b.b) &&
-      sameValue(a.a, b.a)
+      sameValue(a.red, b.red) &&
+      sameValue(a.green, b.green) &&
+      sameValue(a.blue, b.blue) &&
+      sameValue(a.alpha, b.alpha)
     );
   }
 
   toCssRgba(): CssRgba {
-    const r = Math.round(this.r * 255);
-    const g = Math.round(this.g * 255);
-    const b = Math.round(this.b * 255);
-    const a = Utils.numberFixed(this.a);
+    const red = Math.round(this.red * 255);
+    const green = Math.round(this.green * 255);
+    const blue = Math.round(this.blue * 255);
+    const alpha = Utils.numberFixed(this.alpha);
 
-    return { r, g, b, a };
+    return { red, green, blue, alpha };
   }
 
   /**
@@ -421,13 +425,13 @@ export default class Color {
    * If alpha is 1, then return string like rgb(255, 255, 255)
    */
   toCssRgbaString(): string {
-    const { r, g, b, a } = this.toCssRgba();
+    const { red, green, blue, alpha } = this.toCssRgba();
 
-    if (a === 1) {
-      return `rgb(${r}, ${g}, ${b})`;
+    if (alpha === 1) {
+      return `rgb(${red}, ${green}, ${blue})`;
     }
 
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
   }
 
   /**
@@ -435,12 +439,12 @@ export default class Color {
    * @param short Return hex like f90
    */
   toHex(short = false): string {
-    const { r, g, b } = this.toCssRgba();
-    const a = this.a;
+    const { red, green, blue } = this.toCssRgba();
+    const a = this.alpha;
 
-    const hexR = r.toString(16).padStart(2, '0');
-    const hexG = g.toString(16).padStart(2, '0');
-    const hexB = b.toString(16).padStart(2, '0');
+    const hexR = red.toString(16).padStart(2, '0');
+    const hexG = green.toString(16).padStart(2, '0');
+    const hexB = blue.toString(16).padStart(2, '0');
     const hexA = Math.round(a * 255)
       .toString(16)
       .padStart(2, '0');
@@ -465,55 +469,55 @@ export default class Color {
   }
 
   toHsva(): Hsva {
-    const { r, g, b, a } = this;
+    const { red, green, blue, alpha } = this;
 
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
+    const max = Math.max(red, green, blue);
+    const min = Math.min(red, green, blue);
 
-    const h = rgbToHue(max, min, r, g, b);
+    const hue = rgbToHue(max, min, red, green, blue);
 
-    let s;
+    let saturation;
     if (max === 0) {
-      s = 0;
+      saturation = 0;
     } else {
-      s = 1 - min / max;
+      saturation = 1 - min / max;
     }
 
-    const v = max;
+    const value = max;
 
     return {
-      h,
-      s,
-      v,
-      a,
+      hue,
+      saturation,
+      value,
+      alpha,
     };
   }
 
   toHsla(): Hsla {
-    const { r, g, b, a } = this;
+    const { red, green, blue, alpha } = this;
 
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
+    const max = Math.max(red, green, blue);
+    const min = Math.min(red, green, blue);
 
-    const l = (1 / 2) * (max + min);
+    const lightness = (1 / 2) * (max + min);
 
-    let s = 0;
-    if (l === 0 || max === min) {
-      s = 0;
-    } else if (0 < l && l <= 1 / 2) {
-      s = (max - min) / (2 * l);
-    } else if (l > 1 / 2) {
-      s = (max - min) / (2 - 2 * l);
+    let saturation = 0;
+    if (lightness === 0 || max === min) {
+      saturation = 0;
+    } else if (0 < lightness && lightness <= 1 / 2) {
+      saturation = (max - min) / (2 * lightness);
+    } else if (lightness > 1 / 2) {
+      saturation = (max - min) / (2 - 2 * lightness);
     }
-    s = Utils.numberLimit(s, 0, 1);
+    saturation = Utils.numberLimit(saturation, 0, 1);
 
-    const h = rgbToHue(max, min, r, g, b);
+    const hue = rgbToHue(max, min, red, green, blue);
 
     return {
-      h,
-      s,
-      l,
-      a,
+      hue,
+      saturation,
+      lightness,
+      alpha,
     };
   }
 
@@ -521,21 +525,21 @@ export default class Color {
     const hsla = this.toHsla();
 
     return {
-      h: hsla.h,
-      s: Math.round(hsla.s * 100),
-      l: Math.round(hsla.l * 100),
-      a: Utils.numberFixed(hsla.a),
+      hue: hsla.hue,
+      saturation: Math.round(hsla.saturation * 100),
+      lightness: Math.round(hsla.lightness * 100),
+      alpha: Utils.numberFixed(hsla.alpha),
     };
   }
 
   toCssHslaString(): string {
-    const { h, s, l, a } = this.toCssHsla();
+    const { hue, saturation, lightness, alpha } = this.toCssHsla();
 
-    if (a === 1) {
-      return `hsl(${h}, ${s}%, ${l}%)`;
+    if (alpha === 1) {
+      return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }
 
-    return `hsla(${h}, ${s}%, ${l}%, ${a})`;
+    return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
   }
 
   toString(format = 'hex'): string {

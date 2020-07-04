@@ -163,10 +163,10 @@ export default defineComponent({
     function setPositionFromColor(color: Color): void {
       const hsva = color.toHsva();
 
-      const hue = Utils.numberLimit((hsva.h / 360) * 200, 0, 200);
-      const saturation = Utils.numberLimit(hsva.s * 200, 0, 200);
-      const value = Utils.numberLimit(200 - 200 * hsva.v, 0, 200);
-      const alpha = Utils.numberLimit(200 - 200 * hsva.a, 0, 200);
+      const hue = Utils.numberLimit((hsva.hue / 360) * 200, 0, 200);
+      const saturation = Utils.numberLimit(hsva.saturation * 200, 0, 200);
+      const value = Utils.numberLimit(200 - 200 * hsva.value, 0, 200);
+      const alpha = Utils.numberLimit(200 - 200 * hsva.alpha, 0, 200);
 
       state.position.hue = hue;
       state.position.saturation = saturation;
@@ -178,7 +178,7 @@ export default defineComponent({
       if (props.alpha) {
         state.color = color;
       } else {
-        state.color = new Color(color.r, color.g, color.b);
+        state.color = new Color(color.red, color.green, color.blue);
       }
     }
 
@@ -244,8 +244,8 @@ export default defineComponent({
       () => props.alpha,
       (value) => {
         if (!value) {
-          const { r, g, b } = state.color;
-          const color = new Color(r, g, b);
+          const { red, green, blue } = state.color;
+          const color = new Color(red, green, blue);
           setColorAndPosition(color);
         }
       }
