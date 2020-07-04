@@ -1,7 +1,10 @@
 import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { Color, NovaButton, NovaColorPicker } from '../../../index';
-import { PresetScoped } from '../../../components/color-picker/NovaColorPicker';
+import {
+  PresetScoped,
+  TriggerScoped,
+} from '../../../components/color-picker/NovaColorPicker';
 import hslData from '../../../components/color-picker/assets/css-wg/hsl';
 import './styles/normal.css';
 
@@ -27,6 +30,15 @@ export default defineComponent({
     }
 
     const slots = {
+      trigger: (scoped: TriggerScoped) => {
+        const hex = scoped.color.toCssHexString();
+        return (
+          <div class="demo-color-picker-normal-trigger" ref={scoped.triggerRef}>
+            <i style={{ backgroundColor: hex }} />
+            <span>{hex}</span>
+          </div>
+        );
+      },
       preset: (scoped: PresetScoped) => {
         function handleClick(cell: string) {
           scoped.setColorAndPosition(Color.fromHex(cell));
@@ -58,6 +70,7 @@ export default defineComponent({
 
     return (): JSX.Element => {
       const pickerProps = {
+        class: 'demo-color-picker-normal',
         value: state.color,
         disabled: state.disabled,
         onUpdate,

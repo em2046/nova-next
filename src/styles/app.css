@@ -1,3 +1,7 @@
+[class^='demo-'] {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   line-height: 30px;

@@ -89,6 +89,11 @@ export interface PresetScoped {
   setColorAndPosition: (color: Color) => void;
 }
 
+export interface TriggerScoped {
+  color: Color;
+  triggerRef: Ref<HTMLElement | null>;
+}
+
 export default defineComponent({
   name: 'NovaColorPicker',
   props: colorPickerProps,
@@ -264,6 +269,14 @@ export default defineComponent({
       function createTrigger() {
         function onAssignRef(assignedRef: Ref<HTMLElement | null>): void {
           triggerRef.value = assignedRef.value;
+        }
+
+        const trigger = context.slots.trigger;
+        if (trigger) {
+          return trigger({
+            triggerRef,
+            color: state.color,
+          });
         }
 
         return <Trigger color={state.color} onAssignRef={onAssignRef} />;

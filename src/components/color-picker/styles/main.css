@@ -37,6 +37,7 @@
   background-color: var(--nova-color-bg-component);
   width: 30px;
   height: 30px;
+  margin-bottom: -30px;
   border-radius: var(--nova-radius);
   border: var(--nova-border);
   transition: var(--nova-transition-component);

@@ -1,3 +1,11 @@
+.demo-color-picker-normal {
+  width: 100px;
+
+  .nova-color-picker-border {
+    width: 100px;
+  }
+}
+
 .demo-color-picker-normal-preset {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -16,9 +24,22 @@
     height: 20px;
 
     &.demo-color-picker-normal-preset-selected {
-      box-sizing: border-box;
       border: 2px solid var(--nova-color-font);
       box-shadow: inset 0 0 0 1px var(--nova-color-bg);
     }
+  }
+}
+
+.demo-color-picker-normal-trigger {
+  padding: 5px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+
+  i {
+    width: 10px;
+    height: 10px;
+    margin: 5px;
   }
 }
