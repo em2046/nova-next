@@ -37,6 +37,10 @@
   align-items: center;
   font-size: 14px;
 
+  &:focus {
+    outline: none;
+  }
+
   i {
     width: 10px;
     height: 10px;

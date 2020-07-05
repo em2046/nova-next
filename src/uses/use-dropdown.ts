@@ -5,6 +5,8 @@ import { VisualViewport } from '../shims/visual-viewport';
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
   dropdownRef: Ref<HTMLElement | null>;
+  autoFocusRef: Ref<HTMLElement | null>;
+  reset: () => void;
   props: Readonly<unknown>;
   onOpen?: () => void;
   onClose?: () => void;
@@ -61,7 +63,15 @@ export default function useDropdown(
     },
   });
 
-  const { triggerRef, dropdownRef, props, onOpen, onClose } = params;
+  const {
+    triggerRef,
+    dropdownRef,
+    autoFocusRef,
+    reset,
+    props,
+    onOpen,
+    onClose,
+  } = params;
   const dropdownProps = props as DropdownProps;
   let collapseStyleCache: CollapseStyle | null = null;
 
@@ -96,6 +106,9 @@ export default function useDropdown(
 
     if (prevOpened) {
       onClose?.call(null);
+
+      const trigger = triggerRef.value as HTMLElement;
+      trigger.focus();
     }
   }
 
@@ -187,13 +200,18 @@ export default function useDropdown(
     });
   }
 
-  async function openDropdown(): Promise<void> {
+  function openDropdown() {
     if (dropdownProps.disabled) {
       return;
     }
 
     if (!state.dropdown.loaded) {
       state.dropdown.loaded = true;
+
+      nextTick(() => {
+        const dropdown = dropdownRef.value as HTMLElement;
+        dropdown.addEventListener('keydown', triggerKeydown);
+      });
     }
 
     document.addEventListener('mousedown', onVirtualMaskMousedown);
@@ -201,6 +219,9 @@ export default function useDropdown(
     state.dropdown.opened = true;
 
     if (!openedOld) {
+      nextTick(() => {
+        autoFocusRef.value?.focus();
+      });
       onOpen?.call(null);
     }
   }
@@ -210,15 +231,33 @@ export default function useDropdown(
     if (opened) {
       closeDropdown();
     } else {
-      openDropdown().then(() => {
-        // do nothing
-      });
+      openDropdown();
+    }
+  }
+
+  function triggerKeydown(e: KeyboardEvent) {
+    if (dropdownProps.disabled) {
+      return;
+    }
+
+    switch (e.key) {
+      case 'Enter':
+        toggleDropdown();
+        break;
+      case 'Esc':
+      case 'Escape':
+        reset();
+        nextTick(() => {
+          closeDropdown();
+        });
+        break;
     }
   }
 
   onMounted(() => {
     const trigger = triggerRef.value as HTMLElement;
     trigger.addEventListener('click', toggleDropdown);
+    trigger.addEventListener('keydown', triggerKeydown);
   });
 
   onBeforeUnmount(() => {
@@ -226,6 +265,7 @@ export default function useDropdown(
 
     const trigger = triggerRef.value as HTMLElement;
     trigger.removeEventListener('click', toggleDropdown);
+    trigger.removeEventListener('keydown', toggleDropdown);
   });
 
   function getOffsetStyle(offset: Offset) {

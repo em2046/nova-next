@@ -8,6 +8,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      required: true,
+    },
   },
   setup(props, context) {
     const emit = context.emit;
@@ -26,7 +30,11 @@ export default defineComponent({
 
     return (): JSX.Element => {
       return (
-        <div class="nova-color-picker-trigger" ref={triggerRef}>
+        <div
+          class="nova-color-picker-trigger"
+          ref={triggerRef}
+          tabindex={props.disabled ? -1 : 0}
+        >
           <div class="nova-color-picker-trigger-inner">
             <div
               class="nova-color-picker-trigger-bg"

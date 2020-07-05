@@ -65,6 +65,10 @@ const colorPickerProps = {
     type: Object as PropStyle,
     default: null,
   },
+  dropdownProps: {
+    type: Object,
+    default: null,
+  },
   teleportToBody: {
     type: Boolean,
     default: true,
@@ -92,6 +96,7 @@ export interface PresetScoped {
 export interface TriggerScoped {
   color: Color;
   triggerRef: Ref<HTMLElement | null>;
+  disabled: boolean;
 }
 
 export default defineComponent({
@@ -104,6 +109,7 @@ export default defineComponent({
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
+    const autoFocusRef: Ref<HTMLElement | null> = ref(null);
 
     const mode = props.format === 'hsl' ? modeHsla : modeRgba;
     const state = reactive({
@@ -227,6 +233,8 @@ export default defineComponent({
     } = useDropdown({
       triggerRef,
       dropdownRef,
+      autoFocusRef: autoFocusRef,
+      reset,
       props,
       onOpen: () => {
         emit('openChange', true);
@@ -256,9 +264,13 @@ export default defineComponent({
       }
     );
 
-    function init(): void {
+    function reset() {
       const color = Color.parse(props.value);
       setColorAndPosition(color);
+    }
+
+    function init(): void {
+      reset();
     }
 
     onMounted(() => {
@@ -271,15 +283,20 @@ export default defineComponent({
           triggerRef.value = assignedRef.value;
         }
 
+        const triggerProps = {
+          disabled: props.disabled,
+          color: state.color,
+        };
+
         const trigger = context.slots.trigger;
         if (trigger) {
           return trigger({
             triggerRef,
-            color: state.color,
+            ...triggerProps,
           });
         }
 
-        return <Trigger color={state.color} onAssignRef={onAssignRef} />;
+        return <Trigger onAssignRef={onAssignRef} {...triggerProps} />;
       }
 
       function createHsvPanel() {
@@ -345,6 +362,12 @@ export default defineComponent({
           return null;
         }
 
+        function onAssignRef(assignedRef: Ref<HTMLElement | null>) {
+          if (assignedRef.value) {
+            autoFocusRef.value = assignedRef.value;
+          }
+        }
+
         return (
           <CurrLabels
             color={state.color}
@@ -352,16 +375,31 @@ export default defineComponent({
             onColorInput={setColorAndPosition}
             onColorBlur={setColorAndPosition}
             environment={environment}
+            onAssignRef={onAssignRef}
           />
         );
       }
 
       function createForm() {
+        function onKeydown(e: KeyboardEvent) {
+          switch (e.key) {
+            case 'Enter':
+              switchMode();
+              e.stopPropagation();
+              break;
+          }
+        }
+
         const labelsNode = createLabels();
         return (
           <div class="nova-color-picker-form">
+            <div
+              class="nova-color-picker-labels-switch"
+              onClick={switchMode}
+              onKeydown={onKeydown}
+              tabindex={0}
+            />
             {labelsNode}
-            <div class="nova-color-picker-labels-switch" onClick={switchMode} />
             <HexLabel
               color={state.color}
               onColorInput={setColorAndPosition}
@@ -414,10 +452,12 @@ export default defineComponent({
 
         const dropdownCoreNode = (
           <div
+            role="dialog"
             data-nova-theme={environment.themeRef.value}
             ref={dropdownRef}
             class={dropdownClassList.value}
             style={props.dropdownStyle}
+            {...props.dropdownProps}
           >
             {hsvPanelNode}
             {slidesNode}
@@ -472,15 +512,15 @@ export default defineComponent({
 
       const triggerNode = createTrigger();
       const dropdownNode = createDropdown();
+      const borderNode = <div class="nova-color-picker-border" />;
 
       return (
         <div
           class={classList.value}
           data-nova-theme={environment.themeRef.value}
-          tabindex={props.disabled ? -1 : 0}
         >
-          <div class="nova-color-picker-border" />
           {triggerNode}
+          {borderNode}
           {dropdownNode}
         </div>
       );

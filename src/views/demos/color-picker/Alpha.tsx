@@ -100,6 +100,10 @@ export default defineComponent({
         onOpenChange,
         teleportToBody: false,
         dropdownClass: [state.colorDropdownClass],
+        dropdownStyle: { borderRadius: '0' },
+        dropdownProps: {
+          'data-custom': getRandomNumber(),
+        },
         class: 'custom-class-name',
         style: { margin: '10px' },
         ['data-custom']: state.colorCustomValue,

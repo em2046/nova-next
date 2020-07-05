@@ -1,4 +1,5 @@
 .nova-color-picker-hsv {
+  position: relative;
   width: 210px;
   height: 210px;
   background-clip: content-box;
@@ -8,6 +9,7 @@
 }
 
 .nova-color-picker-hsv-inner {
+  position: relative;
   width: 200px;
   height: 200px;
   border-radius: var(--nova-radius-tiny);
@@ -21,6 +23,7 @@
 }
 
 .nova-color-picker-value {
+  position: absolute;
   background-image: linear-gradient(
     180deg,
     hsla(0, 0%, 0%, 0),
@@ -28,16 +31,20 @@
   );
   width: 200px;
   height: 200px;
-  margin-top: -200px;
+  top: 0;
+  left: 0;
 }
 
 .nova-color-picker-cursor {
+  position: absolute;
+  top: 5px;
+  left: 5px;
   pointer-events: none;
   width: 12px;
   height: 12px;
   border: 1px solid var(--nova-color-white);
   border-radius: var(--nova-radius-tiny);
-  margin-top: -206px;
+  margin-top: -6px;
   margin-left: -6px;
   box-shadow: var(--nova-shadow-cursor);
   transform: translate(100px, 100px);
@@ -58,6 +65,7 @@
 
 .nova-color-picker-hue-slide,
 .nova-color-picker-alpha-slide {
+  position: relative;
   padding: 10px 5px;
   width: 30px;
   height: 220px;
@@ -97,11 +105,14 @@
 
 .nova-color-picker-hue-thumb,
 .nova-color-picker-alpha-thumb {
+  position: absolute;
+  top: 10px;
+  left: 5px;
   background-clip: content-box;
   pointer-events: none;
   width: 18px;
   height: 8px;
-  margin-top: -204px;
+  margin-top: -4px;
   margin-left: 1px;
   border: 1px solid var(--nova-color-black-shadow);
   background-color: var(--nova-color-white);

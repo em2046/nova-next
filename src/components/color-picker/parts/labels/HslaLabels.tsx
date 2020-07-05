@@ -1,4 +1,4 @@
-import { defineComponent, reactive, watch } from 'vue';
+import { defineComponent, onMounted, reactive, Ref, ref, watch } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import DomUtils from '../../../../utils/dom-utils';
 import Color from '../../color';
@@ -30,6 +30,8 @@ export default defineComponent({
     },
   },
   setup(props, context) {
+    const firstInputRef: Ref<HTMLElement | null> = ref(null);
+
     const emit = context.emit;
 
     const hsla = props.color.toCssHsla();
@@ -97,6 +99,10 @@ export default defineComponent({
       }
     );
 
+    onMounted(() => {
+      emit('assignRef', firstInputRef);
+    });
+
     return (): JSX.Element => {
       const language = props.environment.languageRef.value.colorPicker;
 
@@ -111,6 +117,7 @@ export default defineComponent({
           onHslInput(params.target, 'hue');
         },
         onBlur: onHslaBlur,
+        inputRef: firstInputRef,
       });
 
       const sNode = createChannel({

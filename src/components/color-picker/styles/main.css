@@ -14,11 +14,7 @@
     }
   }
 
-  &:focus {
-    outline: none;
-  }
-
-  &:not(.nova-color-picker-disabled):focus,
+  &:not(.nova-color-picker-disabled) :focus ~,
   &.nova-color-picker-opened {
     .nova-color-picker-border {
       border: var(--nova-border-primary);
@@ -37,7 +33,7 @@
   background-color: var(--nova-color-bg-component);
   width: 30px;
   height: 30px;
-  margin-bottom: -30px;
+  margin-top: -30px;
   border-radius: var(--nova-radius);
   border: var(--nova-border);
   transition: var(--nova-transition-component);

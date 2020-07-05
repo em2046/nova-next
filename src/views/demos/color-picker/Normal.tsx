@@ -33,7 +33,11 @@ export default defineComponent({
       trigger: (scoped: TriggerScoped) => {
         const hex = scoped.color.toCssHexString();
         return (
-          <div class="demo-color-picker-normal-trigger" ref={scoped.triggerRef}>
+          <div
+            class="demo-color-picker-normal-trigger"
+            ref={scoped.triggerRef}
+            tabindex={scoped.disabled ? -1 : 0}
+          >
             <i style={{ backgroundColor: hex }} />
             <span>{hex}</span>
           </div>

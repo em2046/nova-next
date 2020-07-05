@@ -2,6 +2,10 @@
   background-position: center center;
   background-clip: content-box;
   padding: 5px;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .nova-color-picker-trigger-inner {

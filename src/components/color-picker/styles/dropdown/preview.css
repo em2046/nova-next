@@ -7,18 +7,23 @@
 }
 
 .nova-color-picker-preview {
+  position: relative;
   margin: 20px 0 10px 10px;
+  height: 60px;
 }
 
 .nova-color-picker-preview-prev {
   border: 1px solid var(--nova-color-symbol);
-  margin-top: -60px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .nova-color-picker-preview-curr {
-  margin-top: -20px;
-  margin-left: 20px;
   border: 1px solid var(--nova-color-symbol);
+  position: absolute;
+  left: 20px;
+  top: 20px;
 }
 
 .nova-color-picker-preview-fill-right,
@@ -31,9 +36,13 @@
 }
 
 .nova-color-picker-preview-fill-right {
-  margin-top: -20px;
-  margin-left: 20px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
 }
 
 .nova-color-picker-preview-fill-left {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

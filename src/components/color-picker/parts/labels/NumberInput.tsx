@@ -1,4 +1,4 @@
-import { defineComponent, ref, Ref } from 'vue';
+import { defineComponent, onMounted, Ref, ref } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import Utils from '../../../../utils/utils';
 import DomUtils, {
@@ -14,6 +14,10 @@ export default defineComponent({
     value: {
       type: String,
       default: '',
+    },
+    inputRef: {
+      type: Object,
+      default: null,
     },
   },
   setup(props, context) {
@@ -85,6 +89,10 @@ export default defineComponent({
           break;
       }
     }
+
+    onMounted(() => {
+      emit('assignRef', inputRef);
+    });
 
     return (): JSX.Element => {
       return (
