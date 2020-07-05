@@ -106,9 +106,6 @@ export default function useDropdown(
 
     if (prevOpened) {
       onClose?.call(null);
-
-      const trigger = triggerRef.value as HTMLElement;
-      trigger.focus();
     }
   }
 
@@ -219,9 +216,6 @@ export default function useDropdown(
     state.dropdown.opened = true;
 
     if (!openedOld) {
-      nextTick(() => {
-        autoFocusRef.value?.focus();
-      });
       onOpen?.call(null);
     }
   }
@@ -240,15 +234,26 @@ export default function useDropdown(
       return;
     }
 
+    function triggerFocus() {
+      const trigger = triggerRef.value as HTMLElement;
+      trigger.focus();
+    }
+
+    const opened = state.dropdown.opened;
+
     switch (e.key) {
       case 'Enter':
         toggleDropdown();
+        if (opened) {
+          triggerFocus();
+        }
         break;
       case 'Esc':
       case 'Escape':
         reset();
         nextTick(() => {
           closeDropdown();
+          triggerFocus();
         });
         break;
     }
@@ -313,6 +318,12 @@ export default function useDropdown(
     DomUtils.setStyles(el as HTMLElement, {
       pointerEvents: '',
     });
+
+    if (!DomUtils.isTouchSupported()) {
+      nextTick(() => {
+        autoFocusRef.value?.focus();
+      });
+    }
   }
 
   function onBeforeLeave(el: Element) {

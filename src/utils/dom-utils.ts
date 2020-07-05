@@ -104,4 +104,8 @@ export default class DomUtils {
       element.style[key] = styles[key];
     });
   }
+
+  static isTouchSupported(): boolean {
+    return window.ontouchstart !== undefined;
+  }
 }
