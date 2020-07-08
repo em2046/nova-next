@@ -3,7 +3,7 @@ import { vueJsxCompat } from '../../vue-jsx-compat';
 import { NovaButton } from '../../index';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { MDI3DRotation } from '@em2046/material-design-icons-vue-next';
+import { MDICamera, MDITheaters } from '@em2046/material-design-icons-vue-next';
 
 export default defineComponent({
   setup() {
@@ -19,8 +19,15 @@ export default defineComponent({
         <NovaButton type="submit">{(): string => 'Secondary'}</NovaButton>
         <NovaButton disabled>{(): string => 'Link'}</NovaButton>
         <NovaButton>{(): string => '简体中文'}</NovaButton>
-        <NovaButton>{(): string => '🚀'}</NovaButton>
-        <NovaButton>{() => <MDI3DRotation />}</NovaButton>
+        <NovaButton>{{ icon: (): string => '🚀' }}</NovaButton>
+        <NovaButton>{{ icon: () => <MDICamera /> }}</NovaButton>
+        <NovaButton>
+          {{ icon: () => <MDICamera />, default: () => 'Camera' }}
+        </NovaButton>
+        <NovaButton>{{ icon: () => <MDITheaters /> }}</NovaButton>
+        <NovaButton>
+          {{ icon: () => <MDITheaters />, default: () => 'Theaters' }}
+        </NovaButton>
         <NovaButton />
       </section>
     );

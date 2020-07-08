@@ -31,3 +31,23 @@
     opacity: 0.5;
   }
 }
+
+.nova-button-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: top;
+
+  .md-icon {
+    font-size: 18px;
+    margin: 1px;
+  }
+
+  + span {
+    margin-left: 5px;
+  }
+}
+
+.nova-button-icon-only {
+  padding: 4px;
+}
