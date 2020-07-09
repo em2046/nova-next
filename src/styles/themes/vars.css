@@ -42,7 +42,9 @@
 
   /* region Border */
   --nova-border-primary: 1px solid var(--nova-color-primary);
+  --nova-border-invisible: 1px solid transparent;
   --nova-radius-component: 10px;
+  --nova-radius-close: 6px;
   --nova-radius: 5px;
   --nova-radius-tiny: 2px;
   /* endregion */

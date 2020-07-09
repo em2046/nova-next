@@ -108,4 +108,30 @@ export default class DomUtils {
   static isTouchSupported(): boolean {
     return window.ontouchstart !== undefined;
   }
+
+  static getFocusable(target: HTMLElement | null): HTMLElement[] {
+    if (!target) {
+      return [];
+    }
+
+    const mayFocusable = target.querySelectorAll(
+      'a,button,details,input,select,textarea,[tabindex]'
+    );
+
+    return Array.from(mayFocusable).filter((item) => {
+      const tabindex = item.getAttribute('tabindex');
+
+      if (item.getAttribute('data-nova-trap')) {
+        return false;
+      }
+
+      if (item.getAttribute('disabled')) {
+        return false;
+      }
+
+      if (tabindex && tabindex.indexOf('-') === -1) {
+        return true;
+      }
+    }) as HTMLElement[];
+  }
 }

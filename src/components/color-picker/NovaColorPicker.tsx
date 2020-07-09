@@ -32,6 +32,10 @@ import useEnvironment, {
   environmentProps,
 } from '../../uses/use-environment';
 import { PropClass, PropStyle } from '../../utils/type';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { MDIClose } from '@em2046/material-design-icons-vue-next';
+import DomUtils from '../../utils/dom-utils';
 
 //region Mode
 const modeRgba = Symbol('rgba');
@@ -110,6 +114,10 @@ export default defineComponent({
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
     const autoFocusRef: Ref<HTMLElement | null> = ref(null);
+    const trapHeaderRef: Ref<HTMLElement | null> = ref(null);
+    const trapTrailerRef: Ref<HTMLElement | null> = ref(null);
+
+    let trapped = false;
 
     const mode = props.format === 'hsl' ? modeHsla : modeRgba;
     const state = reactive({
@@ -223,6 +231,29 @@ export default defineComponent({
       state.mode = modeList[activeModeIndex];
     }
 
+    function trapHeaderFocus() {
+      const focusable = DomUtils.getFocusable(dropdownRef.value);
+      nextFocus(focusable[focusable.length - 1]);
+    }
+
+    function trapTrailerFocus() {
+      const focusable = DomUtils.getFocusable(dropdownRef.value);
+      nextFocus(focusable[0]);
+    }
+
+    function nextFocus(target: HTMLElement | null) {
+      if (trapped) {
+        return;
+      }
+
+      trapped = true;
+      target?.focus();
+
+      requestAnimationFrame(() => {
+        trapped = false;
+      });
+    }
+
     const {
       dropdown,
       onBeforeEnter,
@@ -230,6 +261,7 @@ export default defineComponent({
       onBeforeLeave,
       onAfterLeave,
       onLeaveCancelled,
+      closeDropdown,
     } = useDropdown({
       triggerRef,
       dropdownRef,
@@ -459,11 +491,32 @@ export default defineComponent({
             style={props.dropdownStyle}
             {...props.dropdownProps}
           >
+            <div
+              class="nova-trap"
+              data-nova-trap="header"
+              tabindex={0}
+              ref={trapHeaderRef}
+              onFocus={trapHeaderFocus}
+            />
             {hsvPanelNode}
             {slidesNode}
             {formNode}
             {previewNode}
             {presetNode}
+            <div
+              class="nova-color-picker-close"
+              tabindex={0}
+              onClick={closeDropdown}
+            >
+              <MDIClose />
+            </div>
+            <div
+              class="nova-trap"
+              data-nova-trap="trailer"
+              tabindex={0}
+              ref={trapTrailerRef}
+              onFocus={trapTrailerFocus}
+            />
             <div class="nova-color-picker-panel-border" />
           </div>
         );

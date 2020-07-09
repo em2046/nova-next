@@ -23,6 +23,7 @@ interface DropdownProps {
 
 interface UseDropdownReturn {
   dropdown: Dropdown;
+  closeDropdown: () => void;
   onBeforeEnter: (el: Element) => void;
   onAfterEnter: (el: Element) => void;
   onBeforeLeave: (el: Element) => void;
@@ -94,6 +95,11 @@ export default function useDropdown(
     closeDropdown();
   }
 
+  function triggerFocus() {
+    const trigger = triggerRef.value as HTMLElement;
+    trigger.focus();
+  }
+
   function closeDropdown(): void {
     document.removeEventListener('mousedown', onVirtualMaskMousedown);
 
@@ -107,6 +113,8 @@ export default function useDropdown(
     if (prevOpened) {
       onClose?.call(null);
     }
+
+    triggerFocus();
   }
 
   function getDropdownOffset(params: GetDropdownOffsetParams) {
@@ -234,26 +242,15 @@ export default function useDropdown(
       return;
     }
 
-    function triggerFocus() {
-      const trigger = triggerRef.value as HTMLElement;
-      trigger.focus();
-    }
-
-    const opened = state.dropdown.opened;
-
     switch (e.key) {
       case 'Enter':
         toggleDropdown();
-        if (opened) {
-          triggerFocus();
-        }
         break;
       case 'Esc':
       case 'Escape':
         reset();
         nextTick(() => {
           closeDropdown();
-          triggerFocus();
         });
         break;
     }
@@ -341,6 +338,7 @@ export default function useDropdown(
 
   return {
     dropdown: state.dropdown,
+    closeDropdown,
     onBeforeEnter,
     onAfterEnter,
     onBeforeLeave,

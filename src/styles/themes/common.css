@@ -11,3 +11,7 @@
     display: inline-block;
   }
 }
+
+.nova-trap {
+  position: absolute;
+}
