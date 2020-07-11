@@ -32,8 +32,6 @@ import useEnvironment, {
   environmentProps,
 } from '../../uses/use-environment';
 import { PropClass, PropStyle } from '../../utils/type';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { MDIClose } from '@em2046/material-design-icons-vue-next';
 import DomUtils from '../../utils/dom-utils';
 

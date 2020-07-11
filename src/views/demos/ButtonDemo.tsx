@@ -1,8 +1,6 @@
 import { defineComponent } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import { NovaButton } from '../../index';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { MDICamera, MDITheaters } from '@em2046/material-design-icons-vue-next';
 
 export default defineComponent({

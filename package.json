@@ -33,7 +33,7 @@
     "url": "https://github.com/em2046/nova-next/issues"
   },
   "dependencies": {
-    "@em2046/material-design-icons-vue-next": "^1.0.0-alpha.3",
+    "@em2046/material-design-icons-vue-next": "^1.0.0-alpha.4",
     "vue": "^3.0.0-beta.19"
   },
   "devDependencies": {
