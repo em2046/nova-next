@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": false,
     "esModuleInterop": true,
+    "declarationDir": "./temp",
     "jsx": "react",
     "jsxFactory": "vueJsxCompat",
     "module": "CommonJS",

@@ -1,10 +1,16 @@
-import { computed, defineComponent, ref } from 'vue';
+import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import useMove from '../../../uses/use-move';
 import Utils from '../../../utils/utils';
 import Color from '../color';
 
-export default defineComponent({
+interface HsvPanelProps {
+  hueReg: number;
+  saturation: number;
+  value: number;
+}
+
+const HsvPanelImpl = {
   name: 'HsvPanel',
   props: {
     hueReg: {
@@ -20,7 +26,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: HsvPanelProps, context: SetupContext) {
     const emit = context.emit;
 
     const hsvRef = ref(null);
@@ -63,4 +69,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const HsvPanel = (HsvPanelImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & HsvPanelProps;
+  };
+};

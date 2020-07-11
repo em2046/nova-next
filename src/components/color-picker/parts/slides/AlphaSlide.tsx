@@ -1,9 +1,15 @@
-import { computed, defineComponent, ref } from 'vue';
+import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import useMove from '../../../../uses/use-move';
 import Utils from '../../../../utils/utils';
+import Color from '../../color';
 
-export default defineComponent({
+interface AlphaSlideProps {
+  alpha: number;
+  color: Color;
+}
+
+const AlphaSlideImpl = {
   name: 'AlphaSlide',
   props: {
     alpha: {
@@ -15,7 +21,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: AlphaSlideProps, context: SetupContext) {
     const emit = context.emit;
 
     const alphaSlideRef = ref(null);
@@ -56,4 +62,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const AlphaSlide = (AlphaSlideImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & AlphaSlideProps;
+  };
+};

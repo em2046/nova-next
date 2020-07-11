@@ -1,8 +1,13 @@
-import { defineComponent } from 'vue';
+import { SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import Color from '../color';
 
-export default defineComponent({
+interface PresetValuesProps {
+  color: Color;
+  preset: string[];
+}
+
+const PresetValuesImpl = {
   name: 'PresetValues',
   props: {
     color: {
@@ -14,7 +19,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: PresetValuesProps, context: SetupContext) {
     const emit = context.emit;
 
     function selectPreset(hex: string): void {
@@ -57,4 +62,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const PresetValues = (PresetValuesImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & PresetValuesProps;
+  };
+};

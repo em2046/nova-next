@@ -11,8 +11,8 @@ export default defineComponent({
 
     return (): JSX.Element => (
       <section>
-        <NovaButton name="button" onClick={handleClick}>
-          {(): string => 'primary'}
+        <NovaButton primary name="button" onClick={handleClick}>
+          {(): string => 'Primary'}
         </NovaButton>
         <NovaButton type="submit">{(): string => 'Secondary'}</NovaButton>
         <NovaButton disabled>{(): string => 'Link'}</NovaButton>

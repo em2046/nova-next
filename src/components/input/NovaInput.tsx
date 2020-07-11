@@ -1,11 +1,19 @@
-import { computed, defineComponent } from 'vue';
+import { computed, CSSProperties, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import useEnvironment, {
-  EnvironmentProps,
   environmentProps,
+  NovaEnvironmentProps,
 } from '../../uses/use-environment';
 
-export default defineComponent({
+interface NovaInputProps extends NovaEnvironmentProps {
+  class?: unknown;
+  wrapClass?: unknown;
+  wrapStyle?: string | CSSProperties;
+  disabled?: boolean;
+  readonly?: boolean;
+}
+
+const NovaInputImpl = {
   name: 'NovaInput',
   inheritAttrs: false,
   props: {
@@ -31,8 +39,8 @@ export default defineComponent({
       default: false,
     },
   },
-  setup(props, context) {
-    const environment = useEnvironment(props as EnvironmentProps);
+  setup(props: NovaInputProps, context: SetupContext) {
+    const environment = useEnvironment(props as NovaEnvironmentProps);
 
     const wrapClassList = computed(() => {
       return [
@@ -68,4 +76,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const NovaInput = (NovaInputImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & NovaInputProps;
+  };
+};

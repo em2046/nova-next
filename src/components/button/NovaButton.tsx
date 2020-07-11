@@ -1,19 +1,27 @@
-import { defineComponent } from 'vue';
+import { SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import useEnvironment, {
-  EnvironmentProps,
   environmentProps,
+  NovaEnvironmentProps,
 } from '../../uses/use-environment';
 
-export default defineComponent({
+interface NovaButtonProps extends NovaEnvironmentProps {
+  primary?: boolean;
+}
+
+const NovaButtonImpl = {
   name: 'NovaButton',
   props: {
     ...environmentProps,
+    primary: {
+      type: Boolean,
+      default: false,
+    },
   },
-  setup(props, context) {
+  setup(props: NovaButtonProps, context: SetupContext) {
     const { slots } = context;
 
-    const environment = useEnvironment(props as EnvironmentProps);
+    const environment = useEnvironment(props as NovaEnvironmentProps);
 
     return (): JSX.Element => {
       const children = slots.default?.();
@@ -21,6 +29,7 @@ export default defineComponent({
       const classList = [
         'nova-button',
         { 'nova-button-icon-only': icon && !children },
+        { 'nova-button-primary': props.primary },
       ];
 
       function createIcon() {
@@ -51,4 +60,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const NovaButton = (NovaButtonImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & NovaButtonProps;
+  };
+};

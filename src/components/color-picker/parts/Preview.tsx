@@ -1,8 +1,13 @@
-import { defineComponent } from 'vue';
+import { SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import Color from '../color';
 
-export default defineComponent({
+interface PreviewProps {
+  color: Color;
+  value: string;
+}
+
+const PreviewImpl = {
   name: 'Preview',
   props: {
     color: {
@@ -14,7 +19,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: PreviewProps, context: SetupContext) {
     const emit = context.emit;
 
     function onPrevClick(): void {
@@ -45,4 +50,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const Preview = (PreviewImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & PreviewProps;
+  };
+};

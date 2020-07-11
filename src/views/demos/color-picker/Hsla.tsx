@@ -1,6 +1,7 @@
 import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { NovaButton, NovaColorPicker } from '../../../index';
+import { ColorFormat } from '../../../components/color-picker/color';
 
 export default defineComponent({
   setup() {
@@ -20,7 +21,7 @@ export default defineComponent({
     return (): JSX.Element => {
       const pickerProps = {
         value: state.color,
-        format: 'hsl',
+        format: 'hsl' as ColorFormat,
         alpha: true,
         onUpdate,
       };

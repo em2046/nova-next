@@ -1,9 +1,13 @@
-import { computed, defineComponent, ref } from 'vue';
+import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import useMove from '../../../../uses/use-move';
 import Utils from '../../../../utils/utils';
 
-export default defineComponent({
+interface HueSlideProps {
+  hue: number;
+}
+
+const HueSlideImpl = {
   name: 'HueSlide',
   props: {
     hue: {
@@ -11,7 +15,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: HueSlideProps, context: SetupContext) {
     const emit = context.emit;
 
     const hueSlideRef = ref(null);
@@ -46,4 +50,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const HueSlide = (HueSlideImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & HueSlideProps;
+  };
+};

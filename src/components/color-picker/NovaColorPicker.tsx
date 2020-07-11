@@ -1,14 +1,15 @@
 import {
   computed,
-  defineComponent,
+  CSSProperties,
   onMounted,
-  PropType,
   reactive,
   Ref,
   ref,
+  SetupContext,
   Teleport,
   Transition,
   VNode,
+  VNodeProps,
   vShow,
   watch,
   withDirectives,
@@ -17,21 +18,20 @@ import { vueJsxCompat } from '../../vue-jsx-compat';
 import { MovePosition } from '../../uses/use-move';
 import useDropdown, { durationLong } from '../../uses/use-dropdown';
 import Utils from '../../utils/utils';
-import Color from './color';
-import Trigger from './parts/Trigger';
-import HsvPanel from './parts/HsvPanel';
-import HueSlide from './parts/slides/HueSlide';
-import AlphaSlide from './parts/slides/AlphaSlide';
-import RgbaLabels from './parts/labels/RgbaLabels';
-import HslaLabels from './parts/labels/HslaLabels';
-import HexLabel from './parts/labels/HexLabel';
-import Preview from './parts/Preview';
-import PresetValues from './parts/PresetValues';
+import Color, { ColorFormat } from './color';
+import { Trigger } from './parts/Trigger';
+import { HsvPanel } from './parts/HsvPanel';
+import { HueSlide } from './parts/slides/HueSlide';
+import { AlphaSlide } from './parts/slides/AlphaSlide';
+import { RgbaLabels } from './parts/labels/RgbaLabels';
+import { HslaLabels } from './parts/labels/HslaLabels';
+import { HexLabel } from './parts/labels/HexLabel';
+import { Preview } from './parts/Preview';
+import { PresetValues } from './parts/PresetValues';
 import useEnvironment, {
-  EnvironmentProps,
   environmentProps,
+  NovaEnvironmentProps,
 } from '../../uses/use-environment';
-import { PropClass, PropStyle } from '../../utils/type';
 import { MDIClose } from '@em2046/material-design-icons-vue-next';
 import DomUtils from '../../utils/dom-utils';
 
@@ -49,22 +49,40 @@ const modeSize = modeList.length;
 
 //endregion
 
+export interface NovaColorPickerProps extends NovaEnvironmentProps {
+  value?: string;
+  disabled?: boolean;
+  dropdownClass?: unknown;
+  dropdownStyle?: string | CSSProperties;
+  dropdownProps?: {
+    [key: string]: unknown;
+  };
+  teleportToBody?: boolean;
+  alpha?: boolean;
+  format?: ColorFormat;
+  preset?: string[];
+  onUpdate?: (color: string) => void;
+  onOpenChange?: (opened: boolean) => void;
+}
+
+const defaultValue = '#ff0000';
+
 const colorPickerProps = {
   ...environmentProps,
   value: {
     type: String,
-    default: '#ff0000',
+    default: defaultValue,
   },
   disabled: {
     type: Boolean,
     default: false,
   },
   dropdownClass: {
-    type: [String, Array, Object] as PropClass,
+    type: [String, Array, Object],
     default: null,
   },
   dropdownStyle: {
-    type: Object as PropStyle,
+    type: Object,
     default: null,
   },
   dropdownProps: {
@@ -84,7 +102,7 @@ const colorPickerProps = {
     default: 'hex',
   },
   preset: {
-    type: Array as PropType<string[]>,
+    type: Array,
     default: null,
   },
 };
@@ -101,13 +119,13 @@ export interface TriggerScoped {
   disabled: boolean;
 }
 
-export default defineComponent({
+const NovaColorPickerImpl = {
   name: 'NovaColorPicker',
   props: colorPickerProps,
-  setup(props, context) {
+  setup(props: NovaColorPickerProps, context: SetupContext) {
     const emit = context.emit;
 
-    const environment = useEnvironment(props as EnvironmentProps);
+    const environment = useEnvironment(props as NovaEnvironmentProps);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
@@ -314,7 +332,7 @@ export default defineComponent({
         }
 
         const triggerProps = {
-          disabled: props.disabled,
+          disabled: !!props.disabled,
           color: state.color,
         };
 
@@ -401,7 +419,7 @@ export default defineComponent({
         return (
           <CurrLabels
             color={state.color}
-            alpha={props.alpha}
+            alpha={!!props.alpha}
             onColorInput={setColorAndPosition}
             onColorBlur={setColorAndPosition}
             environment={environment}
@@ -441,19 +459,23 @@ export default defineComponent({
 
       function createPreview() {
         return (
-          <Preview color={state.color} value={props.value} onReset={init} />
+          <Preview
+            color={state.color}
+            value={props.value || defaultValue}
+            onReset={init}
+          />
         );
       }
 
       function createPreset() {
-        const preset = context.slots.preset;
+        const slotPreset = context.slots.preset;
         const presetProps = {
           preset: props.preset,
           color: state.color,
         };
 
-        if (preset) {
-          return preset({
+        if (slotPreset) {
+          return slotPreset({
             ...presetProps,
             setColorAndPosition,
           });
@@ -463,7 +485,13 @@ export default defineComponent({
           return null;
         }
 
-        return <PresetValues {...presetProps} onSelect={setColorAndPosition} />;
+        return (
+          <PresetValues
+            preset={props.preset}
+            color={state.color}
+            onSelect={setColorAndPosition}
+          />
+        );
       }
 
       function createDropdown() {
@@ -577,4 +605,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const NovaColorPicker = (NovaColorPickerImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & NovaColorPickerProps;
+  };
+};

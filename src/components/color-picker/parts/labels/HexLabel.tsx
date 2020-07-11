@@ -1,4 +1,4 @@
-import { defineComponent, reactive, ref, Ref } from 'vue';
+import { reactive, ref, Ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import Utils from '../../../../utils/utils';
 import DomUtils, {
@@ -50,7 +50,11 @@ function calcTuned(
   return tunedNumber.toString(16).padStart(tuningParams.length, '0');
 }
 
-export default defineComponent({
+interface HexLabelProps {
+  color: Color;
+}
+
+const HexLabelImpl = {
   name: 'HexLabel',
   props: {
     color: {
@@ -58,7 +62,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: HexLabelProps, context: SetupContext) {
     const emit = context.emit;
 
     const hexRef: Ref<HTMLElement | null> = ref(null);
@@ -184,4 +188,9 @@ export default defineComponent({
       );
     };
   },
-});
+};
+export const HexLabel = (HexLabelImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & HexLabelProps;
+  };
+};

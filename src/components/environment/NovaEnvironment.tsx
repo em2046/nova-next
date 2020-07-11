@@ -1,14 +1,15 @@
-import { defineComponent, provide, ref, VNode, watch } from 'vue';
+import { provide, ref, SetupContext, VNode, VNodeProps, watch } from 'vue';
 import { languageKey, themeKey } from '../../utils/symbols';
 import {
   environmentProps,
   languageDefault,
+  NovaEnvironmentProps,
   themeDefault,
 } from '../../uses/use-environment';
 
-export default defineComponent({
+const NovaEnvironmentImpl = {
   props: environmentProps,
-  setup(props, context) {
+  setup(props: NovaEnvironmentProps, context: SetupContext) {
     const { slots } = context;
 
     const themeRef = props.theme ? ref(props.theme) : ref(themeDefault);
@@ -51,4 +52,10 @@ export default defineComponent({
       return children;
     };
   },
-});
+};
+
+export const NovaEnvironment = (NovaEnvironmentImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & NovaEnvironmentProps;
+  };
+};

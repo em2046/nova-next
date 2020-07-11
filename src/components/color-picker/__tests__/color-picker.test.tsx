@@ -2,7 +2,8 @@ import { reactive } from 'vue';
 import { mount } from '@vue/test-utils';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import DomUtils from '../../../utils/dom-utils';
-import NovaColorPicker from '../NovaColorPicker';
+import { NovaColorPicker } from '../NovaColorPicker';
+import { ColorFormat } from '../color';
 
 describe('color-picker', () => {
   test('render', async () => {
@@ -311,7 +312,7 @@ describe('color-picker', () => {
     const wrapper = mount({
       setup() {
         const state = reactive({
-          format: 'hex',
+          format: 'hex' as ColorFormat,
           color: '#80808080',
         });
 

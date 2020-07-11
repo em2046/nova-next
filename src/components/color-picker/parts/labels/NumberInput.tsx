@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, Ref, ref } from 'vue';
+import { onMounted, Ref, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import Utils from '../../../../utils/utils';
 import DomUtils, {
@@ -8,7 +8,12 @@ import DomUtils, {
   up,
 } from '../../../../utils/dom-utils';
 
-export default defineComponent({
+interface NumberInputProps {
+  value?: string;
+  inputRef?: Ref<HTMLElement | null>;
+}
+
+const NumberInputImpl = {
   name: 'NumberInput',
   props: {
     value: {
@@ -20,7 +25,7 @@ export default defineComponent({
       default: null,
     },
   },
-  setup(props, context) {
+  setup(props: NumberInputProps, context: SetupContext) {
     const emit = context.emit;
 
     const inputRef: Ref<HTMLElement | null> = ref(null);
@@ -108,4 +113,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const NumberInput = (NumberInputImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & NumberInputProps;
+  };
+};

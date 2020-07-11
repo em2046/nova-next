@@ -8,3 +8,5 @@ build
 gulpfile.ts
 # don't lint vue jsx compat
 src/vue-jsx-compat.ts
+# don't lint temporary files
+temp

@@ -54,6 +54,8 @@ interface CssHsla {
   alpha: number;
 }
 
+export type ColorFormat = 'hsl' | 'rgb' | 'hex';
+
 function hexSimplify(hex: string): string {
   if (hex[0] === hex[1] && hex[2] === hex[3] && hex[4] === hex[5]) {
     return `${hex[0]}${hex[2]}${hex[4]}`;
@@ -371,7 +373,11 @@ export default class Color {
     return this.fromCssRgba(cssRed, cssGreen, cssBlue, cssAlpha);
   }
 
-  static parse(text: string): Color {
+  static parse(text?: string): Color {
+    if (!text) {
+      return new Color();
+    }
+
     // Hash hex
     if (text[0] === '#') {
       return Color.fromHex(text);
@@ -542,7 +548,7 @@ export default class Color {
     return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
   }
 
-  toString(format = 'hex'): string {
+  toString(format: ColorFormat = 'hex'): string {
     switch (format) {
       case 'rgb':
         return this.toCssRgbaString();

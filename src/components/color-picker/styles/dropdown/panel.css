@@ -48,6 +48,7 @@
   .md-icon {
     border-radius: var(--nova-radius-close);
     border: var(--nova-border-invisible);
+    transition: var(--nova-transition-component);
   }
 }
 

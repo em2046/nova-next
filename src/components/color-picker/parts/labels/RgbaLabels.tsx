@@ -1,4 +1,12 @@
-import { defineComponent, onMounted, reactive, ref, Ref, watch } from 'vue';
+import {
+  onMounted,
+  reactive,
+  ref,
+  Ref,
+  SetupContext,
+  VNodeProps,
+  watch,
+} from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import DomUtils from '../../../../utils/dom-utils';
 import Color from '../../color';
@@ -10,10 +18,17 @@ import {
   intNormalize,
   UpdateParams,
 } from './label-utils';
+import { Environment } from '../../../../uses/use-environment';
 
 type rgbChannel = 'red' | 'green' | 'blue';
 
-export default defineComponent({
+interface RgbaLabelsProps {
+  alpha: boolean;
+  color: Color;
+  environment: Environment;
+}
+
+const RgbaLabelsImpl = {
   name: 'RgbaLabels',
   props: {
     alpha: {
@@ -29,7 +44,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: RgbaLabelsProps, context: SetupContext) {
     const firstInputRef: Ref<HTMLElement | null> = ref(null);
 
     const emit = context.emit;
@@ -65,7 +80,7 @@ export default defineComponent({
       }
 
       if (/^\d+$/.test(value)) {
-        state[channel] = value;
+        state[channel] = parseFloat(value);
         updateColor('colorInput');
       }
     }
@@ -78,7 +93,7 @@ export default defineComponent({
       }
 
       if (alphaRule.test(value)) {
-        state['alpha'] = value;
+        state['alpha'] = parseFloat(value);
         updateColor('colorInput');
       }
     }
@@ -147,7 +162,7 @@ export default defineComponent({
       });
 
       const aNode = createAlpha({
-        alpha: !!props.alpha,
+        alpha: props.alpha,
         title: language.alpha,
         value: state.alpha,
         onInput: (e) => {
@@ -169,4 +184,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const RgbaLabels = (RgbaLabelsImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & RgbaLabelsProps;
+  };
+};

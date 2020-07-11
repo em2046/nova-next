@@ -17,10 +17,12 @@ export const environmentProps = {
   },
 };
 
-export type EnvironmentProps = { theme: string; language: Language };
+export type NovaEnvironmentProps = { theme?: string; language?: Language };
 export type Environment = { languageRef: Ref<Language>; themeRef: Ref<string> };
 
-export default function useEnvironment(props: EnvironmentProps): Environment {
+export default function useEnvironment(
+  props: NovaEnvironmentProps
+): Environment {
   let themeRef: Ref<string>;
   let languageRef: Ref<Language>;
 

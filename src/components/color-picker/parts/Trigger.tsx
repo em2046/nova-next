@@ -1,7 +1,14 @@
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, Ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
+import Color from '../color';
 
-export default defineComponent({
+export interface TriggerProps {
+  color: Color;
+  disabled: boolean;
+  onAssignRef?: (ref: Ref<HTMLElement | null>) => void;
+}
+
+const TriggerImpl = {
   name: 'Trigger',
   props: {
     color: {
@@ -13,7 +20,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
+  setup(props: TriggerProps, context: SetupContext) {
     const emit = context.emit;
 
     const triggerRef = ref(null);
@@ -45,4 +52,10 @@ export default defineComponent({
       );
     };
   },
-});
+};
+
+export const Trigger = (TriggerImpl as unknown) as {
+  new (): {
+    $props: VNodeProps & TriggerProps;
+  };
+};

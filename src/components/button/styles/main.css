@@ -32,6 +32,11 @@
   }
 }
 
+.nova-button-primary {
+  color: var(--nova-color-white);
+  background-color: var(--nova-color-primary);
+}
+
 .nova-button-icon {
   width: 20px;
   height: 20px;

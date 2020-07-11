@@ -1,7 +1,7 @@
 {
   "name": "@em2046/nova-next",
   "description": "Experimental Vue components",
-  "version": "2.0.0-alpha.16",
+  "version": "2.0.0-alpha.17",
   "author": {
     "name": "em2046",
     "email": "em2046@qq.com"
@@ -11,14 +11,16 @@
     "dist",
     "src"
   ],
-  "module": "dist/nova.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite --https",
+    "gulp:clean": "gulp --require ts-node/register/transpile-only clean",
+    "gulp:style": "gulp --require ts-node/register/transpile-only style",
+    "gulp:lib": "gulp --require ts-node/register/transpile-only lib",
+    "build": "yarn gulp:clean && yarn gulp:style && yarn gulp:lib",
     "build:demo": "vite build",
-    "build:clean": "gulp --require ts-node/register/transpile-only clean",
-    "build:style": "gulp --require ts-node/register/transpile-only style",
-    "build:lib": "rollup --config build/rollup/rollup.config.es.js -m",
-    "build": "yarn build:clean && yarn build:style && yarn build:lib",
     "test": "jest",
     "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css,vue}",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx,.vue",
@@ -37,6 +39,7 @@
     "vue": "^3.0.0-beta.19"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.9.2",
     "@rollup/plugin-typescript": "^5.0.0",
     "@types/autoprefixer": "^9.7.2",
     "@types/gulp": "^4.0.6",
@@ -52,6 +55,7 @@
     "@vue/test-utils": "^2.0.0-alpha.8",
     "autoprefixer": "^9.8.4",
     "del": "^5.1.0",
+    "esbuild": "^0.6.0",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-vue": "^7.0.0-alpha.5",

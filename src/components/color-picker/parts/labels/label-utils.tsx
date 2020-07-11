@@ -1,6 +1,6 @@
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import Utils from '../../../../utils/utils';
-import NumberInput from './NumberInput';
+import { NumberInput } from './NumberInput';
 import { Ref } from 'vue';
 
 export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
