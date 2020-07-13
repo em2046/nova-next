@@ -6,7 +6,7 @@ interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
   dropdownRef: Ref<HTMLElement | null>;
   autoFocusRef: Ref<HTMLElement | null>;
-  reset: () => void;
+  reset?: () => void;
   props: Readonly<unknown>;
   onOpen?: () => void;
   onClose?: () => void;
@@ -248,7 +248,7 @@ export default function useDropdown(
         break;
       case 'Esc':
       case 'Escape':
-        reset();
+        reset?.();
         nextTick(() => {
           closeDropdown();
         });

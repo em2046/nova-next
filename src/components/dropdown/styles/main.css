@@ -1,0 +1,13 @@
+.nova-dropdown {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.nova-dropdown-panel {
+  position: absolute;
+  color: var(--nova-color-font);
+  background-color: var(--nova-color-bg-dropdown);
+  backdrop-filter: var(--nova-backdrop-filter-component);
+  will-change: transform;
+  border-radius: var(--nova-radius-component);
+}

@@ -281,7 +281,7 @@ const NovaColorPickerImpl = {
     } = useDropdown({
       triggerRef,
       dropdownRef,
-      autoFocusRef: autoFocusRef,
+      autoFocusRef,
       reset,
       props,
       onOpen: () => {

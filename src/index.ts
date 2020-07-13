@@ -3,6 +3,7 @@ import { NovaEnvironment } from './components/environment';
 import { NovaButton } from './components/button';
 import { NovaInput } from './components/input';
 import { Color, NovaColorPicker } from './components/color-picker';
+import { NovaDropdown } from './components/dropdown';
 
 export {
   enUS,
@@ -12,4 +13,5 @@ export {
   NovaInput,
   NovaColorPicker,
   Color,
+  NovaDropdown,
 };
