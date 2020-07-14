@@ -1,5 +1,8 @@
-.nova-color-picker-preset-list {
+.nova-color-picker-preset-wrap {
   grid-column: 1 / -1;
+}
+
+.nova-color-picker-preset-list {
   display: grid;
   grid-template: repeat(auto-fill, 20px) / repeat(auto-fill, 20px);
   grid-gap: 10px;

@@ -40,8 +40,3 @@ body {
 #main a {
   color: hsl(210, 100%, 50%);
 }
-
-.nova-button,
-.nova-input {
-  margin-left: 5px;
-}

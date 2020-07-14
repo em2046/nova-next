@@ -107,15 +107,14 @@ const colorPickerProps = {
   },
 };
 
-export interface PresetScoped {
+export interface NovaColorPickerPresetScoped {
   preset: string[];
   color: Color;
   setColorAndPosition: (color: Color) => void;
 }
 
-export interface TriggerScoped {
+export interface NovaColorPickerTriggerScoped {
   color: Color;
-  triggerRef: Ref<HTMLElement | null>;
   disabled: boolean;
 }
 
@@ -337,14 +336,20 @@ const NovaColorPickerImpl = {
         };
 
         const trigger = context.slots.trigger;
+
+        let triggerNode = null;
         if (trigger) {
-          return trigger({
-            triggerRef,
-            ...triggerProps,
-          });
+          triggerNode = () =>
+            trigger({
+              ...triggerProps,
+            });
         }
 
-        return <Trigger onAssignRef={onAssignRef} {...triggerProps} />;
+        return (
+          <Trigger onAssignRef={onAssignRef} {...triggerProps}>
+            {triggerNode}
+          </Trigger>
+        );
       }
 
       function createHsvPanel() {
@@ -474,23 +479,27 @@ const NovaColorPickerImpl = {
           color: state.color,
         };
 
+        let slotPresetNode = null;
         if (slotPreset) {
-          return slotPreset({
-            ...presetProps,
-            setColorAndPosition,
-          });
+          slotPresetNode = () =>
+            slotPreset({
+              ...presetProps,
+              setColorAndPosition,
+            });
         }
 
-        if (!props.preset?.length) {
+        if (!props.preset?.length && !slotPresetNode) {
           return null;
         }
 
         return (
           <PresetValues
-            preset={props.preset}
+            preset={props.preset || []}
             color={state.color}
             onSelect={setColorAndPosition}
-          />
+          >
+            {slotPresetNode}
+          </PresetValues>
         );
       }
 

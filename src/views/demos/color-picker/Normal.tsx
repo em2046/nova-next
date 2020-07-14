@@ -2,8 +2,8 @@ import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { Color, NovaButton, NovaColorPicker } from '../../../index';
 import {
-  PresetScoped,
-  TriggerScoped,
+  NovaColorPickerPresetScoped,
+  NovaColorPickerTriggerScoped,
 } from '../../../components/color-picker/NovaColorPicker';
 import hslData from '../../../components/color-picker/assets/css-wg/hsl';
 import './styles/normal.css';
@@ -30,20 +30,16 @@ export default defineComponent({
     }
 
     const slots = {
-      trigger: (scoped: TriggerScoped) => {
+      trigger: (scoped: NovaColorPickerTriggerScoped) => {
         const hex = scoped.color.toCssHexString();
         return (
-          <div
-            class="demo-color-picker-normal-trigger"
-            ref={scoped.triggerRef}
-            tabindex={scoped.disabled ? -1 : 0}
-          >
+          <div class="demo-color-picker-normal-trigger-inner">
             <i style={{ backgroundColor: hex }} />
             <span>{hex}</span>
           </div>
         );
       },
-      preset: (scoped: PresetScoped) => {
+      preset: (scoped: NovaColorPickerPresetScoped) => {
         function handleClick(cell: string) {
           scoped.setColorAndPosition(Color.fromHex(cell));
         }
@@ -68,7 +64,7 @@ export default defineComponent({
           return <div>{table}</div>;
         });
 
-        return <div class="demo-color-picker-normal-preset">{panes}</div>;
+        return <div class="demo-color-picker-normal-preset-inner">{panes}</div>;
       },
     };
 

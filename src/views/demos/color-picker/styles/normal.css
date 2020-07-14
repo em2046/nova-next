@@ -6,7 +6,7 @@
   }
 }
 
-.demo-color-picker-normal-preset {
+.demo-color-picker-normal-preset-inner {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 5px;
@@ -30,7 +30,7 @@
   }
 }
 
-.demo-color-picker-normal-trigger {
+.demo-color-picker-normal-trigger-inner {
   padding: 5px;
   width: 100px;
   display: flex;

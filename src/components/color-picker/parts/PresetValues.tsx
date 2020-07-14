@@ -21,6 +21,7 @@ const PresetValuesImpl = {
   },
   setup(props: PresetValuesProps, context: SetupContext) {
     const emit = context.emit;
+    const slots = context.slots;
 
     function selectPreset(hex: string): void {
       const color = Color.parse(hex);
@@ -55,11 +56,18 @@ const PresetValuesImpl = {
     }
 
     return (): JSX.Element => {
-      return (
+      const presetDefault = (
         <div class="nova-color-picker-preset-list">
           {props.preset.map((value) => createPreset(value as string))}
         </div>
       );
+      let presetNode = presetDefault;
+      const children = slots.default;
+      if (children) {
+        presetNode = children();
+      }
+
+      return <div class="nova-color-picker-preset-wrap">{presetNode}</div>;
     };
   },
 };

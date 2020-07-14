@@ -22,6 +22,7 @@ const TriggerImpl = {
   },
   setup(props: TriggerProps, context: SetupContext) {
     const emit = context.emit;
+    const slots = context.slots;
 
     const triggerRef = ref(null);
 
@@ -36,18 +37,28 @@ const TriggerImpl = {
     });
 
     return (): JSX.Element => {
+      const defaultTrigger = (
+        <div class="nova-color-picker-trigger-inner">
+          <div
+            class="nova-color-picker-trigger-bg"
+            style={triggerInnerStyle.value}
+          />
+        </div>
+      );
+
+      let triggerInner = defaultTrigger;
+      const children = slots.default;
+      if (children) {
+        triggerInner = children();
+      }
+
       return (
         <div
           class="nova-color-picker-trigger"
           ref={triggerRef}
           tabindex={props.disabled ? -1 : 0}
         >
-          <div class="nova-color-picker-trigger-inner">
-            <div
-              class="nova-color-picker-trigger-bg"
-              style={triggerInnerStyle.value}
-            />
-          </div>
+          {triggerInner}
         </div>
       );
     };
