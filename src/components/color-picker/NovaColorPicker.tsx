@@ -1,22 +1,6 @@
-import {
-  computed,
-  CSSProperties,
-  onMounted,
-  reactive,
-  Ref,
-  ref,
-  SetupContext,
-  Teleport,
-  Transition,
-  VNode,
-  VNodeProps,
-  vShow,
-  watch,
-  withDirectives,
-} from 'vue';
+import { computed, onMounted, reactive, SetupContext, VNodeProps, watch } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import { MovePosition } from '../../uses/use-move';
-import useDropdown, { durationLong } from '../../uses/use-dropdown';
 import Utils from '../../utils/utils';
 import Color, { ColorFormat } from './color';
 import { Trigger } from './parts/Trigger';
@@ -28,12 +12,10 @@ import { HslaLabels } from './parts/labels/HslaLabels';
 import { HexLabel } from './parts/labels/HexLabel';
 import { Preview } from './parts/Preview';
 import { PresetValues } from './parts/PresetValues';
-import useEnvironment, {
-  environmentProps,
-  NovaEnvironmentProps,
-} from '../../uses/use-environment';
+import useEnvironment, { environmentProps, NovaEnvironmentProps } from '../../uses/use-environment';
 import { MDIClose } from '@em2046/material-design-icons-vue-next';
-import DomUtils from '../../utils/dom-utils';
+import { NovaDropdown } from '../dropdown';
+import { dropdownProps, NovaDropdownProps, NovaDropdownTriggerScoped } from '../dropdown/NovaDropdown';
 
 //region Mode
 const modeRgba = Symbol('rgba');
@@ -49,15 +31,10 @@ const modeSize = modeList.length;
 
 //endregion
 
-export interface NovaColorPickerProps extends NovaEnvironmentProps {
+export interface NovaColorPickerProps
+  extends NovaEnvironmentProps,
+    NovaDropdownProps {
   value?: string;
-  disabled?: boolean;
-  dropdownClass?: unknown;
-  dropdownStyle?: string | CSSProperties;
-  dropdownProps?: {
-    [key: string]: unknown;
-  };
-  teleportToBody?: boolean;
   alpha?: boolean;
   format?: ColorFormat;
   preset?: string[];
@@ -69,29 +46,10 @@ const defaultValue = '#ff0000';
 
 const colorPickerProps = {
   ...environmentProps,
+  ...dropdownProps,
   value: {
     type: String,
     default: defaultValue,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  dropdownClass: {
-    type: [String, Array, Object],
-    default: null,
-  },
-  dropdownStyle: {
-    type: Object,
-    default: null,
-  },
-  dropdownProps: {
-    type: Object,
-    default: null,
-  },
-  teleportToBody: {
-    type: Boolean,
-    default: true,
   },
   alpha: {
     type: Boolean,
@@ -113,9 +71,9 @@ export interface NovaColorPickerPresetScoped {
   setColorAndPosition: (color: Color) => void;
 }
 
-export interface NovaColorPickerTriggerScoped {
+export interface NovaColorPickerTriggerScoped
+  extends NovaDropdownTriggerScoped {
   color: Color;
-  disabled: boolean;
 }
 
 const NovaColorPickerImpl = {
@@ -125,14 +83,6 @@ const NovaColorPickerImpl = {
     const emit = context.emit;
 
     const environment = useEnvironment(props as NovaEnvironmentProps);
-
-    const triggerRef: Ref<HTMLElement | null> = ref(null);
-    const dropdownRef: Ref<HTMLElement | null> = ref(null);
-    const autoFocusRef: Ref<HTMLElement | null> = ref(null);
-    const trapHeaderRef: Ref<HTMLElement | null> = ref(null);
-    const trapTrailerRef: Ref<HTMLElement | null> = ref(null);
-
-    let trapped = false;
 
     const mode = props.format === 'hsl' ? modeHsla : modeRgba;
     const state = reactive({
@@ -170,14 +120,13 @@ const NovaColorPickerImpl = {
         'nova-color-picker',
         {
           ['nova-color-picker-disabled']: props.disabled,
-          ['nova-color-picker-opened']: dropdown.opened,
         },
       ];
     });
 
     const dropdownClassList = computed(() => {
       return [
-        'nova-color-picker-panel',
+        'nova-color-picker-panel-inner',
         props.dropdownClass,
         {
           ['nova-color-picker-panel-has-alpha']: props.alpha,
@@ -246,51 +195,11 @@ const NovaColorPickerImpl = {
       state.mode = modeList[activeModeIndex];
     }
 
-    function trapHeaderFocus() {
-      const focusable = DomUtils.getFocusable(dropdownRef.value);
-      nextFocus(focusable[focusable.length - 1]);
-    }
-
-    function trapTrailerFocus() {
-      const focusable = DomUtils.getFocusable(dropdownRef.value);
-      nextFocus(focusable[0]);
-    }
-
-    function nextFocus(target: HTMLElement | null) {
-      if (trapped) {
-        return;
-      }
-
-      trapped = true;
-      target?.focus();
-
-      requestAnimationFrame(() => {
-        trapped = false;
-      });
-    }
-
-    const {
-      dropdown,
-      onBeforeEnter,
-      onAfterEnter,
-      onBeforeLeave,
-      onAfterLeave,
-      onLeaveCancelled,
-      closeDropdown,
-    } = useDropdown({
-      triggerRef,
-      dropdownRef,
-      autoFocusRef,
-      reset,
-      props,
-      onOpen: () => {
-        emit('openChange', true);
-      },
-      onClose: () => {
-        emit('openChange', false);
+    function onOpenChange(open: boolean) {
+      if (!open) {
         changePropsValue(state.color);
-      },
-    });
+      }
+    }
 
     watch(
       () => props.value,
@@ -326,10 +235,6 @@ const NovaColorPickerImpl = {
 
     return (): JSX.Element => {
       function createTrigger() {
-        function onAssignRef(assignedRef: Ref<HTMLElement | null>): void {
-          triggerRef.value = assignedRef.value;
-        }
-
         const triggerProps = {
           disabled: !!props.disabled,
           color: state.color,
@@ -345,11 +250,7 @@ const NovaColorPickerImpl = {
             });
         }
 
-        return (
-          <Trigger onAssignRef={onAssignRef} {...triggerProps}>
-            {triggerNode}
-          </Trigger>
-        );
+        return <Trigger {...triggerProps}>{triggerNode}</Trigger>;
       }
 
       function createHsvPanel() {
@@ -415,12 +316,6 @@ const NovaColorPickerImpl = {
           return null;
         }
 
-        function onAssignRef(assignedRef: Ref<HTMLElement | null>) {
-          if (assignedRef.value) {
-            autoFocusRef.value = assignedRef.value;
-          }
-        }
-
         return (
           <CurrLabels
             color={state.color}
@@ -428,7 +323,6 @@ const NovaColorPickerImpl = {
             onColorInput={setColorAndPosition}
             onColorBlur={setColorAndPosition}
             environment={environment}
-            onAssignRef={onAssignRef}
           />
         );
       }
@@ -504,35 +398,18 @@ const NovaColorPickerImpl = {
       }
 
       function createDropdown() {
-        if (!dropdown.loaded || props.disabled) {
-          return null;
-        }
-
-        let beforeAppearFlag = false;
-        let afterAppearFlag = false;
-
         const hsvPanelNode = createHsvPanel();
         const slidesNode = createSlides();
         const formNode = createForm();
         const previewNode = createPreview();
         const presetNode = createPreset();
 
-        const dropdownCoreNode = (
-          <div
-            role="dialog"
-            data-nova-theme={environment.themeRef.value}
-            ref={dropdownRef}
-            class={dropdownClassList.value}
-            style={props.dropdownStyle}
-            {...props.dropdownProps}
-          >
-            <div
-              class="nova-trap"
-              data-nova-trap="header"
-              tabindex={0}
-              ref={trapHeaderRef}
-              onFocus={trapHeaderFocus}
-            />
+        function closeDropdown() {
+          console.log('closeDropdown');
+        }
+
+        return (
+          <div class={dropdownClassList.value}>
             {hsvPanelNode}
             {slidesNode}
             {formNode}
@@ -543,58 +420,11 @@ const NovaColorPickerImpl = {
               tabindex={0}
               onClick={closeDropdown}
             >
-              <MDIClose />
+              <MDIClose/>
             </div>
-            <div
-              class="nova-trap"
-              data-nova-trap="trailer"
-              tabindex={0}
-              ref={trapTrailerRef}
-              onFocus={trapTrailerFocus}
-            />
-            <div class="nova-color-picker-panel-border" />
+
+            <div class="nova-color-picker-panel-border"/>
           </div>
-        );
-
-        function onBeforeAppear(el: Element) {
-          if (beforeAppearFlag) {
-            return;
-          }
-
-          beforeAppearFlag = true;
-          onBeforeEnter(el);
-        }
-
-        function onAfterAppear(el: Element) {
-          if (afterAppearFlag) {
-            return;
-          }
-
-          afterAppearFlag = true;
-          onAfterEnter(el);
-        }
-
-        return (
-          <Teleport to="body" disabled={!props.teleportToBody}>
-            <Transition
-              name="nova-dropdown"
-              duration={durationLong}
-              appear
-              onBeforeAppear={onBeforeAppear}
-              onAfterAppear={onAfterAppear}
-              onBeforeEnter={onBeforeEnter}
-              onAfterEnter={onAfterEnter}
-              onBeforeLeave={onBeforeLeave}
-              onAfterLeave={onAfterLeave}
-              onLeaveCancelled={onLeaveCancelled}
-            >
-              {() =>
-                withDirectives(dropdownCoreNode as VNode, [
-                  [vShow, dropdown.opened],
-                ])
-              }
-            </Transition>
-          </Teleport>
         );
       }
 
@@ -602,15 +432,28 @@ const NovaColorPickerImpl = {
       const dropdownNode = createDropdown();
       const borderNode = <div class="nova-color-picker-border" />;
 
+      const slots = {
+        trigger: () => {
+          return [triggerNode, borderNode];
+        },
+        default: () => {
+          return dropdownNode;
+        },
+      };
+
       return (
-        <div
+        <NovaDropdown
           class={classList.value}
-          data-nova-theme={environment.themeRef.value}
+          disabled={props.disabled}
+          dropdownClass={props.dropdownClass}
+          dropdownStyle={props.dropdownStyle}
+          dropdownProps={props.dropdownProps}
+          teleportToBody={props.teleportToBody}
+          environment={environment}
+          onOpenChange={onOpenChange}
         >
-          {triggerNode}
-          {borderNode}
-          {dropdownNode}
-        </div>
+          {slots}
+        </NovaDropdown>
       );
     };
   },

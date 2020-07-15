@@ -1,4 +1,4 @@
-import { onMounted, Ref, ref, SetupContext, VNodeProps } from 'vue';
+import { Ref, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import Utils from '../../../../utils/utils';
 import DomUtils, {
@@ -94,10 +94,6 @@ const NumberInputImpl = {
           break;
       }
     }
-
-    onMounted(() => {
-      emit('assignRef', inputRef);
-    });
 
     return (): JSX.Element => {
       return (

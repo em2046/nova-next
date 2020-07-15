@@ -14,11 +14,13 @@
     }
   }
 
-  &:not(.nova-color-picker-disabled) :focus ~,
-  &.nova-color-picker-opened {
-    .nova-color-picker-border {
-      border: var(--nova-border-primary);
-      box-shadow: var(--nova-shadow-primary);
+  &.nova-dropdown-opened,
+  .nova-dropdown-trigger:focus {
+     {
+      .nova-color-picker-border {
+        border: var(--nova-border-primary);
+        box-shadow: var(--nova-shadow-primary);
+      }
     }
   }
 }

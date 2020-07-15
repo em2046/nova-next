@@ -1,6 +1,7 @@
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import {
   computed,
+  CSSProperties,
   ref,
   Ref,
   SetupContext,
@@ -12,35 +13,93 @@ import {
   withDirectives,
 } from 'vue';
 import useEnvironment, {
+  Environment,
   NovaEnvironmentProps,
 } from '../../uses/use-environment';
 import useDropdown, { durationLong } from '../../uses/use-dropdown';
+import DomUtils from '../../utils/dom-utils';
 
 export interface NovaDropdownProps extends NovaEnvironmentProps {
   disabled?: boolean;
+  dropdownClass?: unknown;
+  dropdownStyle?: string | CSSProperties;
+  dropdownProps?: {
+    [key: string]: unknown;
+  };
   teleportToBody?: boolean;
+  environment?: Environment;
 }
+
+export interface NovaDropdownTriggerScoped {
+  disabled: boolean;
+}
+
+export const dropdownProps = {
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  dropdownClass: {
+    type: [String, Array, Object],
+    default: null,
+  },
+  dropdownStyle: {
+    type: Object,
+    default: null,
+  },
+  dropdownProps: {
+    type: Object,
+    default: null,
+  },
+  teleportToBody: {
+    type: Boolean,
+    default: true,
+  },
+  environment: {
+    type: Object,
+    default: null,
+  },
+};
 
 const NovaDropdownImpl = {
   name: 'NovaDropdown',
-  props: {
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    teleportToBody: {
-      type: Boolean,
-      default: true,
-    },
-  },
+  props: dropdownProps,
   setup(props: NovaDropdownProps, context: SetupContext) {
     const { emit, slots } = context;
 
-    const environment = useEnvironment(props as NovaEnvironmentProps);
+    let trapped = false;
+
+    const environment =
+      props.environment ?? useEnvironment(props as NovaEnvironmentProps);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
     const autoFocusRef: Ref<HTMLElement | null> = ref(null);
+    const trapHeaderRef: Ref<HTMLElement | null> = ref(null);
+    const trapTrailerRef: Ref<HTMLElement | null> = ref(null);
+
+    function trapHeaderFocus() {
+      const focusable = DomUtils.getFocusable(dropdownRef.value);
+      nextFocus(focusable[focusable.length - 1]);
+    }
+
+    function trapTrailerFocus() {
+      const focusable = DomUtils.getFocusable(dropdownRef.value);
+      nextFocus(focusable[0]);
+    }
+
+    function nextFocus(target: HTMLElement | null) {
+      if (trapped) {
+        return;
+      }
+
+      trapped = true;
+      target?.focus();
+
+      requestAnimationFrame(() => {
+        trapped = false;
+      });
+    }
 
     const classList = computed(() => {
       return [
@@ -54,6 +113,7 @@ const NovaDropdownImpl = {
 
     const {
       dropdown,
+      closeDropdown,
       onBeforeEnter,
       onAfterEnter,
       onBeforeLeave,
@@ -74,12 +134,23 @@ const NovaDropdownImpl = {
 
     return () => {
       const children = slots.default?.();
-      const trigger = slots.trigger?.();
+      const slotTrigger = slots.trigger;
+
+      let slotTriggerNode: VNode[] | null = null;
+      if (slotTrigger) {
+        slotTriggerNode = slotTrigger({
+          closeDropdown,
+        });
+      }
 
       function createTrigger() {
         return (
-          <div ref={triggerRef} class="nova-dropdown-trigger">
-            {trigger}
+          <div
+            ref={triggerRef}
+            class="nova-dropdown-trigger"
+            tabindex={props.disabled ? -1 : 0}
+          >
+            {slotTriggerNode}
           </div>
         );
       }
@@ -98,7 +169,23 @@ const NovaDropdownImpl = {
             role="dialog"
             data-nova-theme={environment.themeRef.value}
             ref={dropdownRef}
+            style={props.dropdownStyle}
+            {...props.dropdownProps}
           >
+            <div
+              class="nova-trap"
+              data-nova-trap="header"
+              tabindex={0}
+              ref={trapHeaderRef}
+              onFocus={trapHeaderFocus}
+            />
+            <div
+              class="nova-trap"
+              data-nova-trap="trailer"
+              tabindex={0}
+              ref={trapTrailerRef}
+              onFocus={trapTrailerFocus}
+            />
             {children}
           </div>
         );
@@ -149,7 +236,10 @@ const NovaDropdownImpl = {
       const triggerNode = createTrigger();
 
       return (
-        <div class={classList.value}>
+        <div
+          class={classList.value}
+          data-nova-theme={environment.themeRef.value}
+        >
           {triggerNode}
           {dropdownNode}
         </div>

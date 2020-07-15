@@ -1,11 +1,10 @@
-import { computed, onMounted, ref, Ref, SetupContext, VNodeProps } from 'vue';
+import { computed, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import Color from '../color';
 
 export interface TriggerProps {
   color: Color;
   disabled: boolean;
-  onAssignRef?: (ref: Ref<HTMLElement | null>) => void;
 }
 
 const TriggerImpl = {
@@ -21,10 +20,7 @@ const TriggerImpl = {
     },
   },
   setup(props: TriggerProps, context: SetupContext) {
-    const emit = context.emit;
     const slots = context.slots;
-
-    const triggerRef = ref(null);
 
     const triggerInnerStyle = computed(() => {
       return {
@@ -32,12 +28,8 @@ const TriggerImpl = {
       };
     });
 
-    onMounted(() => {
-      emit('assignRef', triggerRef);
-    });
-
     return (): JSX.Element => {
-      const defaultTrigger = (
+      let triggerInner = (
         <div class="nova-color-picker-trigger-inner">
           <div
             class="nova-color-picker-trigger-bg"
@@ -45,22 +37,12 @@ const TriggerImpl = {
           />
         </div>
       );
-
-      let triggerInner = defaultTrigger;
       const children = slots.default;
       if (children) {
         triggerInner = children();
       }
 
-      return (
-        <div
-          class="nova-color-picker-trigger"
-          ref={triggerRef}
-          tabindex={props.disabled ? -1 : 0}
-        >
-          {triggerInner}
-        </div>
-      );
+      return triggerInner;
     };
   },
 };

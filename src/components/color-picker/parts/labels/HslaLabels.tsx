@@ -1,12 +1,4 @@
-import {
-  onMounted,
-  reactive,
-  Ref,
-  ref,
-  SetupContext,
-  VNodeProps,
-  watch,
-} from 'vue';
+import { reactive, SetupContext, VNodeProps, watch } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import DomUtils from '../../../../utils/dom-utils';
 import Color from '../../color';
@@ -45,8 +37,6 @@ const HslaLabelsImpl = {
     },
   },
   setup(props: HslaLabelsProps, context: SetupContext) {
-    const firstInputRef: Ref<HTMLElement | null> = ref(null);
-
     const emit = context.emit;
 
     const hsla = props.color.toCssHsla();
@@ -114,10 +104,6 @@ const HslaLabelsImpl = {
       }
     );
 
-    onMounted(() => {
-      emit('assignRef', firstInputRef);
-    });
-
     return (): JSX.Element => {
       const language = props.environment.languageRef.value.colorPicker;
 
@@ -132,7 +118,6 @@ const HslaLabelsImpl = {
           onHslInput(params.target, 'hue');
         },
         onBlur: onHslaBlur,
-        inputRef: firstInputRef,
       });
 
       const sNode = createChannel({

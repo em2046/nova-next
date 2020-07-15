@@ -56,12 +56,11 @@ const PresetValuesImpl = {
     }
 
     return (): JSX.Element => {
-      const presetDefault = (
+      let presetNode = (
         <div class="nova-color-picker-preset-list">
           {props.preset.map((value) => createPreset(value as string))}
         </div>
       );
-      let presetNode = presetDefault;
       const children = slots.default;
       if (children) {
         presetNode = children();

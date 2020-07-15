@@ -1,18 +1,12 @@
-.nova-color-picker-panel {
+.nova-color-picker-panel-inner {
   line-height: var(--nova-line-height);
   font-family: var(--nova-font-sans-serif);
   user-select: none;
-  position: absolute;
   padding: 10px;
   font-size: var(--nova-font-size);
-  color: var(--nova-color-font);
-  background-color: var(--nova-color-bg-dropdown);
-  backdrop-filter: var(--nova-backdrop-filter-component);
   width: 330px;
   display: grid;
   grid-template-columns: 220px auto;
-  will-change: transform;
-  border-radius: var(--nova-radius-component);
 }
 
 .nova-color-picker-close {

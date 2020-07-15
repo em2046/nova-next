@@ -1,7 +1,6 @@
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import Utils from '../../../../utils/utils';
 import { NumberInput } from './NumberInput';
-import { Ref } from 'vue';
 
 export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
 
@@ -11,7 +10,6 @@ interface Params {
   onInput: (e: Event) => void;
   onBlur: (e: Event) => void;
   onUpdate: (params: UpdateParams) => void;
-  inputRef?: Ref<HTMLElement | null>;
 }
 
 export interface ChannelParams extends Params {
@@ -52,13 +50,7 @@ export function alphaNormalize(value: number): number {
 }
 
 export function createChannel(params: ChannelParams): JSX.Element {
-  const { label, title, value, onInput, onUpdate, onBlur, inputRef } = params;
-
-  function onAssignRef(assignedRef: Ref<HTMLElement | null>) {
-    if (inputRef) {
-      inputRef.value = assignedRef.value;
-    }
-  }
+  const { label, title, value, onInput, onUpdate, onBlur } = params;
 
   return (
     <label class="nova-color-picker-label">
@@ -71,7 +63,6 @@ export function createChannel(params: ChannelParams): JSX.Element {
         onInput={onInput}
         onUpdate={onUpdate}
         onBlur={onBlur}
-        onAssignRef={onAssignRef}
       />
     </label>
   );

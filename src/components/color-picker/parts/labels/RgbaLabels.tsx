@@ -1,12 +1,4 @@
-import {
-  onMounted,
-  reactive,
-  ref,
-  Ref,
-  SetupContext,
-  VNodeProps,
-  watch,
-} from 'vue';
+import { reactive, SetupContext, VNodeProps, watch } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import DomUtils from '../../../../utils/dom-utils';
 import Color from '../../color';
@@ -45,8 +37,6 @@ const RgbaLabelsImpl = {
     },
   },
   setup(props: RgbaLabelsProps, context: SetupContext) {
-    const firstInputRef: Ref<HTMLElement | null> = ref(null);
-
     const emit = context.emit;
 
     const rgba = props.color.toCssRgba();
@@ -114,10 +104,6 @@ const RgbaLabelsImpl = {
       }
     );
 
-    onMounted(() => {
-      emit('assignRef', firstInputRef);
-    });
-
     return (): JSX.Element => {
       const language = props.environment.languageRef.value.colorPicker;
 
@@ -132,7 +118,6 @@ const RgbaLabelsImpl = {
           onRgbInput(params.target, 'red');
         },
         onBlur: onRgbaBlur,
-        inputRef: firstInputRef,
       });
 
       const gNode = createChannel({
