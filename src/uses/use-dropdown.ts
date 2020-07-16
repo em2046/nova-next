@@ -5,7 +5,6 @@ import { VisualViewport } from '../shims/visual-viewport';
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
   dropdownRef: Ref<HTMLElement | null>;
-  autoFocusRef: Ref<HTMLElement | null>;
   reset?: () => void;
   props: Readonly<unknown>;
   onOpen?: () => void;
@@ -23,7 +22,7 @@ interface DropdownProps {
 
 interface UseDropdownReturn {
   dropdown: Dropdown;
-  closeDropdown: () => void;
+  close: () => void;
   onBeforeEnter: (el: Element) => void;
   onAfterEnter: (el: Element) => void;
   onBeforeLeave: (el: Element) => void;
@@ -64,15 +63,7 @@ export default function useDropdown(
     },
   });
 
-  const {
-    triggerRef,
-    dropdownRef,
-    autoFocusRef,
-    reset,
-    props,
-    onOpen,
-    onClose,
-  } = params;
+  const { triggerRef, dropdownRef, reset, props, onOpen, onClose } = params;
   const dropdownProps = props as DropdownProps;
   let collapseStyleCache: CollapseStyle | null = null;
 
@@ -318,7 +309,8 @@ export default function useDropdown(
 
     if (!DomUtils.isTouchSupported()) {
       nextTick(() => {
-        autoFocusRef.value?.focus();
+        const focusable = DomUtils.getFocusable(el as HTMLElement);
+        focusable[0]?.focus();
       });
     }
   }
@@ -338,7 +330,7 @@ export default function useDropdown(
 
   return {
     dropdown: state.dropdown,
-    closeDropdown,
+    close: closeDropdown,
     onBeforeEnter,
     onAfterEnter,
     onBeforeLeave,

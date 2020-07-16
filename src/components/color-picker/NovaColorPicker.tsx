@@ -1,4 +1,12 @@
-import { computed, onMounted, reactive, SetupContext, VNodeProps, watch } from 'vue';
+import {
+  computed,
+  onMounted,
+  reactive,
+  ref,
+  SetupContext,
+  VNodeProps,
+  watch,
+} from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import { MovePosition } from '../../uses/use-move';
 import Utils from '../../utils/utils';
@@ -12,10 +20,18 @@ import { HslaLabels } from './parts/labels/HslaLabels';
 import { HexLabel } from './parts/labels/HexLabel';
 import { Preview } from './parts/Preview';
 import { PresetValues } from './parts/PresetValues';
-import useEnvironment, { environmentProps, NovaEnvironmentProps } from '../../uses/use-environment';
+import useEnvironment, {
+  environmentProps,
+  NovaEnvironmentProps,
+} from '../../uses/use-environment';
 import { MDIClose } from '@em2046/material-design-icons-vue-next';
 import { NovaDropdown } from '../dropdown';
-import { dropdownProps, NovaDropdownProps, NovaDropdownTriggerScoped } from '../dropdown/NovaDropdown';
+import {
+  DropdownInstance,
+  dropdownProps,
+  NovaDropdownProps,
+  NovaDropdownTriggerScoped,
+} from '../dropdown/NovaDropdown';
 
 //region Mode
 const modeRgba = Symbol('rgba');
@@ -83,6 +99,7 @@ const NovaColorPickerImpl = {
     const emit = context.emit;
 
     const environment = useEnvironment(props as NovaEnvironmentProps);
+    const dropdownInstanceRef = ref<DropdownInstance | null>(null);
 
     const mode = props.format === 'hsl' ? modeHsla : modeRgba;
     const state = reactive({
@@ -405,7 +422,7 @@ const NovaColorPickerImpl = {
         const presetNode = createPreset();
 
         function closeDropdown() {
-          console.log('closeDropdown');
+          dropdownInstanceRef.value?.close();
         }
 
         return (
@@ -420,10 +437,10 @@ const NovaColorPickerImpl = {
               tabindex={0}
               onClick={closeDropdown}
             >
-              <MDIClose/>
+              <MDIClose />
             </div>
 
-            <div class="nova-color-picker-panel-border"/>
+            <div class="nova-color-picker-panel-border" />
           </div>
         );
       }
@@ -433,7 +450,8 @@ const NovaColorPickerImpl = {
       const borderNode = <div class="nova-color-picker-border" />;
 
       const slots = {
-        trigger: () => {
+        trigger: ({ dropdownInstance }: NovaDropdownTriggerScoped) => {
+          dropdownInstanceRef.value = dropdownInstance;
           return [triggerNode, borderNode];
         },
         default: () => {

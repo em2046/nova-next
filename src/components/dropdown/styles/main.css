@@ -8,6 +8,7 @@
     outline: none;
   }
 }
+
 .nova-dropdown-panel {
   position: absolute;
   color: var(--nova-color-font);

@@ -15,7 +15,7 @@
   }
 
   &.nova-dropdown-opened,
-  .nova-dropdown-trigger:focus {
+  :not(.nova-color-picker-disabled) .nova-dropdown-trigger:focus {
      {
       .nova-color-picker-border {
         border: var(--nova-border-primary);

@@ -129,9 +129,7 @@ export default class DomUtils {
         return false;
       }
 
-      if (tabindex && tabindex.indexOf('-') === -1) {
-        return true;
-      }
+      return !(tabindex && tabindex.indexOf('-') !== -1);
     }) as HTMLElement[];
   }
 }
