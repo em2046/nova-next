@@ -24,7 +24,7 @@ describe('color-picker', () => {
     });
     expect(wrapper.html()).toMatchSnapshot();
 
-    await wrapper.find('.nova-color-picker-trigger').trigger('click');
+    await wrapper.find('.nova-dropdown-trigger').trigger('click');
     expect(wrapper.html()).toMatchSnapshot();
   });
 
@@ -55,7 +55,7 @@ describe('color-picker', () => {
     const print = wrapper.find('#print');
     expect(print.text()).toEqual('#808080');
 
-    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const pickerTrigger = wrapper.find('.nova-dropdown-trigger');
     await pickerTrigger.trigger('click');
 
     const hueSlide = wrapper.find('.nova-color-picker-hue-slide');
@@ -107,7 +107,7 @@ describe('color-picker', () => {
       },
     });
 
-    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const pickerTrigger = wrapper.find('.nova-dropdown-trigger');
     await pickerTrigger.trigger('click');
     expect(wrapper.html()).toMatchSnapshot();
 
@@ -161,10 +161,8 @@ describe('color-picker', () => {
     expect(classList).toContain('array-class');
     expect(classList).toContain('object-class');
 
-    await wrapper.find('.nova-color-picker-trigger').trigger('click');
-    const dropdownClassList = wrapper
-      .find('.nova-color-picker-panel')
-      .classes();
+    await wrapper.find('.nova-dropdown-trigger').trigger('click');
+    const dropdownClassList = wrapper.find('.nova-dropdown-panel').classes();
     expect(dropdownClassList).toContain('array-dropdown-class');
     expect(dropdownClassList).toContain('object-dropdown-class');
     expect(wrapper.html()).toMatchSnapshot();
@@ -206,8 +204,8 @@ describe('color-picker', () => {
     );
     expect(bg).toEqual('rgb(128, 128, 128)');
 
-    await wrapper.find('.nova-color-picker-trigger').trigger('click');
-    const panel = wrapper.find('.nova-color-picker-panel');
+    await wrapper.find('.nova-dropdown-trigger').trigger('click');
+    const panel = wrapper.find('.nova-dropdown-panel');
     const dropdownBg = DomUtils.getStyleOf(
       panel.element as HTMLElement,
       'background-color'
@@ -241,7 +239,7 @@ describe('color-picker', () => {
       },
     });
 
-    const trigger = wrapper.find('.nova-color-picker-trigger');
+    const trigger = wrapper.find('.nova-dropdown-trigger');
     await trigger.trigger('click');
     expect(wrapper.html()).toMatchSnapshot();
 
@@ -285,7 +283,7 @@ describe('color-picker', () => {
     const print = wrapper.find('#print');
     expect(print.text()).toEqual('#80808080');
 
-    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const pickerTrigger = wrapper.find('.nova-dropdown-trigger');
     await pickerTrigger.trigger('click');
     expect(wrapper.html()).toMatchSnapshot();
 
@@ -347,7 +345,7 @@ describe('color-picker', () => {
       },
     });
 
-    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const pickerTrigger = wrapper.find('.nova-dropdown-trigger');
     const print = wrapper.find('#print');
     const rgb = wrapper.find('#rgb');
     const hsl = wrapper.find('#hsl');
@@ -395,7 +393,7 @@ describe('color-picker', () => {
       },
     });
 
-    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const pickerTrigger = wrapper.find('.nova-dropdown-trigger');
     const print = wrapper.find('#print');
     await pickerTrigger.trigger('click');
     expect(wrapper.html()).toMatchSnapshot();
@@ -435,7 +433,7 @@ describe('color-picker', () => {
     });
 
     const print = wrapper.find('#print');
-    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const pickerTrigger = wrapper.find('.nova-dropdown-trigger');
 
     await pickerTrigger.trigger('click');
     const rgbNumberList = wrapper.findAll('.nova-color-picker-input input');
@@ -504,7 +502,7 @@ describe('color-picker', () => {
     });
 
     const print = wrapper.find('#print');
-    const pickerTrigger = wrapper.find('.nova-color-picker-trigger');
+    const pickerTrigger = wrapper.find('.nova-dropdown-trigger');
     const init = wrapper.find('#init');
 
     await pickerTrigger.trigger('click');

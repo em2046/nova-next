@@ -143,7 +143,6 @@ const NovaColorPickerImpl = {
 
     const dropdownClassList = computed(() => {
       return [
-        'nova-color-picker-panel-inner',
         props.dropdownClass,
         {
           ['nova-color-picker-panel-has-alpha']: props.alpha,
@@ -426,7 +425,7 @@ const NovaColorPickerImpl = {
         }
 
         return (
-          <div class={dropdownClassList.value}>
+          <div class="nova-color-picker-panel-inner">
             {hsvPanelNode}
             {slidesNode}
             {formNode}
@@ -463,7 +462,7 @@ const NovaColorPickerImpl = {
         <NovaDropdown
           class={classList.value}
           disabled={props.disabled}
-          dropdownClass={props.dropdownClass}
+          dropdownClass={dropdownClassList.value}
           dropdownStyle={props.dropdownStyle}
           dropdownProps={props.dropdownProps}
           teleportToBody={props.teleportToBody}

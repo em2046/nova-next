@@ -115,6 +115,9 @@ const NovaDropdownImpl = {
         },
       ];
     });
+    const panelClassList = computed(() => {
+      return ['nova-dropdown-panel', props.dropdownClass];
+    });
 
     const {
       dropdown,
@@ -183,7 +186,7 @@ const NovaDropdownImpl = {
 
         const dropdownCoreNode = (
           <div
-            class="nova-dropdown-panel"
+            class={panelClassList.value}
             role="dialog"
             data-nova-theme={environment.themeRef.value}
             ref={dropdownRef}
