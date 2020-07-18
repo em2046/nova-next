@@ -1,6 +1,5 @@
 .nova-color-picker-trigger {
-  background-position: center center;
-  background-clip: content-box;
+  background-color: var(--nova-color-bg-component);
   border: var(--nova-border);
   border-radius: var(--nova-radius);
   transition: var(--nova-transition-component);

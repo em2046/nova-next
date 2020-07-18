@@ -224,6 +224,7 @@ const NovaDropdownImpl = {
               ref={trapTrailerRef}
               onFocus={trapTrailerFocus}
             />
+            <div class="nova-dropdown-panel-border" />
           </div>
         );
 

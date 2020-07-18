@@ -298,6 +298,9 @@ export default function useDropdown(
     );
 
     requestAnimationFrame(() => {
+      // Firefox need force render
+      DomUtils.getVisualViewport();
+
       const style = Object.assign({}, getExpandStyle(), getTransitionStyle());
       DomUtils.setStyles(el as HTMLElement, style);
     });

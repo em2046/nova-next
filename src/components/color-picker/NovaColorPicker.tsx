@@ -445,8 +445,6 @@ const NovaColorPickerImpl = {
             >
               <MDIClose />
             </div>
-
-            <div class="nova-color-picker-panel-border" />
           </div>
         );
       }

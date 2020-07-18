@@ -12,8 +12,23 @@
 .nova-dropdown-panel {
   position: absolute;
   color: var(--nova-color-font);
-  background-color: var(--nova-color-bg-dropdown);
-  backdrop-filter: var(--nova-backdrop-filter-component);
+  background-color: var(--nova-color-bg-component);
   will-change: transform;
   border-radius: var(--nova-radius-component);
+
+  @supports (backdrop-filter: blur()) {
+    backdrop-filter: var(--nova-backdrop-filter-component);
+    background-color: var(--nova-color-bg-dropdown);
+  }
+}
+
+.nova-dropdown-panel-border {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  box-shadow: var(--nova-shadow-dropdown);
+  border-radius: inherit;
 }
