@@ -1,6 +1,9 @@
 .nova-color-picker-trigger {
   background-position: center center;
   background-clip: content-box;
+  border: var(--nova-border);
+  border-radius: var(--nova-radius);
+  transition: var(--nova-transition-component);
 
   &:focus {
     outline: none;
@@ -8,7 +11,7 @@
 }
 
 .nova-color-picker-trigger-inner {
-  margin: 5px;
+  margin: 4px;
   background-image: var(--nova-bg-checkerboard);
   border-radius: var(--nova-radius-tiny);
   width: 20px;

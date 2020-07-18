@@ -250,10 +250,13 @@ const NovaColorPickerImpl = {
     });
 
     return (): JSX.Element => {
+      const language = environment.languageRef.value.colorPicker;
+
       function createTrigger() {
         const triggerProps = {
           disabled: !!props.disabled,
           color: state.color,
+          environment,
         };
 
         const trigger = context.slots.trigger;
@@ -358,6 +361,8 @@ const NovaColorPickerImpl = {
           <div class="nova-color-picker-form">
             <div
               class="nova-color-picker-labels-switch"
+              role="button"
+              aria-label={language.aria.switch}
               onClick={switchMode}
               onKeydown={onKeydown}
               tabindex={0}
@@ -434,6 +439,8 @@ const NovaColorPickerImpl = {
             <div
               class="nova-color-picker-close"
               tabindex={0}
+              role="button"
+              aria-label={language.aria.close}
               onClick={closeDropdown}
             >
               <MDIClose />
@@ -446,12 +453,11 @@ const NovaColorPickerImpl = {
 
       const triggerNode = createTrigger();
       const dropdownNode = createDropdown();
-      const borderNode = <div class="nova-color-picker-border" />;
 
       const slots = {
         trigger: ({ dropdownInstance }: NovaDropdownTriggerScoped) => {
           dropdownInstanceRef.value = dropdownInstance;
-          return [triggerNode, borderNode];
+          return triggerNode;
         },
         default: () => {
           return dropdownNode;

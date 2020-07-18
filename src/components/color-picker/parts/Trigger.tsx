@@ -1,10 +1,12 @@
 import { computed, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import Color from '../color';
+import { Environment } from '../../../uses/use-environment';
 
 export interface TriggerProps {
   color: Color;
   disabled: boolean;
+  environment: Environment;
 }
 
 const TriggerImpl = {
@@ -18,6 +20,10 @@ const TriggerImpl = {
       type: Boolean,
       required: true,
     },
+    environment: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props: TriggerProps, context: SetupContext) {
     const slots = context.slots;
@@ -29,20 +35,29 @@ const TriggerImpl = {
     });
 
     return (): JSX.Element => {
-      let triggerInner = (
-        <div class="nova-color-picker-trigger-inner">
-          <div
-            class="nova-color-picker-trigger-bg"
-            style={triggerInnerStyle.value}
-          />
+      const language = props.environment.languageRef.value.colorPicker;
+
+      let triggerNode = (
+        <div
+          class="nova-color-picker-trigger"
+          role="button"
+          aria-label={language.aria.trigger}
+          tabindex={props.disabled ? -1 : 0}
+        >
+          <div class="nova-color-picker-trigger-inner">
+            <div
+              class="nova-color-picker-trigger-bg"
+              style={triggerInnerStyle.value}
+            />
+          </div>
         </div>
       );
       const children = slots.default;
       if (children) {
-        triggerInner = children();
+        triggerNode = children();
       }
 
-      return triggerInner;
+      return triggerNode;
     };
   },
 };

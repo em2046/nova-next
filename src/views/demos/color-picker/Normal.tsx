@@ -33,7 +33,12 @@ export default defineComponent({
       trigger: (scoped: NovaColorPickerTriggerScoped) => {
         const hex = scoped.color.toCssHexString();
         return (
-          <div class="demo-color-picker-normal-trigger-inner">
+          <div
+            class="demo-color-picker-normal-trigger"
+            role="button"
+            aria-label="Color Picker"
+            tabindex={scoped.disabled ? -1 : 0}
+          >
             <i style={{ backgroundColor: hex }} />
             <span>{hex}</span>
           </div>

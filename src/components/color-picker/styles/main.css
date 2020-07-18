@@ -2,25 +2,21 @@
   font-family: var(--nova-font-sans-serif);
   display: inline-block;
   vertical-align: top;
-  width: 30px;
-  height: 30px;
   line-height: var(--nova-line-height);
 
   &:not(.nova-color-picker-disabled) {
     &:hover {
-      .nova-color-picker-border {
+      .nova-color-picker-trigger {
         border: var(--nova-border-primary);
       }
     }
   }
 
-  &.nova-dropdown-opened,
-  &:not(.nova-color-picker-disabled) .nova-dropdown-trigger:focus {
+  &.nova-dropdown-opened .nova-color-picker-trigger,
+  &:not(.nova-color-picker-disabled) .nova-color-picker-trigger:focus {
      {
-      .nova-color-picker-border {
-        border: var(--nova-border-primary);
-        box-shadow: var(--nova-shadow-primary);
-      }
+      border: var(--nova-border-primary);
+      box-shadow: var(--nova-shadow-primary);
     }
   }
 }
@@ -28,15 +24,4 @@
 .nova-color-picker-disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.nova-color-picker-border {
-  pointer-events: none;
-  background-color: var(--nova-color-bg-component);
-  width: 30px;
-  height: 30px;
-  margin-top: -30px;
-  border-radius: var(--nova-radius);
-  border: var(--nova-border);
-  transition: var(--nova-transition-component);
 }

@@ -49,6 +49,8 @@ interface CollapseStyle {
   pointerEvents: string;
 }
 
+type TriggerType = 'mouse' | 'keyboard' | null;
+
 export const durationLong = 300;
 
 export default function useDropdown(
@@ -61,11 +63,15 @@ export default function useDropdown(
     },
   });
 
+  let triggerType: TriggerType;
+
   const { triggerRef, dropdownRef, reset, props, onOpen, onClose } = params;
   const dropdownProps = props as DropdownProps;
   let collapseStyleCache: CollapseStyle | null = null;
 
   function onVirtualMaskMousedown(e: MouseEvent): void {
+    triggerType = 'mouse';
+
     if (dropdownProps.disabled) {
       return;
     }
@@ -86,7 +92,9 @@ export default function useDropdown(
 
   function triggerFocus() {
     const trigger = triggerRef.value as HTMLElement;
-    trigger.focus();
+    const focusable = DomUtils.getFocusable(trigger);
+    const firstFocusable = focusable?.[0];
+    firstFocusable?.focus();
   }
 
   function closeDropdown(): void {
@@ -103,7 +111,11 @@ export default function useDropdown(
       onClose?.call(null);
     }
 
-    triggerFocus();
+    if (triggerType === 'keyboard') {
+      triggerFocus();
+    }
+
+    triggerType = null;
   }
 
   function getDropdownOffset(params: GetDropdownOffsetParams) {
@@ -201,6 +213,10 @@ export default function useDropdown(
     }
   }
 
+  function triggerClick() {
+    toggleDropdown();
+  }
+
   function toggleDropdown(): void {
     const opened = state.dropdown.opened;
     if (opened) {
@@ -217,12 +233,15 @@ export default function useDropdown(
 
     switch (e.key) {
       case 'Enter':
+        triggerType = 'keyboard';
         toggleDropdown();
+        e.preventDefault();
         break;
       case 'Esc':
       case 'Escape':
         reset?.();
         nextTick(() => {
+          triggerType = 'keyboard';
           closeDropdown();
         });
         break;
@@ -231,7 +250,7 @@ export default function useDropdown(
 
   onMounted(() => {
     const trigger = triggerRef.value as HTMLElement;
-    trigger.addEventListener('click', toggleDropdown);
+    trigger.addEventListener('click', triggerClick);
     trigger.addEventListener('keydown', triggerKeydown);
   });
 
@@ -239,8 +258,8 @@ export default function useDropdown(
     closeDropdown();
 
     const trigger = triggerRef.value as HTMLElement;
-    trigger.removeEventListener('click', toggleDropdown);
-    trigger.removeEventListener('keydown', toggleDropdown);
+    trigger.removeEventListener('click', triggerClick);
+    trigger.removeEventListener('keydown', triggerKeydown);
   });
 
   function getOffsetStyle(offset: Offset) {
@@ -292,7 +311,8 @@ export default function useDropdown(
     if (!DomUtils.isTouchSupported()) {
       nextTick(() => {
         const focusable = DomUtils.getFocusable(el as HTMLElement);
-        focusable?.[0].focus();
+        const firstFocusable = focusable?.[0];
+        firstFocusable?.focus();
       });
     }
   }

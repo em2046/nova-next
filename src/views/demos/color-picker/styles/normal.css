@@ -4,6 +4,22 @@
   .nova-color-picker-border {
     width: 100px;
   }
+
+  &:not(.nova-color-picker-disabled) {
+    &:hover {
+      .demo-color-picker-normal-trigger {
+        border: var(--nova-border-primary);
+      }
+    }
+  }
+
+  &.nova-dropdown-opened .demo-color-picker-normal-trigger,
+  &:not(.nova-color-picker-disabled) .demo-color-picker-normal-trigger:focus {
+     {
+      border: var(--nova-border-primary);
+      box-shadow: var(--nova-shadow-primary);
+    }
+  }
 }
 
 .demo-color-picker-normal-preset-inner {
@@ -30,12 +46,15 @@
   }
 }
 
-.demo-color-picker-normal-trigger-inner {
-  padding: 5px;
+.demo-color-picker-normal-trigger {
+  padding: 4px;
   width: 100px;
   display: flex;
   align-items: center;
   font-size: 14px;
+  border: var(--nova-border);
+  border-radius: var(--nova-radius);
+  transition: var(--nova-transition-component);
 
   &:focus {
     outline: none;

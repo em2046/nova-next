@@ -54,7 +54,11 @@ export function createChannel(params: ChannelParams): JSX.Element {
 
   return (
     <label class="nova-color-picker-label">
-      <div class="nova-color-picker-label-text" title={title}>
+      <div
+        class="nova-color-picker-label-text"
+        title={title}
+        aria-label={title}
+      >
         {label}
       </div>
 

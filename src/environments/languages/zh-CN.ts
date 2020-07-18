@@ -3,6 +3,11 @@ import { Language } from './type';
 const zhCN: Language = {
   name: 'Chinese Simplified',
   colorPicker: {
+    aria: {
+      trigger: '颜色选择器',
+      switch: '模式切换',
+      close: '关闭',
+    },
     red: '红',
     green: '绿',
     blue: '蓝',

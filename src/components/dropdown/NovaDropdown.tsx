@@ -186,11 +186,7 @@ const NovaDropdownImpl = {
 
       function createTrigger() {
         return (
-          <div
-            ref={triggerRef}
-            class="nova-dropdown-trigger"
-            tabindex={props.disabled ? -1 : 0}
-          >
+          <div ref={triggerRef} class="nova-dropdown-trigger">
             {slotTriggerNode}
           </div>
         );

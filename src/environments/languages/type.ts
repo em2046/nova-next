@@ -1,6 +1,11 @@
 export interface Language {
   name: string;
   colorPicker: {
+    aria: {
+      trigger: string;
+      switch: string;
+      close: string;
+    };
     red: string;
     green: string;
     blue: string;
