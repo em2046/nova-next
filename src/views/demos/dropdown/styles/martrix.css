@@ -1,3 +1,35 @@
+.demo-dropdown-matrix-placement {
+  display: grid;
+  width: 1000px;
+  grid-template-areas:
+    '.    top     .'
+    'left .       right'
+    '.    bottom  .';
+}
+
+.demo-dropdown-matrix-placement-top {
+  grid-area: top;
+}
+
+.demo-dropdown-matrix-placement-right {
+  grid-area: right;
+}
+
+.demo-dropdown-matrix-placement-bottom {
+  grid-area: bottom;
+}
+
+.demo-dropdown-matrix-placement-left {
+  grid-area: left;
+}
+
+.demo-dropdown-matrix-placement-left,
+.demo-dropdown-matrix-placement-right {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
 .demo-dropdown-matrix-box {
   ul {
     width: 1000px;

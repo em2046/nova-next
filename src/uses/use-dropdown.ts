@@ -1,6 +1,8 @@
 import { nextTick, onBeforeUnmount, onMounted, reactive, Ref } from 'vue';
 import DomUtils from '../utils/dom-utils';
 import { VisualViewport } from '../shims/visual-viewport';
+import { Placement } from '../components/dropdown/NovaDropdown';
+import { Offset, place } from '../utils/place';
 
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
@@ -18,6 +20,7 @@ interface Dropdown {
 
 interface DropdownProps {
   disabled: boolean;
+  placement: Placement;
 }
 
 interface UseDropdownReturn {
@@ -28,11 +31,6 @@ interface UseDropdownReturn {
   onBeforeLeave: (el: Element) => void;
   onAfterLeave: (el: Element) => void;
   onLeaveCancelled: (el: Element) => void;
-}
-
-interface Offset {
-  left: number;
-  top: number;
 }
 
 interface GetDropdownOffsetParams {
@@ -111,34 +109,18 @@ export default function useDropdown(
   function getDropdownOffset(params: GetDropdownOffsetParams) {
     const { triggerRect, dropdownRect, visualViewport } = params;
 
-    const viewportWidth = visualViewport.width;
-    const viewportHeight = visualViewport.height;
-    const pageLeft = visualViewport.pageLeft;
-    const pageTop = visualViewport.pageTop;
+    const placement = dropdownProps.placement;
 
-    let leftWithPageLeft = triggerRect.left + pageLeft;
-    let topWithPageTop = triggerRect.top + triggerRect.height + pageTop;
-
-    const right = triggerRect.left + dropdownRect.width;
-    const bottom = triggerRect.bottom + dropdownRect.height;
-
-    if (right > viewportWidth) {
-      leftWithPageLeft = viewportWidth + pageLeft - dropdownRect.width;
-    }
-    if (leftWithPageLeft < pageLeft) {
-      leftWithPageLeft = pageLeft;
-    }
-
-    if (bottom > viewportHeight) {
-      topWithPageTop = triggerRect.top + pageTop - dropdownRect.height;
-    }
-    if (topWithPageTop < pageTop) {
-      topWithPageTop = pageTop;
-    }
+    const { left, top } = place(
+      triggerRect,
+      dropdownRect,
+      visualViewport,
+      placement
+    );
 
     return {
-      left: leftWithPageLeft,
-      top: topWithPageTop,
+      left: left,
+      top: top,
     };
   }
 
@@ -310,7 +292,7 @@ export default function useDropdown(
     if (!DomUtils.isTouchSupported()) {
       nextTick(() => {
         const focusable = DomUtils.getFocusable(el as HTMLElement);
-        focusable[0]?.focus();
+        focusable?.[0].focus();
       });
     }
   }

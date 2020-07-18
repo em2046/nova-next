@@ -109,9 +109,9 @@ export default class DomUtils {
     return window.ontouchstart !== undefined;
   }
 
-  static getFocusable(target: HTMLElement | null): HTMLElement[] {
+  static getFocusable(target: HTMLElement | null): HTMLElement[] | null {
     if (!target) {
-      return [];
+      return null;
     }
 
     const mayFocusable = target.querySelectorAll(

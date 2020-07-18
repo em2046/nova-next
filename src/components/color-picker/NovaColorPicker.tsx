@@ -466,6 +466,7 @@ const NovaColorPickerImpl = {
           dropdownStyle={props.dropdownStyle}
           dropdownProps={props.dropdownProps}
           teleportToBody={props.teleportToBody}
+          placement={props.placement}
           environment={environment}
           onOpenChange={onOpenChange}
         >

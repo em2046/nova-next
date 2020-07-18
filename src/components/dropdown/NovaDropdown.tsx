@@ -20,6 +20,20 @@ import useEnvironment, {
 import useDropdown, { durationLong } from '../../uses/use-dropdown';
 import DomUtils from '../../utils/dom-utils';
 
+export type Placement =
+  | 'topLeft'
+  | 'top'
+  | 'topRight'
+  | 'rightTop'
+  | 'right'
+  | 'rightBottom'
+  | 'bottomLeft'
+  | 'bottom'
+  | 'bottomRight'
+  | 'leftTop'
+  | 'left'
+  | 'leftBottom';
+
 export interface NovaDropdownProps extends NovaEnvironmentProps {
   disabled?: boolean;
   dropdownClass?: unknown;
@@ -29,6 +43,7 @@ export interface NovaDropdownProps extends NovaEnvironmentProps {
   };
   teleportToBody?: boolean;
   environment?: Environment;
+  placement?: Placement;
 }
 
 export interface DropdownInstance {
@@ -65,6 +80,10 @@ export const dropdownProps = {
     type: Object,
     default: null,
   },
+  placement: {
+    type: String,
+    default: 'bottomLeft',
+  },
 };
 
 const NovaDropdownImpl = {
@@ -85,15 +104,15 @@ const NovaDropdownImpl = {
 
     function trapHeaderFocus() {
       const focusable = DomUtils.getFocusable(dropdownRef.value);
-      nextFocus(focusable[focusable.length - 1]);
+      nextFocus(focusable?.[focusable.length - 1]);
     }
 
     function trapTrailerFocus() {
       const focusable = DomUtils.getFocusable(dropdownRef.value);
-      nextFocus(focusable[0]);
+      nextFocus(focusable?.[0]);
     }
 
-    function nextFocus(target: HTMLElement | null) {
+    function nextFocus(target: HTMLElement | undefined) {
       if (trapped) {
         return;
       }
@@ -139,6 +158,7 @@ const NovaDropdownImpl = {
       },
     });
 
+    // TODO Find another way to communicate parent and child components
     const dropdownInstance: DropdownInstance = {
       close,
     };
