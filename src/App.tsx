@@ -7,11 +7,14 @@ import enUS from './environments/languages/en-US';
 
 const storageThemeKey = 'nova-theme';
 
+type Direction = 'ltr' | 'rtl';
+
 export default defineComponent({
   setup() {
     const state = reactive({
       theme: 'light',
       language: zhCN,
+      direction: 'ltr' as Direction,
     });
 
     function initTheme() {
@@ -19,19 +22,30 @@ export default defineComponent({
       if (theme) {
         state.theme = theme;
       }
-      setBodyTheme(state.theme);
+      setDocumentTheme(state.theme);
     }
 
     initTheme();
 
-    function setBodyTheme(theme: string) {
+    function setDocumentTheme(theme: string) {
       document.documentElement.setAttribute('data-nova-theme', theme);
+    }
+
+    function setDocumentDirection(direction: Direction) {
+      document.documentElement.setAttribute('dir', direction);
     }
 
     watch(
       () => state.theme,
       (theme) => {
-        setBodyTheme(theme);
+        setDocumentTheme(theme);
+      }
+    );
+
+    watch(
+      () => state.direction,
+      (direction) => {
+        setDocumentDirection(direction);
       }
     );
 
@@ -54,6 +68,14 @@ export default defineComponent({
 
     function setEnUs() {
       state.language = enUS;
+    }
+
+    function setLtr() {
+      state.direction = 'ltr';
+    }
+
+    function setRtl() {
+      state.direction = 'rtl';
     }
 
     return (): JSX.Element => (
@@ -98,6 +120,11 @@ export default defineComponent({
                 Language: {state.language.name}
                 <NovaButton onClick={setZhCn}>{() => 'zh-CN'}</NovaButton>
                 <NovaButton onClick={setEnUs}>{() => 'en-US'}</NovaButton>
+              </div>
+              <div>
+                Direction: {state.direction}
+                <NovaButton onClick={setLtr}>{() => 'ltr'}</NovaButton>
+                <NovaButton onClick={setRtl}>{() => 'rtl'}</NovaButton>
               </div>
             </nav>
           </header>,

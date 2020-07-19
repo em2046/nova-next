@@ -9,15 +9,19 @@
   grid-template-columns: 220px auto;
 }
 
+.nova-color-picker-close-wrap {
+  grid-column: 2;
+  margin: -10px -10px -20px -10px;
+  justify-self: flex-end;
+  width: 30px;
+}
+
 .nova-color-picker-close {
   width: 30px;
   height: 30px;
   font-size: 18px;
   line-height: 18px;
   padding: 5px;
-  position: absolute;
-  top: 0;
-  right: 0;
   color: var(--nova-color-symbol);
   border-radius: 50%;
   cursor: pointer;

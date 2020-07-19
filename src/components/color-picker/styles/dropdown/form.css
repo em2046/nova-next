@@ -8,13 +8,13 @@
 }
 
 .nova-color-picker-labels {
-  justify-content: flex-end;
+  width: 175px;
+  justify-content: space-between;
   display: flex;
 }
 
 .nova-color-picker-label {
   width: 55px;
-  margin-left: 5px;
   display: flex;
   flex-direction: column;
 }
@@ -52,6 +52,7 @@
     width: 100%;
     font-family: var(--nova-font-monospace);
     will-change: contents;
+    direction: ltr;
 
     &:hover,
     &:focus {
@@ -95,12 +96,11 @@
 }
 
 .nova-color-picker-labels-switch {
-  position: absolute;
-  left: 0;
-  top: 0;
+  align-self: flex-start;
   margin-top: 20px;
   width: 20px;
   height: 25px;
+  margin-bottom: -45px;
   display: flex;
   flex-direction: column;
   justify-content: center;

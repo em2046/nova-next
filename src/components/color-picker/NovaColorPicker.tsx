@@ -429,13 +429,8 @@ const NovaColorPickerImpl = {
           dropdownInstanceRef.value?.close();
         }
 
-        return (
-          <div class="nova-color-picker-panel-inner">
-            {hsvPanelNode}
-            {slidesNode}
-            {formNode}
-            {previewNode}
-            {presetNode}
+        const closeNode = (
+          <div class="nova-color-picker-close-wrap">
             <div
               class="nova-color-picker-close"
               tabindex={0}
@@ -445,6 +440,17 @@ const NovaColorPickerImpl = {
             >
               <MDIClose />
             </div>
+          </div>
+        );
+
+        return (
+          <div class="nova-color-picker-panel-inner">
+            {closeNode}
+            {hsvPanelNode}
+            {slidesNode}
+            {formNode}
+            {previewNode}
+            {presetNode}
           </div>
         );
       }
