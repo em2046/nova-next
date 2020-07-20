@@ -5,6 +5,7 @@ import Color from '../color';
 interface PreviewProps {
   color: Color;
   value: string;
+  onReset?: () => void;
 }
 
 const PreviewImpl = {

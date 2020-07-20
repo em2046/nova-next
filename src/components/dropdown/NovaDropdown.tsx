@@ -2,6 +2,7 @@ import { vueJsxCompat } from '../../vue-jsx-compat';
 import {
   computed,
   CSSProperties,
+  HTMLAttributes,
   ref,
   Ref,
   SetupContext,
@@ -19,6 +20,7 @@ import useEnvironment, {
 } from '../../uses/use-environment';
 import useDropdown, { durationLong } from '../../uses/use-dropdown';
 import DomUtils from '../../utils/dom-utils';
+import { VueComponentProps } from '../../utils/types';
 
 export type Placement =
   | 'topLeft'
@@ -44,6 +46,7 @@ export interface NovaDropdownProps extends NovaEnvironmentProps {
   teleportToBody?: boolean;
   environment?: Environment;
   placement?: Placement;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export interface DropdownInstance {
@@ -288,6 +291,6 @@ const NovaDropdownImpl = {
 
 export const NovaDropdown = (NovaDropdownImpl as unknown) as {
   new (): {
-    $props: VNodeProps & NovaDropdownProps;
+    $props: VNodeProps & NovaDropdownProps & HTMLAttributes & VueComponentProps;
   };
 };

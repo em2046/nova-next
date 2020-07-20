@@ -12,7 +12,7 @@ export default defineComponent({
       state.required = !state.required;
     }
 
-    function handleInput(e: InputEvent) {
+    function handleInput(e: Event) {
       console.log(e);
     }
 
@@ -27,9 +27,9 @@ export default defineComponent({
             id="name"
             name="name"
             required={state.required}
-            minlength="4"
-            maxlength="4"
-            size="10"
+            minlength={4}
+            maxlength={4}
+            size={10}
             onInput={handleInput}
           />
           <NovaButton onClick={toggleRequired}>

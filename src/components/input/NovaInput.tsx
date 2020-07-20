@@ -4,6 +4,8 @@ import useEnvironment, {
   environmentProps,
   NovaEnvironmentProps,
 } from '../../uses/use-environment';
+import { VueComponentProps } from '../../utils/types';
+import { InputHTMLAttributes } from '@vue/runtime-dom';
 
 interface NovaInputProps extends NovaEnvironmentProps {
   class?: unknown;
@@ -80,6 +82,9 @@ const NovaInputImpl = {
 
 export const NovaInput = (NovaInputImpl as unknown) as {
   new (): {
-    $props: VNodeProps & NovaInputProps;
+    $props: VNodeProps &
+      NovaInputProps &
+      InputHTMLAttributes &
+      VueComponentProps;
   };
 };

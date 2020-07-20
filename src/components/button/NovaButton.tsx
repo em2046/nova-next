@@ -1,9 +1,10 @@
-import { SetupContext, VNodeProps } from 'vue';
+import { ButtonHTMLAttributes, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import useEnvironment, {
   environmentProps,
   NovaEnvironmentProps,
 } from '../../uses/use-environment';
+import { VueComponentProps } from '../../utils/types';
 
 interface NovaButtonProps extends NovaEnvironmentProps {
   primary?: boolean;
@@ -64,6 +65,9 @@ const NovaButtonImpl = {
 
 export const NovaButton = (NovaButtonImpl as unknown) as {
   new (): {
-    $props: VNodeProps & NovaButtonProps;
+    $props: VNodeProps &
+      NovaButtonProps &
+      ButtonHTMLAttributes &
+      VueComponentProps;
   };
 };

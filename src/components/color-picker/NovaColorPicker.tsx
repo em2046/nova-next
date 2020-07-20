@@ -1,5 +1,6 @@
 import {
   computed,
+  HTMLAttributes,
   onMounted,
   reactive,
   ref,
@@ -32,6 +33,7 @@ import {
   NovaDropdownProps,
   NovaDropdownTriggerScoped,
 } from '../dropdown/NovaDropdown';
+import { VueComponentProps } from '../../utils/types';
 
 //region Mode
 const modeRgba = Symbol('rgba');
@@ -489,6 +491,9 @@ const NovaColorPickerImpl = {
 
 export const NovaColorPicker = (NovaColorPickerImpl as unknown) as {
   new (): {
-    $props: VNodeProps & NovaColorPickerProps;
+    $props: VNodeProps &
+      NovaColorPickerProps &
+      HTMLAttributes &
+      VueComponentProps;
   };
 };

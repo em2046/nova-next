@@ -18,6 +18,8 @@ interface RgbaLabelsProps {
   alpha: boolean;
   color: Color;
   environment: Environment;
+  onColorInput?: (color: Color) => void;
+  onColorBlur?: (color: Color) => void;
 }
 
 const RgbaLabelsImpl = {

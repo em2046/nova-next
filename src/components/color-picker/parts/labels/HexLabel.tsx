@@ -17,6 +17,12 @@ interface TuningParams {
   length: number;
 }
 
+interface HexLabelProps {
+  color: Color;
+  onColorInput?: (color: Color) => void;
+  onColorBlur?: (color: Color) => void;
+}
+
 function calcTuned(
   functionKeys: FunctionKeys,
   originNumber: number,
@@ -48,10 +54,6 @@ function calcTuned(
   tunedNumber = Utils.numberLimit(tunedNumber, 0, tuningParams.max);
 
   return tunedNumber.toString(16).padStart(tuningParams.length, '0');
-}
-
-interface HexLabelProps {
-  color: Color;
 }
 
 const HexLabelImpl = {

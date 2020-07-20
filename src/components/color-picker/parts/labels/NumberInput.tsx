@@ -7,10 +7,14 @@ import DomUtils, {
   FunctionKeys,
   up,
 } from '../../../../utils/dom-utils';
+import { UpdateParams } from './label-utils';
 
 interface NumberInputProps {
   value?: string;
   inputRef?: Ref<HTMLElement | null>;
+  onInput?: (e: Event) => void;
+  onBlur?: (e: Event) => void;
+  onUpdate?: (params: UpdateParams) => void;
 }
 
 const NumberInputImpl = {

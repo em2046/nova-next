@@ -1,12 +1,13 @@
 import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import useMove from '../../../../uses/use-move';
+import useMove, { MovePosition } from '../../../../uses/use-move';
 import Utils from '../../../../utils/utils';
 import Color from '../../color';
 
 interface AlphaSlideProps {
   alpha: number;
   color: Color;
+  onMove?: (position: MovePosition) => void;
 }
 
 const AlphaSlideImpl = {

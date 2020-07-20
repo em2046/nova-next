@@ -5,6 +5,7 @@ import Color from '../color';
 interface PresetValuesProps {
   color: Color;
   preset: string[];
+  onSelect?: (color: Color) => void;
 }
 
 const PresetValuesImpl = {

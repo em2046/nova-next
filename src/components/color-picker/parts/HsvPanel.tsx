@@ -1,6 +1,6 @@
 import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import useMove from '../../../uses/use-move';
+import useMove, { MovePosition } from '../../../uses/use-move';
 import Utils from '../../../utils/utils';
 import Color from '../color';
 
@@ -8,6 +8,7 @@ interface HsvPanelProps {
   hueReg: number;
   saturation: number;
   value: number;
+  onMove: (position: MovePosition) => void;
 }
 
 const HsvPanelImpl = {
