@@ -2,7 +2,7 @@ import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { NovaButton, NovaColorPicker } from '../../../index';
 import './styles/martrix.css';
-import { Placement } from '../../../components/dropdown/NovaDropdown';
+import { Placement } from '../../../types/props';
 
 export default defineComponent({
   setup() {

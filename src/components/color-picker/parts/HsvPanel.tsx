@@ -1,8 +1,8 @@
 import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import useMove, { MovePosition } from '../../../uses/use-move';
-import Utils from '../../../utils/utils';
-import Color from '../color';
+import { MovePosition, useMove } from '../../../uses/use-move';
+import { Color } from '../color';
+import { numberFixed } from '../../../utils/utils';
 
 interface HsvPanelProps {
   hueReg: number;
@@ -33,8 +33,8 @@ const HsvPanelImpl = {
     const hsvRef = ref(null);
 
     const cursorStyle = computed(() => {
-      const x = Utils.numberFixed(props.saturation);
-      const y = Utils.numberFixed(props.value);
+      const x = numberFixed(props.saturation);
+      const y = numberFixed(props.value);
       return {
         transform: `translate(${x}px, ${y}px)`,
       };

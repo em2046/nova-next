@@ -1,9 +1,9 @@
 import { reactive } from 'vue';
 import { mount } from '@vue/test-utils';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import DomUtils from '../../../utils/dom-utils';
 import { NovaColorPicker } from '../NovaColorPicker';
 import { ColorFormat } from '../color';
+import { getStyleOf } from '../../../utils/dom';
 
 describe('color-picker', () => {
   test('render', async () => {
@@ -198,15 +198,12 @@ describe('color-picker', () => {
     });
 
     const picker = wrapper.find('.nova-color-picker');
-    const bg = DomUtils.getStyleOf(
-      picker.element as HTMLElement,
-      'background-color'
-    );
+    const bg = getStyleOf(picker.element as HTMLElement, 'background-color');
     expect(bg).toEqual('rgb(128, 128, 128)');
 
     await wrapper.find('.nova-dropdown-trigger').trigger('click');
     const panel = wrapper.find('.nova-dropdown-panel');
-    const dropdownBg = DomUtils.getStyleOf(
+    const dropdownBg = getStyleOf(
       panel.element as HTMLElement,
       'background-color'
     );

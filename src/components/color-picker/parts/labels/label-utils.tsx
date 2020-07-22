@@ -1,6 +1,6 @@
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import Utils from '../../../../utils/utils';
 import { NumberInput } from './NumberInput';
+import { numberFixed, numberLimit } from '../../../../utils/utils';
 
 export const alphaRule = /^((0)|(1)|(\d+(\.\d{1,2})?))$/;
 
@@ -33,19 +33,19 @@ export function intNormalize(value: number, max: number): number {
     intNumber = 0;
   }
 
-  intNumber = Utils.numberLimit(intNumber, 0, max);
+  intNumber = numberLimit(intNumber, 0, max);
   return intNumber;
 }
 
 export function alphaNormalize(value: number): number {
   const text = value.toString().replace(/[^\d.]/g, '');
-  let floatNumber = Utils.numberFixed(parseFloat(text));
+  let floatNumber = numberFixed(parseFloat(text));
 
   if (Number.isNaN(floatNumber)) {
     floatNumber = 1;
   }
 
-  floatNumber = Utils.numberLimit(floatNumber, 0, 1);
+  floatNumber = numberLimit(floatNumber, 0, 1);
   return floatNumber;
 }
 

@@ -1,13 +1,15 @@
 import { reactive, ref, Ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import Utils from '../../../../utils/utils';
-import DomUtils, {
+import {
   Direction,
   down,
   FunctionKeys,
+  getInputValue,
+  setInputValue,
   up,
-} from '../../../../utils/dom-utils';
-import Color from '../../color';
+} from '../../../../utils/dom';
+import { Color } from '../../color';
+import { numberLimit } from '../../../../utils/utils';
 
 interface TuningParams {
   red: number;
@@ -51,7 +53,7 @@ function calcTuned(
   } else if (direction === down) {
     tunedNumber = originNumber - step;
   }
-  tunedNumber = Utils.numberLimit(tunedNumber, 0, tuningParams.max);
+  tunedNumber = numberLimit(tunedNumber, 0, tuningParams.max);
 
   return tunedNumber.toString(16).padStart(tuningParams.length, '0');
 }
@@ -89,18 +91,18 @@ const HexLabelImpl = {
 
     function onHexInput(e: Event): void {
       const target = e.target as HTMLInputElement;
-      const value = DomUtils.getInputValue(target);
+      const value = getInputValue(target);
       updateColor('colorInput', value);
     }
 
     function onHexBlur(e: Event): void {
       const target = e.target as HTMLInputElement;
-      const inputValue = DomUtils.getInputValue(target);
+      const inputValue = getInputValue(target);
       const hex = Color.hexNormalize(inputValue);
       const hashHex = `#${hex}`;
 
       if (inputValue !== hashHex) {
-        DomUtils.setInputValue(target, hashHex);
+        setInputValue(target, hashHex);
       }
 
       updateColor('colorBlur', hex);
@@ -112,7 +114,7 @@ const HexLabelImpl = {
       }
 
       const hexInput = hexRef.value as HTMLInputElement;
-      const hexValue = DomUtils.getInputValue(hexInput);
+      const hexValue = getInputValue(hexInput);
 
       if (!Color.hexRule.test(hexValue)) {
         return;
@@ -147,7 +149,7 @@ const HexLabelImpl = {
       }
 
       const newHex = `#${tunedPureHex}`;
-      DomUtils.setInputValue(hexInput, newHex);
+      setInputValue(hexInput, newHex);
       updateColor('colorInput', newHex);
     }
 

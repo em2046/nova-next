@@ -1,28 +1,31 @@
 import { ButtonHTMLAttributes, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
-import useEnvironment, {
+import { useEnvironment } from '../../uses/use-environment';
+import { VueComponentProps } from '../../types/vue-component';
+import {
   environmentProps,
-  NovaEnvironmentProps,
-} from '../../uses/use-environment';
-import { VueComponentProps } from '../../utils/types';
+  EnvironmentProps,
+} from '../environment/NovaEnvironment';
 
-interface NovaButtonProps extends NovaEnvironmentProps {
+export interface ButtonProps extends EnvironmentProps {
   primary?: boolean;
 }
 
+const buttonProps = {
+  ...environmentProps,
+  primary: {
+    type: Boolean,
+    default: false,
+  },
+};
+
 const NovaButtonImpl = {
   name: 'NovaButton',
-  props: {
-    ...environmentProps,
-    primary: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props: NovaButtonProps, context: SetupContext) {
+  props: buttonProps,
+  setup(props: ButtonProps, context: SetupContext) {
     const { slots } = context;
 
-    const environment = useEnvironment(props as NovaEnvironmentProps);
+    const environment = useEnvironment(props as EnvironmentProps);
 
     return (): JSX.Element => {
       const children = slots.default?.();
@@ -65,9 +68,6 @@ const NovaButtonImpl = {
 
 export const NovaButton = (NovaButtonImpl as unknown) as {
   new (): {
-    $props: VNodeProps &
-      NovaButtonProps &
-      ButtonHTMLAttributes &
-      VueComponentProps;
+    $props: VNodeProps & ButtonProps & ButtonHTMLAttributes & VueComponentProps;
   };
 };

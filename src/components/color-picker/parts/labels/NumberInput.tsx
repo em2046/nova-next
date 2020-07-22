@@ -1,13 +1,15 @@
 import { Ref, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import Utils from '../../../../utils/utils';
-import DomUtils, {
+import {
   Direction,
   down,
   FunctionKeys,
+  getInputValue,
+  setInputValue,
   up,
-} from '../../../../utils/dom-utils';
+} from '../../../../utils/dom';
 import { UpdateParams } from './label-utils';
+import { numberFixed } from '../../../../utils/utils';
 
 interface NumberInputProps {
   value?: string;
@@ -40,7 +42,7 @@ const NumberInputImpl = {
       }
 
       const input = inputRef.value as HTMLInputElement;
-      const value = DomUtils.getInputValue(input);
+      const value = getInputValue(input);
 
       if (!/^-?\d+(\.\d+)?$/.test(value)) {
         return;
@@ -65,13 +67,13 @@ const NumberInputImpl = {
         tunedNumber = originNumber - step;
       }
 
-      const tunedValue = Utils.numberFixed(tunedNumber, 1).toString();
+      const tunedValue = numberFixed(tunedNumber, 1).toString();
 
       if (tunedValue === value) {
         return;
       }
 
-      DomUtils.setInputValue(input, tunedValue);
+      setInputValue(input, tunedValue);
       emit('update', {
         target: input,
         value: tunedValue,

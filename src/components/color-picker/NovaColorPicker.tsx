@@ -10,8 +10,7 @@ import {
 } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import { MovePosition } from '../../uses/use-move';
-import Utils from '../../utils/utils';
-import Color, { ColorFormat } from './color';
+import { Color, ColorFormat } from './color';
 import { Trigger } from './parts/Trigger';
 import { HsvPanel } from './parts/HsvPanel';
 import { HueSlide } from './parts/slides/HueSlide';
@@ -21,19 +20,21 @@ import { HslaLabels } from './parts/labels/HslaLabels';
 import { HexLabel } from './parts/labels/HexLabel';
 import { Preview } from './parts/Preview';
 import { PresetValues } from './parts/PresetValues';
-import useEnvironment, {
-  environmentProps,
-  NovaEnvironmentProps,
-} from '../../uses/use-environment';
+import { useEnvironment } from '../../uses/use-environment';
 import { MDIClose } from '@em2046/material-design-icons-vue-next';
 import { NovaDropdown } from '../dropdown';
 import {
   DropdownInstance,
   dropdownProps,
-  NovaDropdownProps,
-  NovaDropdownTriggerScoped,
+  DropdownProps,
+  DropdownTriggerScoped,
 } from '../dropdown/NovaDropdown';
-import { VueComponentProps } from '../../utils/types';
+import { VueComponentProps } from '../../types/vue-component';
+import {
+  environmentProps,
+  EnvironmentProps,
+} from '../environment/NovaEnvironment';
+import { numberLimit } from '../../utils/utils';
 
 //region Mode
 const modeRgba = Symbol('rgba');
@@ -49,9 +50,7 @@ const modeSize = modeList.length;
 
 //endregion
 
-export interface NovaColorPickerProps
-  extends NovaEnvironmentProps,
-    NovaDropdownProps {
+export interface ColorPickerProps extends EnvironmentProps, DropdownProps {
   value?: string;
   alpha?: boolean;
   format?: ColorFormat;
@@ -83,24 +82,23 @@ const colorPickerProps = {
   },
 };
 
-export interface NovaColorPickerPresetScoped {
+export interface ColorPickerPresetScoped {
   preset: string[];
   color: Color;
   setColorAndPosition: (color: Color) => void;
 }
 
-export interface NovaColorPickerTriggerScoped
-  extends NovaDropdownTriggerScoped {
+export interface ColorPickerTriggerScoped extends DropdownTriggerScoped {
   color: Color;
 }
 
 const NovaColorPickerImpl = {
   name: 'NovaColorPicker',
   props: colorPickerProps,
-  setup(props: NovaColorPickerProps, context: SetupContext) {
+  setup(props: ColorPickerProps, context: SetupContext) {
     const emit = context.emit;
 
-    const environment = useEnvironment(props as NovaEnvironmentProps);
+    const environment = useEnvironment(props as EnvironmentProps);
     const dropdownInstanceRef = ref<DropdownInstance | null>(null);
 
     const mode = props.format === 'hsl' ? modeHsla : modeRgba;
@@ -164,10 +162,10 @@ const NovaColorPickerImpl = {
     function setPositionFromColor(color: Color): void {
       const hsva = color.toHsva();
 
-      const hue = Utils.numberLimit((hsva.hue / 360) * 200, 0, 200);
-      const saturation = Utils.numberLimit(hsva.saturation * 200, 0, 200);
-      const value = Utils.numberLimit(200 - 200 * hsva.value, 0, 200);
-      const alpha = Utils.numberLimit(200 - 200 * hsva.alpha, 0, 200);
+      const hue = numberLimit((hsva.hue / 360) * 200, 0, 200);
+      const saturation = numberLimit(hsva.saturation * 200, 0, 200);
+      const value = numberLimit(200 - 200 * hsva.value, 0, 200);
+      const alpha = numberLimit(200 - 200 * hsva.alpha, 0, 200);
 
       state.position.hue = hue;
       state.position.saturation = saturation;
@@ -276,8 +274,8 @@ const NovaColorPickerImpl = {
 
       function createHsvPanel() {
         function onHsvMove(position: MovePosition): void {
-          state.position.saturation = Utils.numberLimit(position.x, 0, 200);
-          state.position.value = Utils.numberLimit(position.y, 0, 200);
+          state.position.saturation = numberLimit(position.x, 0, 200);
+          state.position.value = numberLimit(position.y, 0, 200);
           setColorFromPosition();
         }
 
@@ -293,7 +291,7 @@ const NovaColorPickerImpl = {
 
       function createHue() {
         function onHueMove(position: MovePosition): void {
-          state.position.hue = Utils.numberLimit(position.y, 0, 200);
+          state.position.hue = numberLimit(position.y, 0, 200);
           setColorFromPosition();
         }
 
@@ -306,7 +304,7 @@ const NovaColorPickerImpl = {
         }
 
         function onAlphaMove(position: MovePosition): void {
-          state.position.alpha = Utils.numberLimit(position.y, 0, 200);
+          state.position.alpha = numberLimit(position.y, 0, 200);
           setColorFromPosition();
         }
 
@@ -461,7 +459,7 @@ const NovaColorPickerImpl = {
       const dropdownNode = createDropdown();
 
       const slots = {
-        trigger: ({ dropdownInstance }: NovaDropdownTriggerScoped) => {
+        trigger: ({ dropdownInstance }: DropdownTriggerScoped) => {
           dropdownInstanceRef.value = dropdownInstance;
           return triggerNode;
         },
@@ -491,9 +489,6 @@ const NovaColorPickerImpl = {
 
 export const NovaColorPicker = (NovaColorPickerImpl as unknown) as {
   new (): {
-    $props: VNodeProps &
-      NovaColorPickerProps &
-      HTMLAttributes &
-      VueComponentProps;
+    $props: VNodeProps & ColorPickerProps & HTMLAttributes & VueComponentProps;
   };
 };

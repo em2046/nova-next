@@ -1,4 +1,4 @@
-import Utils from '../../utils/utils';
+import { numberFixed, numberLimit } from '../../utils/utils';
 
 const colorFormatError = 'Color format error';
 
@@ -149,7 +149,7 @@ function sameValue(a: number, b: number): boolean {
  * @property b [0, 1]
  * @property a [0, 1]
  */
-export default class Color {
+export class Color {
   static hexRule = /^#?((([\dA-Fa-f]{6})([\dA-Fa-f]{2})?)|([\dA-Fa-f]{3}))$/;
   static rgbRule = /^rgb\((\d{1,3}%?,){2}\d{1,3}%?\)$/;
   static rgbaRule = /^rgba\((\d{1,3}%?,){2}\d{1,3}%?,(\d+(\.\d{1,2})?)\)$/;
@@ -421,7 +421,7 @@ export default class Color {
     const red = Math.round(this.red * 255);
     const green = Math.round(this.green * 255);
     const blue = Math.round(this.blue * 255);
-    const alpha = Utils.numberFixed(this.alpha);
+    const alpha = numberFixed(this.alpha);
 
     return { red, green, blue, alpha };
   }
@@ -515,7 +515,7 @@ export default class Color {
     } else if (lightness > 1 / 2) {
       saturation = (max - min) / (2 - 2 * lightness);
     }
-    saturation = Utils.numberLimit(saturation, 0, 1);
+    saturation = numberLimit(saturation, 0, 1);
 
     const hue = rgbToHue(max, min, red, green, blue);
 
@@ -534,7 +534,7 @@ export default class Color {
       hue: hsla.hue,
       saturation: Math.round(hsla.saturation * 100),
       lightness: Math.round(hsla.lightness * 100),
-      alpha: Utils.numberFixed(hsla.alpha),
+      alpha: numberFixed(hsla.alpha),
     };
   }
 

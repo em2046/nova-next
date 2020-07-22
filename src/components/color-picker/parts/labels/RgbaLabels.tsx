@@ -1,7 +1,7 @@
 import { reactive, SetupContext, VNodeProps, watch } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import DomUtils from '../../../../utils/dom-utils';
-import Color from '../../color';
+import { getInputValue } from '../../../../utils/dom';
+import { Color } from '../../color';
 import {
   alphaNormalize,
   alphaRule,
@@ -65,7 +65,7 @@ const RgbaLabelsImpl = {
     }
 
     function onRgbInput(input: HTMLInputElement, channel: rgbChannel): void {
-      const value = DomUtils.getInputValue(input);
+      const value = getInputValue(input);
 
       if (value === '') {
         return;
@@ -78,7 +78,7 @@ const RgbaLabelsImpl = {
     }
 
     function onAlphaInput(input: HTMLInputElement): void {
-      const value = DomUtils.getInputValue(input);
+      const value = getInputValue(input);
 
       if (value === '') {
         return;

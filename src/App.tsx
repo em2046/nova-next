@@ -2,8 +2,7 @@ import { defineComponent, reactive, watch } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { vueJsxCompat } from './vue-jsx-compat';
 import { NovaButton, NovaEnvironment } from './index';
-import zhCN from './environments/languages/zh-CN';
-import enUS from './environments/languages/en-US';
+import { enUS, zhCN } from './environments/languages';
 
 const storageThemeKey = 'nova-theme';
 

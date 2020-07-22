@@ -1,15 +1,35 @@
-import { provide, ref, SetupContext, VNode, VNodeProps, watch } from 'vue';
-import { languageKey, themeKey } from '../../utils/symbols';
 import {
-  environmentProps,
-  languageDefault,
-  NovaEnvironmentProps,
-  themeDefault,
-} from '../../uses/use-environment';
+  PropType,
+  provide,
+  ref,
+  SetupContext,
+  VNode,
+  VNodeProps,
+  watch,
+} from 'vue';
+import { languageKey, themeKey } from '../../utils/symbols';
+import { languageDefault, themeDefault } from '../../uses/use-environment';
+import { Language } from '../../environments/languages/type';
+
+export interface EnvironmentProps {
+  theme?: string;
+  language?: Language;
+}
+
+export const environmentProps = {
+  theme: {
+    type: String,
+    default: null,
+  },
+  language: {
+    type: Object as PropType<Language>,
+    default: null,
+  },
+};
 
 const NovaEnvironmentImpl = {
   props: environmentProps,
-  setup(props: NovaEnvironmentProps, context: SetupContext) {
+  setup(props: EnvironmentProps, context: SetupContext) {
     const { slots } = context;
 
     const themeRef = props.theme ? ref(props.theme) : ref(themeDefault);
@@ -56,6 +76,6 @@ const NovaEnvironmentImpl = {
 
 export const NovaEnvironment = (NovaEnvironmentImpl as unknown) as {
   new (): {
-    $props: VNodeProps & NovaEnvironmentProps;
+    $props: VNodeProps & EnvironmentProps;
   };
 };

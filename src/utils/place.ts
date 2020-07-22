@@ -1,5 +1,5 @@
 import { VisualViewport } from '../shims/visual-viewport';
-import { Placement } from '../components/dropdown/NovaDropdown';
+import { Placement } from '../types/props';
 
 type MainAxisPlacement = 'start' | 'center' | 'end';
 type CrossAxisPlacement = 'start' | 'end';

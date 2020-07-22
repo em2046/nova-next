@@ -18,4 +18,4 @@ const zhCN: Language = {
   },
 };
 
-export default zhCN;
+export { zhCN };

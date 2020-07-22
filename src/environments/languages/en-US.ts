@@ -18,4 +18,4 @@ const enUS: Language = {
   },
 };
 
-export default enUS;
+export { enUS };

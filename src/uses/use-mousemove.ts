@@ -1,8 +1,8 @@
 import { onBeforeUnmount, onMounted } from 'vue';
-import DomUtils from '../utils/dom-utils';
 import { MoveParams } from './use-move';
+import { getPaddingLeft, getPaddingTop } from '../utils/dom';
 
-export default function useMousemove(params: MoveParams): void {
+export function useMousemove(params: MoveParams): void {
   const { ref, start, move, finish } = params;
 
   let rect = {} as DOMRect;
@@ -39,8 +39,8 @@ export default function useMousemove(params: MoveParams): void {
 
     const target: HTMLElement = ref.value as HTMLElement;
     rect = target.getBoundingClientRect();
-    border.left = DomUtils.getPaddingLeft(target);
-    border.top = DomUtils.getPaddingTop(target);
+    border.left = getPaddingLeft(target);
+    border.top = getPaddingTop(target);
 
     const rectX = rect.x ?? 0;
     const rectY = rect.y ?? 0;

@@ -14,29 +14,14 @@ import {
   watch,
   withDirectives,
 } from 'vue';
-import useEnvironment, {
-  Environment,
-  NovaEnvironmentProps,
-} from '../../uses/use-environment';
-import useDropdown, { durationLong } from '../../uses/use-dropdown';
-import DomUtils from '../../utils/dom-utils';
-import { VueComponentProps } from '../../utils/types';
+import { Environment, useEnvironment } from '../../uses/use-environment';
+import { durationLong, useDropdown } from '../../uses/use-dropdown';
+import { VueComponentProps } from '../../types/vue-component';
+import { EnvironmentProps } from '../environment/NovaEnvironment';
+import { Placement } from '../../types/props';
+import { getFocusable } from '../../utils/dom';
 
-export type Placement =
-  | 'topLeft'
-  | 'top'
-  | 'topRight'
-  | 'rightTop'
-  | 'right'
-  | 'rightBottom'
-  | 'bottomLeft'
-  | 'bottom'
-  | 'bottomRight'
-  | 'leftTop'
-  | 'left'
-  | 'leftBottom';
-
-export interface NovaDropdownProps extends NovaEnvironmentProps {
+export interface DropdownProps extends EnvironmentProps {
   disabled?: boolean;
   dropdownClass?: unknown;
   dropdownStyle?: string | CSSProperties;
@@ -53,7 +38,7 @@ export interface DropdownInstance {
   close: () => void;
 }
 
-export interface NovaDropdownTriggerScoped {
+export interface DropdownTriggerScoped {
   disabled: boolean;
   dropdownInstance: DropdownInstance;
 }
@@ -92,13 +77,13 @@ export const dropdownProps = {
 const NovaDropdownImpl = {
   name: 'NovaDropdown',
   props: dropdownProps,
-  setup(props: NovaDropdownProps, context: SetupContext) {
+  setup(props: DropdownProps, context: SetupContext) {
     const { emit, slots } = context;
 
     let trapped = false;
 
     const environment =
-      props.environment ?? useEnvironment(props as NovaEnvironmentProps);
+      props.environment ?? useEnvironment(props as EnvironmentProps);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
@@ -106,12 +91,12 @@ const NovaDropdownImpl = {
     const trapTrailerRef: Ref<HTMLElement | null> = ref(null);
 
     function trapHeaderFocus() {
-      const focusable = DomUtils.getFocusable(dropdownRef.value);
+      const focusable = getFocusable(dropdownRef.value);
       nextFocus(focusable?.[focusable.length - 1]);
     }
 
     function trapTrailerFocus() {
-      const focusable = DomUtils.getFocusable(dropdownRef.value);
+      const focusable = getFocusable(dropdownRef.value);
       nextFocus(focusable?.[0]);
     }
 
@@ -291,6 +276,6 @@ const NovaDropdownImpl = {
 
 export const NovaDropdown = (NovaDropdownImpl as unknown) as {
   new (): {
-    $props: VNodeProps & NovaDropdownProps & HTMLAttributes & VueComponentProps;
+    $props: VNodeProps & DropdownProps & HTMLAttributes & VueComponentProps;
   };
 };

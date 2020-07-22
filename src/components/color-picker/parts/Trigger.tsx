@@ -1,6 +1,6 @@
 import { computed, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import Color from '../color';
+import { Color } from '../color';
 import { Environment } from '../../../uses/use-environment';
 
 export interface TriggerProps {

@@ -1,8 +1,8 @@
 import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import useMove, { MovePosition } from '../../../../uses/use-move';
-import Utils from '../../../../utils/utils';
-import Color from '../../color';
+import { MovePosition, useMove } from '../../../../uses/use-move';
+import { Color } from '../../color';
+import { numberFixed } from '../../../../utils/utils';
 
 interface AlphaSlideProps {
   alpha: number;
@@ -28,7 +28,7 @@ const AlphaSlideImpl = {
     const alphaSlideRef = ref(null);
 
     const alphaThumbStyle = computed(() => {
-      const y = Utils.numberFixed(props.alpha);
+      const y = numberFixed(props.alpha);
       return {
         transform: `translate(0, ${y}px)`,
       };

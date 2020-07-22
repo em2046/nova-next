@@ -1,7 +1,7 @@
 import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
-import useMove, { MovePosition } from '../../../../uses/use-move';
-import Utils from '../../../../utils/utils';
+import { MovePosition, useMove } from '../../../../uses/use-move';
+import { numberFixed } from '../../../../utils/utils';
 
 interface HueSlideProps {
   hue: number;
@@ -22,7 +22,7 @@ const HueSlideImpl = {
     const hueSlideRef = ref(null);
 
     const hueThumbStyle = computed(() => {
-      const y = Utils.numberFixed(props.hue);
+      const y = numberFixed(props.hue);
 
       return {
         transform: `translate(0, ${y}px)`,

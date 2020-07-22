@@ -1,8 +1,15 @@
 import { nextTick, onBeforeUnmount, onMounted, reactive, Ref } from 'vue';
-import DomUtils from '../utils/dom-utils';
+import {
+  getElementPosition,
+  getFocusable,
+  getVisualViewport,
+  isInElement,
+  isTouchSupported,
+  setStyles,
+} from '../utils/dom';
 import { VisualViewport } from '../shims/visual-viewport';
-import { Placement } from '../components/dropdown/NovaDropdown';
 import { Offset, place } from '../utils/place';
+import { Placement } from '../types/props';
 
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
@@ -53,9 +60,7 @@ type TriggerType = 'mouse' | 'keyboard' | null;
 
 export const durationLong = 300;
 
-export default function useDropdown(
-  params: UseDropdownParams
-): UseDropdownReturn {
+export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
   const state = reactive({
     dropdown: {
       loaded: false,
@@ -78,9 +83,9 @@ export default function useDropdown(
 
     const target = e.target as HTMLElement;
     const dropdown = dropdownRef.value as HTMLElement;
-    const stopDropdown = DomUtils.isInElement(target, dropdown);
+    const stopDropdown = isInElement(target, dropdown);
     const trigger = triggerRef.value as HTMLElement;
-    const stopTrigger = DomUtils.isInElement(target, trigger);
+    const stopTrigger = isInElement(target, trigger);
 
     if (stopDropdown || stopTrigger) {
       return;
@@ -92,7 +97,7 @@ export default function useDropdown(
 
   function triggerFocus() {
     const trigger = triggerRef.value as HTMLElement;
-    const focusable = DomUtils.getFocusable(trigger);
+    const focusable = getFocusable(trigger);
     const firstFocusable = focusable?.[0];
     firstFocusable?.focus();
   }
@@ -180,7 +185,7 @@ export default function useDropdown(
   }
 
   function resetStyle(el: Element | HTMLElement) {
-    DomUtils.setStyles(el as HTMLElement, {
+    setStyles(el as HTMLElement, {
       left: '',
       top: '',
       opacity: '',
@@ -273,12 +278,12 @@ export default function useDropdown(
     await nextTick();
 
     const trigger = triggerRef.value as HTMLElement;
-    const triggerRect = DomUtils.getElementPosition(trigger);
+    const triggerRect = getElementPosition(trigger);
 
     const dropdown = dropdownRef.value as HTMLElement;
-    const dropdownRect = DomUtils.getElementPosition(dropdown);
+    const dropdownRect = getElementPosition(dropdown);
 
-    const visualViewport: VisualViewport = DomUtils.getVisualViewport();
+    const visualViewport: VisualViewport = getVisualViewport();
 
     const params = {
       triggerRect,
@@ -292,28 +297,25 @@ export default function useDropdown(
 
     const offsetStyle = getOffsetStyle(offset);
 
-    DomUtils.setStyles(
-      el as HTMLElement,
-      Object.assign({}, offsetStyle, collapseStyle)
-    );
+    setStyles(el as HTMLElement, Object.assign({}, offsetStyle, collapseStyle));
 
     requestAnimationFrame(() => {
       // Firefox need force render
-      DomUtils.getVisualViewport();
+      getVisualViewport();
 
       const style = Object.assign({}, getExpandStyle(), getTransitionStyle());
-      DomUtils.setStyles(el as HTMLElement, style);
+      setStyles(el as HTMLElement, style);
     });
   }
 
   function onAfterEnter(el: Element) {
-    DomUtils.setStyles(el as HTMLElement, {
+    setStyles(el as HTMLElement, {
       pointerEvents: '',
     });
 
-    if (!DomUtils.isTouchSupported()) {
+    if (!isTouchSupported()) {
       nextTick(() => {
-        const focusable = DomUtils.getFocusable(el as HTMLElement);
+        const focusable = getFocusable(el as HTMLElement);
         const firstFocusable = focusable?.[0];
         firstFocusable?.focus();
       });
@@ -322,7 +324,7 @@ export default function useDropdown(
 
   function onBeforeLeave(el: Element) {
     const style = Object.assign({}, collapseStyleCache, getTransitionStyle());
-    DomUtils.setStyles(el as HTMLElement, style);
+    setStyles(el as HTMLElement, style);
   }
 
   function onAfterLeave(el: Element) {

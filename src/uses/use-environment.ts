@@ -1,28 +1,15 @@
-import { inject, PropType, Ref, ref } from 'vue';
+import { inject, Ref, ref } from 'vue';
 import { languageKey, themeKey } from '../utils/symbols';
 import { Language } from '../environments/languages/type';
-import enUS from '../environments/languages/en-US';
+import { enUS } from '../environments/languages';
+import { EnvironmentProps } from '../components/environment/NovaEnvironment';
 
 export const themeDefault = 'light';
 export const languageDefault = enUS;
 
-export const environmentProps = {
-  theme: {
-    type: String,
-    default: null,
-  },
-  language: {
-    type: Object as PropType<Language>,
-    default: null,
-  },
-};
-
-export type NovaEnvironmentProps = { theme?: string; language?: Language };
 export type Environment = { languageRef: Ref<Language>; themeRef: Ref<string> };
 
-export default function useEnvironment(
-  props: NovaEnvironmentProps
-): Environment {
+export function useEnvironment(props: EnvironmentProps): Environment {
   let themeRef: Ref<string>;
   let languageRef: Ref<Language>;
 
