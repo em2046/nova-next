@@ -1,7 +1,6 @@
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import {
   computed,
-  CSSProperties,
   HTMLAttributes,
   ref,
   Ref,
@@ -18,16 +17,14 @@ import { Environment, useEnvironment } from '../../uses/use-environment';
 import { durationLong, useDropdown } from '../../uses/use-dropdown';
 import { VueComponentProps } from '../../types/vue-component';
 import { EnvironmentProps } from '../environment/NovaEnvironment';
-import { Placement } from '../../types/props';
+import { Placement, VueClass, VueProps, VueStyle } from '../../types/props';
 import { getFocusable } from '../../utils/dom';
 
 export interface DropdownProps extends EnvironmentProps {
   disabled?: boolean;
-  dropdownClass?: unknown;
-  dropdownStyle?: string | CSSProperties;
-  dropdownProps?: {
-    [key: string]: unknown;
-  };
+  dropdownClass?: VueClass;
+  dropdownStyle?: VueStyle;
+  dropdownProps?: VueProps;
   teleportToBody?: boolean;
   environment?: Environment;
   placement?: Placement;

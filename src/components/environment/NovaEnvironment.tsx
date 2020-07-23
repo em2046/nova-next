@@ -9,7 +9,7 @@ import {
 } from 'vue';
 import { languageKey, themeKey } from '../../utils/symbols';
 import { languageDefault, themeDefault } from '../../uses/use-environment';
-import { Language } from '../../environments/languages/type';
+import { Language } from '../../types/language';
 
 export interface EnvironmentProps {
   theme?: string;

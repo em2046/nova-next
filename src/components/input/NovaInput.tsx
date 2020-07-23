@@ -1,17 +1,17 @@
-import { computed, CSSProperties, SetupContext, VNodeProps } from 'vue';
+import { computed, InputHTMLAttributes, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import { useEnvironment } from '../../uses/use-environment';
 import { VueComponentProps } from '../../types/vue-component';
-import { InputHTMLAttributes } from '@vue/runtime-dom';
 import {
   environmentProps,
   EnvironmentProps,
 } from '../environment/NovaEnvironment';
+import { VueClass, VueStyle } from '../../types/props';
 
 interface InputProps extends EnvironmentProps {
-  class?: unknown;
-  wrapClass?: unknown;
-  wrapStyle?: string | CSSProperties;
+  class?: VueClass;
+  wrapClass?: VueClass;
+  wrapStyle?: VueStyle;
   disabled?: boolean;
   readonly?: boolean;
 }

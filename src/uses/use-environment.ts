@@ -1,6 +1,6 @@
 import { inject, Ref, ref } from 'vue';
 import { languageKey, themeKey } from '../utils/symbols';
-import { Language } from '../environments/languages/type';
+import { Language } from '../types/language';
 import { enUS } from '../environments/languages';
 import { EnvironmentProps } from '../components/environment/NovaEnvironment';
 

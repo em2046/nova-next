@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`input render 1`] = `"<div><div class=\\"nova-input\\" data-nova-theme=\\"light\\"><input type=\\"text\\" class=\\"nova-input-text\\"><div class=\\"nova-input-border\\"></div></div><div class=\\"nova-input nova-input-disabled\\" data-nova-theme=\\"light\\"><input type=\\"text\\" class=\\"nova-input-text\\" disabled=\\"\\"><div class=\\"nova-input-border\\"></div></div><div class=\\"nova-input nova-input-readonly\\" data-nova-theme=\\"light\\"><input type=\\"text\\" class=\\"nova-input-text\\" readonly=\\"\\"><div class=\\"nova-input-border\\"></div></div></div>"`;
