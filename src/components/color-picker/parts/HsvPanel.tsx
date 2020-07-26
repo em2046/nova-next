@@ -1,7 +1,7 @@
 import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { MovePosition, useMove } from '../../../uses/use-move';
-import { fromHsva, toCssRgbaString } from '../color';
+import { Color } from '../color';
 import { numberFixed } from '../../../utils/utils';
 
 interface HsvPanelProps {
@@ -41,7 +41,7 @@ const HsvPanelImpl = {
     });
 
     const hsvStyle = computed(() => {
-      const bg = toCssRgbaString(fromHsva(props.hueReg, 1, 1));
+      const bg = Color.fromHsva(props.hueReg, 1, 1).toCssRgbaString();
 
       return {
         background: `linear-gradient(90deg, hsl(0, 0%, 100%), ${bg})`,

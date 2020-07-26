@@ -1,17 +1,4 @@
-import {
-  fromCssHsla,
-  fromCssHslString,
-  fromCssLikeHsva,
-  fromCssRgba,
-  fromHex,
-  parse,
-  toCssHsla,
-  toCssHslaString,
-  toCssRgba,
-  toCssRgbaString,
-  toHex,
-  toHsva,
-} from '../color';
+import { Color } from '../color';
 import x11Colors from '../assets/x11-colors';
 import hslData from '../assets/css-wg/hsl';
 import mdnColors from '../assets/mdn-colors';
@@ -95,7 +82,7 @@ describe('x11-colors', () => {
       const red = percentToValue(parseInt(x11Color.red), 255);
       const green = percentToValue(parseInt(x11Color.green), 255);
       const blue = percentToValue(parseInt(x11Color.blue), 255);
-      const hex = toHex(fromCssRgba(red, green, blue));
+      const hex = Color.fromCssRgba(red, green, blue).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
     });
@@ -103,7 +90,7 @@ describe('x11-colors', () => {
 
   test('hex to rgb', () => {
     x11Colors.forEach((x11Color) => {
-      const { red, green, blue } = toCssRgba(fromHex(x11Color.hex));
+      const { red, green, blue } = Color.fromHex(x11Color.hex).toCssRgba();
       expect(valueToPercent(red, 255).toString()).toEqual(x11Color.red);
       expect(valueToPercent(green, 255).toString()).toEqual(x11Color.green);
       expect(valueToPercent(blue, 255).toString()).toEqual(x11Color.blue);
@@ -115,7 +102,7 @@ describe('x11-colors', () => {
       const hue = parseInt(x11Color.hue);
       const saturation = parseInt(x11Color.hslSaturation);
       const lightness = parseInt(x11Color.light);
-      const hex = toHex(fromCssHsla(hue, saturation, lightness));
+      const hex = Color.fromCssHsla(hue, saturation, lightness).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
     });
@@ -123,7 +110,9 @@ describe('x11-colors', () => {
 
   test('hex to hsl', () => {
     x11Colors.forEach((x11Color) => {
-      const { hue, saturation, lightness } = toCssHsla(fromHex(x11Color.hex));
+      const { hue, saturation, lightness } = Color.fromHex(
+        x11Color.hex
+      ).toCssHsla();
       const sameH = almostSameValue(hue, parseInt(x11Color.hue), 360);
       const sameS = almostSameValue(
         saturation,
@@ -142,7 +131,7 @@ describe('x11-colors', () => {
       const hue = parseInt(x11Color.hue);
       const saturation = parseInt(x11Color.hsvSaturation);
       const value = parseInt(x11Color.value);
-      const hex = toHex(fromCssLikeHsva(hue, saturation, value));
+      const hex = Color.fromCssLikeHsva(hue, saturation, value).toHex();
       const sameHex = almostSameHex(hex, hexNormalize(x11Color.hex));
       expect(sameHex).toBeTruthy();
     });
@@ -150,7 +139,7 @@ describe('x11-colors', () => {
 
   test('hex to hsv', () => {
     x11Colors.forEach((x11Color) => {
-      const { hue, saturation, value } = toHsva(fromHex(x11Color.hex));
+      const { hue, saturation, value } = Color.fromHex(x11Color.hex).toHsva();
       const originHue = parseInt(x11Color.hue);
       const originSaturation = parseInt(x11Color.hsvSaturation);
       const originValue = parseInt(x11Color.value);
@@ -180,7 +169,7 @@ describe('css-wg-colors', () => {
         const light = lightList[0];
         lightList.slice(1).forEach((color, index) => {
           const originHsl = `hsl(${hue}, ${saturationKeys[index]}, ${light})`;
-          const outputHex = toHex(fromCssHslString(originHsl));
+          const outputHex = Color.fromCssHslString(originHsl).toHex();
           const sameHex = almostSameHex(outputHex, hexNormalize(color));
           expect(sameHex).toBeTruthy();
         });
@@ -190,7 +179,7 @@ describe('css-wg-colors', () => {
         const light = lightList[0];
         lightList.slice(1, -1).forEach((color, index) => {
           const originHsl = `hsl(${hue}, ${saturationKeys[index]}, ${light})`;
-          const outputHsl = toCssHslaString(fromHex(color));
+          const outputHsl = Color.fromHex(color).toCssHslaString();
           const sameHsl = almostSameHsl(originHsl, outputHsl);
           expect(sameHsl).toBeTruthy();
         });
@@ -208,7 +197,7 @@ describe('mdn-colors', () => {
     mdnColors.forEach((mdnColor) => {
       if (mdnColor.error) {
         expect(() => {
-          parse(mdnColor.css);
+          Color.parse(mdnColor.css);
         }).toThrowError();
         return;
       }
@@ -217,8 +206,8 @@ describe('mdn-colors', () => {
         return;
       }
 
-      const color = parse(mdnColor.css);
-      const sameRgb = almostSameRgb(toCssRgbaString(color), mdnColor.rgb);
+      const color = Color.parse(mdnColor.css);
+      const sameRgb = almostSameRgb(color.toCssRgbaString(), mdnColor.rgb);
       expect(sameRgb).toBeTruthy();
     });
   });

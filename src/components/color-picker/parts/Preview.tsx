@@ -1,6 +1,6 @@
 import { SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import { Color, parse, toCssRgbaString } from '../color';
+import { Color } from '../color';
 
 interface PreviewProps {
   color: Color;
@@ -28,8 +28,8 @@ const PreviewImpl = {
     }
 
     return (): JSX.Element => {
-      const prevColor = toCssRgbaString(parse(props.value));
-      const currColor = toCssRgbaString(props.color);
+      const prevColor = Color.parse(props.value).toCssRgbaString();
+      const currColor = props.color.toCssRgbaString();
       const prevStyle = {
         backgroundColor: prevColor,
       };

@@ -1,7 +1,7 @@
 import { reactive, SetupContext, VNodeProps, watch } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import { getInputValue } from '../../../../utils/dom';
-import { Color, fromCssHsla, sameColor, toCssHsla } from '../../color';
+import { Color } from '../../color';
 import {
   alphaNormalize,
   alphaRule,
@@ -41,7 +41,7 @@ const HslaLabelsImpl = {
   setup(props: HslaLabelsProps, context: SetupContext) {
     const emit = context.emit;
 
-    const hsla = toCssHsla(props.color);
+    const hsla = props.color.toCssHsla();
     const state = reactive({
       hue: hsla.hue,
       saturation: hsla.saturation,
@@ -55,9 +55,9 @@ const HslaLabelsImpl = {
       const lightness = intNormalize(state.lightness, 100);
       const alpha = alphaNormalize(state.alpha);
 
-      const color = fromCssHsla(hue, saturation, lightness, alpha);
-      const same = sameColor(props.color as Color, color);
-      if (same) {
+      const color = Color.fromCssHsla(hue, saturation, lightness, alpha);
+      const sameColor = Color.sameColor(props.color as Color, color);
+      if (sameColor) {
         return;
       }
 
@@ -97,7 +97,7 @@ const HslaLabelsImpl = {
     watch(
       () => props.color,
       () => {
-        const hsla = toCssHsla(props.color);
+        const hsla = props.color.toCssHsla();
 
         state.hue = hsla.hue;
         state.saturation = hsla.saturation;

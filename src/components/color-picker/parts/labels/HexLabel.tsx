@@ -8,14 +8,7 @@ import {
   setInputValue,
   up,
 } from '../../../../utils/dom';
-import {
-  Color,
-  fromHex,
-  hexNormalize,
-  hexRule,
-  sameColor,
-  toCssHexString,
-} from '../../color';
+import { Color } from '../../color';
 import { numberLimit } from '../../../../utils/utils';
 
 interface TuningParams {
@@ -83,12 +76,12 @@ const HexLabelImpl = {
     });
 
     function updateColor(eventName: string, hex: string): void {
-      if (hexRule.test(hex)) {
+      if (Color.hexRule.test(hex)) {
         state.hexShort = hex.replace('#', '').length === 3;
 
-        const color = fromHex(hex);
-        const same = sameColor(props.color as Color, color);
-        if (same) {
+        const color = Color.fromHex(hex);
+        const sameColor = Color.sameColor(props.color as Color, color);
+        if (sameColor) {
           return;
         }
 
@@ -105,7 +98,7 @@ const HexLabelImpl = {
     function onHexBlur(e: Event): void {
       const target = e.target as HTMLInputElement;
       const inputValue = getInputValue(target);
-      const hex = hexNormalize(inputValue);
+      const hex = Color.hexNormalize(inputValue);
       const hashHex = `#${hex}`;
 
       if (inputValue !== hashHex) {
@@ -123,7 +116,7 @@ const HexLabelImpl = {
       const hexInput = hexRef.value as HTMLInputElement;
       const hexValue = getInputValue(hexInput);
 
-      if (!hexRule.test(hexValue)) {
+      if (!Color.hexRule.test(hexValue)) {
         return;
       }
 
@@ -187,7 +180,7 @@ const HexLabelImpl = {
           <div class="nova-color-picker-hex">
             <input
               type="text"
-              value={toCssHexString(props.color, state.hexShort)}
+              value={props.color.toCssHexString(state.hexShort)}
               ref={hexRef}
               onInput={onHexInput}
               onBlur={onHexBlur}

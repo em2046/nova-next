@@ -1,6 +1,6 @@
 import { SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import { Color, parse, toCssHexString } from '../color';
+import { Color } from '../color';
 
 interface PresetValuesProps {
   color: Color;
@@ -25,13 +25,13 @@ const PresetValuesImpl = {
     const slots = context.slots;
 
     function selectPreset(hex: string): void {
-      const color = parse(hex);
+      const color = Color.parse(hex);
       emit('select', color);
     }
 
     function createPreset(color: string) {
-      const presetHex = toCssHexString(parse(color));
-      const panelHex = toCssHexString(props.color);
+      const presetHex = Color.parse(color).toCssHexString();
+      const panelHex = props.color.toCssHexString();
       const selected = presetHex === panelHex;
       const classList = [
         'nova-color-picker-preset',

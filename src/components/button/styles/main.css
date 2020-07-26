@@ -16,7 +16,6 @@
 
   &:not([disabled]) {
     &:focus {
-      position: relative;
       outline: none;
       border: var(--nova-border-primary);
       box-shadow: var(--nova-shadow-primary);
