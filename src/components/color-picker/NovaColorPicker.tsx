@@ -10,7 +10,14 @@ import {
 } from 'vue';
 import { vueJsxCompat } from '../../vue-jsx-compat';
 import { MovePosition } from '../../uses/use-move';
-import { Color, ColorFormat } from './color';
+import {
+  Color,
+  ColorFormat,
+  colorToString,
+  fromCssLikeHsva,
+  parse,
+  toHsva,
+} from './color';
 import { Trigger } from './parts/Trigger';
 import { HsvPanel } from './parts/HsvPanel';
 import { HueSlide } from './parts/slides/HueSlide';
@@ -121,7 +128,7 @@ const NovaColorPickerImpl = {
          */
         alpha: 0,
       },
-      color: Color.fromCssLikeHsva(0, 100, 100, 1),
+      color: fromCssLikeHsva(0, 100, 100, 1),
       mode,
     });
 
@@ -151,7 +158,7 @@ const NovaColorPickerImpl = {
     });
 
     function getColorFromPosition(): Color {
-      return Color.fromCssLikeHsva(
+      return fromCssLikeHsva(
         hueDegrees.value,
         state.position.saturation / 2,
         (200 - state.position.value) / 2,
@@ -160,7 +167,7 @@ const NovaColorPickerImpl = {
     }
 
     function setPositionFromColor(color: Color): void {
-      const hsva = color.toHsva();
+      const hsva = toHsva(color);
 
       const hue = numberLimit((hsva.hue / 360) * 200, 0, 200);
       const saturation = numberLimit(hsva.saturation * 200, 0, 200);
@@ -192,10 +199,10 @@ const NovaColorPickerImpl = {
 
     function changePropsValue(color: Color): void {
       // JSX onUpdate
-      emit('update', color.toString(props.format));
+      emit('update', colorToString(color, props.format));
 
       // Template v-model:value
-      emit('update:value', color.toString(props.format));
+      emit('update:value', colorToString(color, props.format));
     }
 
     function switchMode(): void {
@@ -220,7 +227,7 @@ const NovaColorPickerImpl = {
     watch(
       () => props.value,
       (value) => {
-        const color = Color.parse(value);
+        const color = parse(value);
         setColorAndPosition(color);
       }
     );
@@ -237,7 +244,7 @@ const NovaColorPickerImpl = {
     );
 
     function reset() {
-      const color = Color.parse(props.value);
+      const color = parse(props.value);
       setColorAndPosition(color);
     }
 

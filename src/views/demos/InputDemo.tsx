@@ -40,6 +40,7 @@ export default defineComponent({
           <NovaInput disabled />
           <NovaInput readonly value="Text" />
           <NovaInput value="✒" />
+          <NovaInput />
         </div>
       </section>
     );

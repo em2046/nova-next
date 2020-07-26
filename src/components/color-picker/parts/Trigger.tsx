@@ -1,6 +1,6 @@
 import { computed, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import { Color } from '../color';
+import { Color, toCssRgbaString } from '../color';
 import { Environment } from '../../../uses/use-environment';
 
 export interface TriggerProps {
@@ -30,7 +30,7 @@ const TriggerImpl = {
 
     const triggerInnerStyle = computed(() => {
       return {
-        backgroundColor: props.color.toCssRgbaString(),
+        backgroundColor: toCssRgbaString(props.color),
       };
     });
 

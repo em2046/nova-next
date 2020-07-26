@@ -1,7 +1,7 @@
 import { computed, ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import { MovePosition, useMove } from '../../../../uses/use-move';
-import { Color } from '../../color';
+import { Color, toCssRgba } from '../../color';
 import { numberFixed } from '../../../../utils/utils';
 
 interface AlphaSlideProps {
@@ -42,7 +42,7 @@ const AlphaSlideImpl = {
     });
 
     return (): JSX.Element => {
-      const { red, green, blue } = props.color.toCssRgba();
+      const { red, green, blue } = toCssRgba(props.color);
       const currColorRgb = `${red}, ${green}, ${blue}`;
       const currColorLinearGradient = `linear-gradient(180deg, rgba(${currColorRgb}, 1), rgba(${currColorRgb}, 0))`;
 

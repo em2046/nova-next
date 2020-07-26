@@ -1,12 +1,16 @@
 import { defineComponent, reactive } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
-import { Color, NovaButton, NovaColorPicker } from '../../../index';
+import { NovaButton, NovaColorPicker } from '../../../index';
 import {
   ColorPickerPresetScoped,
   ColorPickerTriggerScoped,
 } from '../../../components/color-picker/NovaColorPicker';
 import hslData from '../../../components/color-picker/assets/css-wg/hsl';
 import './styles/normal.css';
+import {
+  fromHex,
+  toCssHexString,
+} from '../../../components/color-picker/color';
 
 export default defineComponent({
   setup() {
@@ -31,7 +35,7 @@ export default defineComponent({
 
     const slots = {
       trigger: (scoped: ColorPickerTriggerScoped) => {
-        const hex = scoped.color.toCssHexString();
+        const hex = toCssHexString(scoped.color);
         return (
           <div
             class="demo-color-picker-normal-trigger"
@@ -46,7 +50,7 @@ export default defineComponent({
       },
       preset: (scoped: ColorPickerPresetScoped) => {
         function handleClick(cell: string) {
-          scoped.setColorAndPosition(Color.fromHex(cell));
+          scoped.setColorAndPosition(fromHex(cell));
         }
 
         const panes = hslData.map((pane) => {
@@ -56,7 +60,7 @@ export default defineComponent({
                 <li
                   class={{
                     ['demo-color-picker-normal-preset-selected']:
-                      scoped.color.toCssHexString() === cell,
+                      toCssHexString(scoped.color) === cell,
                   }}
                   onClick={() => handleClick(cell)}
                   style={{ backgroundColor: cell }}

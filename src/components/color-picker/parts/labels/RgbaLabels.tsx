@@ -1,7 +1,7 @@
 import { reactive, SetupContext, VNodeProps, watch } from 'vue';
 import { vueJsxCompat } from '../../../../vue-jsx-compat';
 import { getInputValue } from '../../../../utils/dom';
-import { Color } from '../../color';
+import { Color, fromCssRgba, sameColor, toCssRgba } from '../../color';
 import {
   alphaNormalize,
   alphaRule,
@@ -41,7 +41,7 @@ const RgbaLabelsImpl = {
   setup(props: RgbaLabelsProps, context: SetupContext) {
     const emit = context.emit;
 
-    const rgba = props.color.toCssRgba();
+    const rgba = toCssRgba(props.color);
     const state = reactive({
       red: rgba.red,
       green: rgba.green,
@@ -55,9 +55,9 @@ const RgbaLabelsImpl = {
       const blue = intNormalize(state.blue, 255);
       const alpha = alphaNormalize(state.alpha);
 
-      const color = Color.fromCssRgba(red, green, blue, alpha);
-      const sameColor = Color.sameColor(props.color as Color, color);
-      if (sameColor) {
+      const color = fromCssRgba(red, green, blue, alpha);
+      const same = sameColor(props.color as Color, color);
+      if (same) {
         return;
       }
 
@@ -97,7 +97,7 @@ const RgbaLabelsImpl = {
     watch(
       () => props.color,
       () => {
-        const rgba = props.color.toCssRgba();
+        const rgba = toCssRgba(props.color);
 
         state.red = rgba.red;
         state.green = rgba.green;

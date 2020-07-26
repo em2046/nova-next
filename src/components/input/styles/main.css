@@ -2,6 +2,10 @@
   display: inline-block;
   vertical-align: top;
 
+  &:focus-within {
+    position: relative;
+  }
+
   &:not(.nova-input-disabled):not(.nova-input-readonly) {
     .nova-input-text {
       &:hover,
