@@ -55,71 +55,77 @@ export function place(
     maxLength: maxWidth,
   };
 
-  const mainVerticalStart = getMainAxisPlace(verticalParams, 'start');
-  const mainVerticalCenter = getMainAxisPlace(verticalParams, 'center');
-  const mainVerticalEnd = getMainAxisPlace(verticalParams, 'end');
+  const getMainVerticalStart = () => getMainAxisPlace(verticalParams, 'start');
+  const getMainVerticalCenter = () =>
+    getMainAxisPlace(verticalParams, 'center');
+  const getMainVerticalEnd = () => getMainAxisPlace(verticalParams, 'end');
 
-  const mainHorizontalStart = getMainAxisPlace(horizontalParams, 'start');
-  const mainHorizontalCenter = getMainAxisPlace(horizontalParams, 'center');
-  const mainHorizontalEnd = getMainAxisPlace(horizontalParams, 'end');
+  const getMainHorizontalStart = () =>
+    getMainAxisPlace(horizontalParams, 'start');
+  const getMainHorizontalCenter = () =>
+    getMainAxisPlace(horizontalParams, 'center');
+  const getMainHorizontalEnd = () => getMainAxisPlace(horizontalParams, 'end');
 
-  const crossVerticalStart = getCrossAxisPlace(verticalParams, 'start');
-  const crossVerticalEnd = getCrossAxisPlace(verticalParams, 'end');
+  const getCrossVerticalStart = () =>
+    getCrossAxisPlace(verticalParams, 'start');
+  const getCrossVerticalEnd = () => getCrossAxisPlace(verticalParams, 'end');
 
-  const crossHorizontalEnd = getCrossAxisPlace(horizontalParams, 'end');
-  const crossHorizontalStart = getCrossAxisPlace(horizontalParams, 'start');
+  const getCrossHorizontalEnd = () =>
+    getCrossAxisPlace(horizontalParams, 'end');
+  const getCrossHorizontalStart = () =>
+    getCrossAxisPlace(horizontalParams, 'start');
 
   let left;
   let top;
 
   switch (placement) {
     case 'topLeft':
-      left = mainHorizontalStart;
-      top = crossVerticalStart;
+      left = getMainHorizontalStart();
+      top = getCrossVerticalStart();
       break;
     case 'top':
-      left = mainHorizontalCenter;
-      top = crossVerticalStart;
+      left = getMainHorizontalCenter();
+      top = getCrossVerticalStart();
       break;
     case 'topRight':
-      left = mainHorizontalEnd;
-      top = crossVerticalStart;
+      left = getMainHorizontalEnd();
+      top = getCrossVerticalStart();
       break;
     case 'bottomLeft':
-      left = mainHorizontalStart;
-      top = crossVerticalEnd;
+      left = getMainHorizontalStart();
+      top = getCrossVerticalEnd();
       break;
     case 'bottom':
-      left = mainHorizontalCenter;
-      top = crossVerticalEnd;
+      left = getMainHorizontalCenter();
+      top = getCrossVerticalEnd();
       break;
     case 'bottomRight':
-      left = mainHorizontalEnd;
-      top = crossVerticalEnd;
+      left = getMainHorizontalEnd();
+      top = getCrossVerticalEnd();
       break;
     case 'leftTop':
-      left = crossHorizontalStart;
-      top = mainVerticalStart;
+      left = getCrossHorizontalStart();
+      top = getMainVerticalStart();
       break;
     case 'left':
-      left = crossHorizontalStart;
-      top = mainVerticalCenter;
+      left = getCrossHorizontalStart();
+      top = getMainVerticalCenter();
       break;
     case 'leftBottom':
-      left = crossHorizontalStart;
-      top = mainVerticalEnd;
+      left = getCrossHorizontalStart();
+      top = getMainVerticalEnd();
       break;
     case 'rightTop':
-      left = crossHorizontalEnd;
-      top = mainVerticalStart;
+      left = getCrossHorizontalEnd();
+      top = getMainVerticalStart();
       break;
     case 'right':
-      left = crossHorizontalEnd;
-      top = mainVerticalCenter;
+      left = getCrossHorizontalEnd();
+      top = getMainVerticalCenter();
       break;
     case 'rightBottom':
-      left = crossHorizontalEnd;
-      top = mainVerticalEnd;
+      left = getCrossHorizontalEnd();
+      top = getMainVerticalEnd();
       break;
   }
 
@@ -143,7 +149,6 @@ function getMainAxisPlace(
   switch (placement) {
     case 'start':
       newStart = oldStart;
-
       break;
     case 'center':
       newStart = oldEnd - (oldEnd - oldStart) / 2 - newLength / 2;
