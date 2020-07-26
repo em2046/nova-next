@@ -14,6 +14,7 @@ import { Placement } from '../types/props';
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
   dropdownRef: Ref<HTMLElement | null>;
+  trapHiddenRef: Ref<HTMLElement | null>;
   reset?: () => void;
   props: Readonly<unknown>;
   onOpen?: () => void;
@@ -70,7 +71,15 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
 
   let triggerType: TriggerType;
 
-  const { triggerRef, dropdownRef, reset, props, onOpen, onClose } = params;
+  const {
+    triggerRef,
+    dropdownRef,
+    trapHiddenRef,
+    reset,
+    props,
+    onOpen,
+    onClose,
+  } = params;
   const dropdownProps = props as DropdownProps;
   let collapseStyleCache: CollapseStyle | null = null;
 
@@ -222,6 +231,10 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     toggleDropdown();
   }
 
+  function triggerMousedown() {
+    triggerType = 'mouse';
+  }
+
   function toggleDropdown(): void {
     const opened = state.dropdown.opened;
     if (opened) {
@@ -256,6 +269,7 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
   onMounted(() => {
     const trigger = triggerRef.value as HTMLElement;
     trigger.addEventListener('click', triggerClick);
+    trigger.addEventListener('mousedown', triggerMousedown);
     trigger.addEventListener('keydown', triggerKeydown);
   });
 
@@ -264,6 +278,7 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
 
     const trigger = triggerRef.value as HTMLElement;
     trigger.removeEventListener('click', triggerClick);
+    trigger.removeEventListener('mousedown', triggerMousedown);
     trigger.removeEventListener('keydown', triggerKeydown);
   });
 
@@ -315,9 +330,13 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
 
     if (!isTouchSupported()) {
       nextTick(() => {
-        const focusable = getFocusable(el as HTMLElement);
-        const firstFocusable = focusable?.[0];
-        firstFocusable?.focus();
+        if (triggerType === 'mouse' && trapHiddenRef.value) {
+          trapHiddenRef.value.focus();
+        } else {
+          const focusable = getFocusable(el as HTMLElement);
+          const firstFocusable = focusable?.[0];
+          firstFocusable?.focus();
+        }
       });
     }
   }

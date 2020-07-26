@@ -85,6 +85,7 @@ const NovaDropdownImpl = {
     const triggerRef: Ref<HTMLElement | null> = ref(null);
     const dropdownRef: Ref<HTMLElement | null> = ref(null);
     const trapHeaderRef: Ref<HTMLElement | null> = ref(null);
+    const trapHiddenRef: Ref<HTMLElement | null> = ref(null);
     const trapTrailerRef: Ref<HTMLElement | null> = ref(null);
 
     function trapHeaderFocus() {
@@ -134,6 +135,7 @@ const NovaDropdownImpl = {
     } = useDropdown({
       triggerRef,
       dropdownRef,
+      trapHiddenRef,
       props,
       onOpen: () => {
         emit('openChange', true);
@@ -202,6 +204,7 @@ const NovaDropdownImpl = {
               onFocus={trapHeaderFocus}
             />
             {children}
+            <div class="nova-trap" ref={trapHiddenRef} tabindex={0} />
             <div
               class="nova-trap"
               data-nova-trap="trailer"
