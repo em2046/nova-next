@@ -49,6 +49,16 @@
   box-shadow: var(--nova-shadow-cursor);
   transform: translate(100px, 100px);
   will-change: transform;
+  transition: width var(--nova-duration-short) linear,
+    height var(--nova-duration-short) linear,
+    margin var(--nova-duration-short) linear;
+}
+
+.nova-color-picker-cursor-holding {
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  margin-left: -20px;
 }
 
 .nova-color-picker-slides {

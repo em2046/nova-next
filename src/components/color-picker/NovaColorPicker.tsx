@@ -281,6 +281,7 @@ const NovaColorPickerImpl = {
 
         return (
           <HsvPanel
+            color={state.color}
             hueReg={hueDegrees.value}
             saturation={state.position.saturation}
             value={state.position.value}
