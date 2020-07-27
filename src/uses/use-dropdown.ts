@@ -4,7 +4,6 @@ import {
   getFocusable,
   getVisualViewport,
   isInElement,
-  isTouchSupported,
   setStyles,
 } from '../utils/dom';
 import { VisualViewport } from '../shims/visual-viewport';
@@ -57,7 +56,7 @@ interface CollapseStyle {
   pointerEvents: string;
 }
 
-type TriggerType = 'mouse' | 'keyboard' | null;
+type TriggerType = 'mouse' | 'keyboard' | 'touch' | null;
 
 export const durationLong = 300;
 
@@ -235,6 +234,10 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     triggerType = 'mouse';
   }
 
+  function triggerTouchstart() {
+    triggerType = 'touch';
+  }
+
   function toggleDropdown(): void {
     const opened = state.dropdown.opened;
     if (opened) {
@@ -270,6 +273,7 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     const trigger = triggerRef.value as HTMLElement;
     trigger.addEventListener('click', triggerClick);
     trigger.addEventListener('mousedown', triggerMousedown);
+    trigger.addEventListener('touchstart ', triggerTouchstart);
     trigger.addEventListener('keydown', triggerKeydown);
   });
 
@@ -279,6 +283,7 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     const trigger = triggerRef.value as HTMLElement;
     trigger.removeEventListener('click', triggerClick);
     trigger.removeEventListener('mousedown', triggerMousedown);
+    trigger.removeEventListener('touchstart ', triggerTouchstart);
     trigger.removeEventListener('keydown', triggerKeydown);
   });
 
@@ -323,21 +328,22 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     });
   }
 
-  function onAfterEnter(el: Element) {
+  async function onAfterEnter(el: Element) {
     setStyles(el as HTMLElement, {
       pointerEvents: '',
     });
 
-    if (!isTouchSupported()) {
-      nextTick(() => {
-        if (triggerType === 'mouse' && trapHiddenRef.value) {
-          trapHiddenRef.value.focus();
-        } else {
-          const focusable = getFocusable(el as HTMLElement);
-          const firstFocusable = focusable?.[0];
-          firstFocusable?.focus();
-        }
-      });
+    await nextTick();
+
+    if (
+      (triggerType === 'mouse' || triggerType === 'touch') &&
+      trapHiddenRef.value
+    ) {
+      trapHiddenRef.value.focus();
+    } else {
+      const focusable = getFocusable(el as HTMLElement);
+      const firstFocusable = focusable?.[0];
+      firstFocusable?.focus();
     }
   }
 
