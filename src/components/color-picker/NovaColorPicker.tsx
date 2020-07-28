@@ -141,9 +141,9 @@ const NovaColorPickerImpl = {
       ];
     });
 
-    const dropdownClassList = computed(() => {
+    const panelClassList = computed(() => {
       return [
-        props.dropdownClass,
+        props.panelClass,
         {
           ['nova-color-picker-panel-has-alpha']: props.alpha,
         },
@@ -473,9 +473,9 @@ const NovaColorPickerImpl = {
         <NovaDropdown
           class={classList.value}
           disabled={props.disabled}
-          dropdownClass={dropdownClassList.value}
-          dropdownStyle={props.dropdownStyle}
-          dropdownProps={props.dropdownProps}
+          panelClass={panelClassList.value}
+          panelStyle={props.panelStyle}
+          panelProps={props.panelProps}
           teleportToBody={props.teleportToBody}
           placement={props.placement}
           environment={environment}

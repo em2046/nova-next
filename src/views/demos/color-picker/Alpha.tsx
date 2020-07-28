@@ -66,7 +66,7 @@ export default defineComponent({
       color: defaultColor,
       alpha: true,
       colorCustomValue: getRandomNumber(),
-      colorDropdownClass: 'custom-dropdown-class-name' + getRandomNumber(),
+      colorPanelClass: 'custom-panel-class-name-' + getRandomNumber(),
     });
 
     function onUpdate(color: string): void {
@@ -83,8 +83,7 @@ export default defineComponent({
 
     function onClick(): void {
       state.colorCustomValue = getRandomNumber();
-      state.colorDropdownClass =
-        'custom-dropdown-class-name-' + getRandomNumber();
+      state.colorPanelClass = 'custom-panel-class-name-' + getRandomNumber();
     }
 
     function onOpenChange(open: boolean): void {
@@ -100,9 +99,9 @@ export default defineComponent({
         onClick,
         onOpenChange,
         teleportToBody: false,
-        dropdownClass: [state.colorDropdownClass],
-        dropdownStyle: { borderRadius: '0' },
-        dropdownProps: {
+        panelClass: [state.colorPanelClass],
+        panelStyle: { borderRadius: '0' },
+        panelProps: {
           'data-custom': getRandomNumber(),
         },
         class: 'custom-class-name',

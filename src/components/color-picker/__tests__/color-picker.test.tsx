@@ -135,10 +135,10 @@ describe('color-picker', () => {
             ['object-class']: true,
           },
         ];
-        const dropdownClassList = [
-          'array-dropdown-class',
+        const panelClassList = [
+          'array-panel-class',
           {
-            ['object-dropdown-class']: true,
+            ['object-panel-class']: true,
           },
         ];
 
@@ -148,7 +148,7 @@ describe('color-picker', () => {
               <NovaColorPicker
                 value={state.color}
                 class={classList}
-                dropdownClass={dropdownClassList}
+                panelClass={panelClassList}
                 teleportToBody={false}
               />
             </div>
@@ -162,9 +162,9 @@ describe('color-picker', () => {
     expect(classList).toContain('object-class');
 
     await wrapper.find('.nova-dropdown-trigger').trigger('click');
-    const dropdownClassList = wrapper.find('.nova-dropdown-panel').classes();
-    expect(dropdownClassList).toContain('array-dropdown-class');
-    expect(dropdownClassList).toContain('object-dropdown-class');
+    const panelClassList = wrapper.find('.nova-dropdown-panel').classes();
+    expect(panelClassList).toContain('array-panel-class');
+    expect(panelClassList).toContain('object-panel-class');
     expect(wrapper.html()).toMatchSnapshot();
   });
 
@@ -178,7 +178,7 @@ describe('color-picker', () => {
         const style = {
           backgroundColor: '#808080',
         };
-        const dropdownStyle = {
+        const panelStyle = {
           backgroundColor: '#808080',
         };
 
@@ -188,7 +188,7 @@ describe('color-picker', () => {
               <NovaColorPicker
                 value={state.color}
                 style={style}
-                dropdownStyle={dropdownStyle}
+                panelStyle={panelStyle}
                 teleportToBody={false}
               />
             </div>
@@ -203,11 +203,11 @@ describe('color-picker', () => {
 
     await wrapper.find('.nova-dropdown-trigger').trigger('click');
     const panel = wrapper.find('.nova-dropdown-panel');
-    const dropdownBg = getStyleOf(
+    const panelBg = getStyleOf(
       panel.element as HTMLElement,
       'background-color'
     );
-    expect(dropdownBg).toEqual('rgb(128, 128, 128)');
+    expect(panelBg).toEqual('rgb(128, 128, 128)');
   });
 
   test('teleport to body', async () => {

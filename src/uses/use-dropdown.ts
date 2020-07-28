@@ -12,7 +12,7 @@ import { Placement } from '../types/props';
 
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
-  dropdownRef: Ref<HTMLElement | null>;
+  panelRef: Ref<HTMLElement | null>;
   trapHiddenRef: Ref<HTMLElement | null>;
   reset?: () => void;
   props: Readonly<unknown>;
@@ -40,13 +40,13 @@ interface UseDropdownReturn {
   onLeaveCancelled: (el: Element) => void;
 }
 
-interface GetDropdownOffsetParams {
+interface GetPanelOffsetParams {
   triggerRect: DOMRect;
-  dropdownRect: DOMRect;
+  panelRect: DOMRect;
   visualViewport: VisualViewport;
 }
 
-interface GetCollapseStyleParams extends GetDropdownOffsetParams {
+interface GetCollapseStyleParams extends GetPanelOffsetParams {
   offset: Offset;
 }
 
@@ -72,7 +72,7 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
 
   const {
     triggerRef,
-    dropdownRef,
+    panelRef,
     trapHiddenRef,
     reset,
     props,
@@ -90,12 +90,12 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     }
 
     const target = e.target as HTMLElement;
-    const dropdown = dropdownRef.value as HTMLElement;
-    const stopDropdown = isInElement(target, dropdown);
+    const panel = panelRef.value as HTMLElement;
+    const stopPanel = isInElement(target, panel);
     const trigger = triggerRef.value as HTMLElement;
     const stopTrigger = isInElement(target, trigger);
 
-    if (stopDropdown || stopTrigger) {
+    if (stopPanel || stopTrigger) {
       return;
     }
 
@@ -131,14 +131,14 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     triggerType = null;
   }
 
-  function getDropdownOffset(params: GetDropdownOffsetParams) {
-    const { triggerRect, dropdownRect, visualViewport } = params;
+  function getPanelOffset(params: GetPanelOffsetParams) {
+    const { triggerRect, panelRect, visualViewport } = params;
 
     const placement = dropdownProps.placement;
 
     const { left, top } = place(
       triggerRect,
-      dropdownRect,
+      panelRect,
       visualViewport,
       placement
     );
@@ -150,27 +150,27 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
   }
 
   function getCollapseStyle(params: GetCollapseStyleParams): CollapseStyle {
-    const { offset, triggerRect, dropdownRect, visualViewport } = params;
+    const { offset, triggerRect, panelRect, visualViewport } = params;
 
     const pageLeft = visualViewport.pageLeft;
     const pageTop = visualViewport.pageTop;
 
     let widthProportion = 1;
-    if (dropdownRect.width) {
-      widthProportion = triggerRect.width / dropdownRect.width;
+    if (panelRect.width) {
+      widthProportion = triggerRect.width / panelRect.width;
     }
     let heightProportion = 1;
-    if (dropdownRect.height) {
-      heightProportion = triggerRect.height / dropdownRect.height;
+    if (panelRect.height) {
+      heightProportion = triggerRect.height / panelRect.height;
     }
 
-    const dropdownXCenter = dropdownRect.width / 2 + offset.left;
+    const panelXCenter = panelRect.width / 2 + offset.left;
     const triggerXCenter = pageLeft + triggerRect.left + triggerRect.width / 2;
-    const dropdownYCenter = dropdownRect.height / 2 + offset.top;
+    const panelYCenter = panelRect.height / 2 + offset.top;
     const triggerYCenter = pageTop + triggerRect.top + triggerRect.height / 2;
 
-    const translateX = triggerXCenter - dropdownXCenter;
-    const translateY = triggerYCenter - dropdownYCenter;
+    const translateX = triggerXCenter - panelXCenter;
+    const translateY = triggerYCenter - panelYCenter;
 
     return {
       opacity: `0`,
@@ -212,8 +212,8 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
       state.dropdown.loaded = true;
 
       nextTick(() => {
-        const dropdown = dropdownRef.value as HTMLElement;
-        dropdown.addEventListener('keydown', triggerKeydown);
+        const panel = panelRef.value as HTMLElement;
+        panel.addEventListener('keydown', triggerKeydown);
       });
     }
 
@@ -300,17 +300,17 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
     const trigger = triggerRef.value as HTMLElement;
     const triggerRect = getElementPosition(trigger);
 
-    const dropdown = dropdownRef.value as HTMLElement;
-    const dropdownRect = getElementPosition(dropdown);
+    const panel = panelRef.value as HTMLElement;
+    const panelRect = getElementPosition(panel);
 
     const visualViewport: VisualViewport = getVisualViewport();
 
     const params = {
       triggerRect,
-      dropdownRect,
+      panelRect,
       visualViewport,
     };
-    const offset = getDropdownOffset(params);
+    const offset = getPanelOffset(params);
     const collapseStyle = getCollapseStyle({ offset, ...params });
 
     collapseStyleCache = collapseStyle;
