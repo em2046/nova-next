@@ -13,7 +13,8 @@ import { Placement } from '../types/props';
 interface UseDropdownParams {
   triggerRef: Ref<HTMLElement | null>;
   panelRef: Ref<HTMLElement | null>;
-  trapHiddenRef: Ref<HTMLElement | null>;
+  panelAutoFocusRef: Ref<HTMLElement | null>;
+  triggerAutoFocusRef: Ref<HTMLElement | null>;
   reset?: () => void;
   props: Readonly<unknown>;
   onOpen?: () => void;
@@ -73,7 +74,8 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
   const {
     triggerRef,
     panelRef,
-    trapHiddenRef,
+    panelAutoFocusRef,
+    triggerAutoFocusRef,
     reset,
     props,
     onOpen,
@@ -105,9 +107,14 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
 
   function triggerFocus() {
     const trigger = triggerRef.value as HTMLElement;
-    const focusable = getFocusable(trigger);
-    const firstFocusable = focusable?.[0];
-    firstFocusable?.focus();
+
+    if (triggerAutoFocusRef.value) {
+      triggerAutoFocusRef.value.focus();
+    } else {
+      const focusable = getFocusable(trigger);
+      const firstFocusable = focusable?.[0];
+      firstFocusable?.focus();
+    }
   }
 
   function closeDropdown(): void {
@@ -335,11 +342,8 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
 
     await nextTick();
 
-    if (
-      (triggerType === 'mouse' || triggerType === 'touch') &&
-      trapHiddenRef.value
-    ) {
-      trapHiddenRef.value.focus();
+    if (panelAutoFocusRef.value) {
+      panelAutoFocusRef.value.focus();
     } else {
       const focusable = getFocusable(el as HTMLElement);
       const firstFocusable = focusable?.[0];

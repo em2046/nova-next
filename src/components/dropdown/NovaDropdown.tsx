@@ -38,6 +38,11 @@ export interface DropdownInstance {
 export interface DropdownTriggerScoped {
   disabled: boolean;
   dropdownInstance: DropdownInstance;
+  triggerAutoFocusRef: Ref<HTMLElement | null>;
+}
+
+export interface DropdownPanelScoped {
+  panelAutoFocusRef: Ref<HTMLElement | null>;
 }
 
 export const dropdownProps = {
@@ -83,9 +88,10 @@ const NovaDropdownImpl = {
       props.environment ?? useEnvironment(props as EnvironmentProps);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
+    const triggerAutoFocusRef: Ref<HTMLElement | null> = ref(null);
     const panelRef: Ref<HTMLElement | null> = ref(null);
+    const panelAutoFocusRef: Ref<HTMLElement | null> = ref(null);
     const trapHeaderRef: Ref<HTMLElement | null> = ref(null);
-    const trapHiddenRef: Ref<HTMLElement | null> = ref(null);
     const trapTrailerRef: Ref<HTMLElement | null> = ref(null);
 
     function trapHeaderFocus() {
@@ -135,7 +141,8 @@ const NovaDropdownImpl = {
     } = useDropdown({
       triggerRef,
       panelRef,
-      trapHiddenRef,
+      panelAutoFocusRef,
+      triggerAutoFocusRef,
       props,
       onOpen: () => {
         emit('openChange', true);
@@ -161,13 +168,14 @@ const NovaDropdownImpl = {
     );
 
     return () => {
-      const children = slots.default?.();
+      const slotDefault = slots.default;
       const slotTrigger = slots.trigger;
 
       let slotTriggerNode: VNode[] | null = null;
       if (slotTrigger) {
         slotTriggerNode = slotTrigger({
           dropdownInstance,
+          triggerAutoFocusRef,
         });
       }
 
@@ -187,6 +195,9 @@ const NovaDropdownImpl = {
         let beforeAppearFlag = false;
         let afterAppearFlag = false;
 
+        const children = slotDefault?.({
+          panelAutoFocusRef,
+        });
         const panelCoreNode = (
           <div
             class={panelClassList.value}
@@ -203,7 +214,6 @@ const NovaDropdownImpl = {
               ref={trapHeaderRef}
               onFocus={trapHeaderFocus}
             />
-            <div class="nova-trap" ref={trapHiddenRef} tabindex={0} />
             {children}
             <div
               class="nova-trap"
