@@ -63,14 +63,14 @@
 
 .nova-color-picker-slides {
   display: flex;
+  justify-content: space-around;
+  width: 80px;
 }
 
 .nova-color-picker-hue-slide {
-  margin-left: 5px;
 }
 
 .nova-color-picker-alpha-slide {
-  margin-left: 10px;
 }
 
 .nova-color-picker-hue-slide,

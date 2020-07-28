@@ -50,7 +50,9 @@
   }
 
   + span {
-    margin-left: 5px;
+    display: inline-block;
+    vertical-align: top;
+    text-indent: 5px;
   }
 }
 
