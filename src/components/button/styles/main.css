@@ -7,6 +7,7 @@
   line-height: var(--nova-line-height);
   min-height: 30px;
   padding: 4px 14px;
+  margin: 0;
   font-size: var(--nova-font-size);
   border-radius: var(--nova-radius);
   border: var(--nova-border);
