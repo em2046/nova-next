@@ -26,6 +26,11 @@
 
 .nova-input-disabled {
   opacity: 0.5;
+  cursor: not-allowed;
+
+  .nova-input-text {
+    cursor: not-allowed;
+  }
 }
 
 .nova-input-text {
@@ -33,7 +38,7 @@
   font-size: var(--nova-font-size);
   line-height: var(--nova-line-height);
   height: 30px;
-  padding: 5px;
+  padding: 5px 10px;
   width: 200px;
   vertical-align: top;
   border: none;

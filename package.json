@@ -15,6 +15,8 @@
   "module": "./dist/index.esm.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
+    "doc:dev": "vitepress dev docs",
+    "doc:dist": "vitepress build docs",
     "dev": "vite --https",
     "gulp:clean": "gulp --require ts-node/register/transpile-only clean",
     "gulp:style": "gulp --require ts-node/register/transpile-only style",
@@ -22,7 +24,7 @@
     "build": "yarn gulp:clean && yarn gulp:style && yarn gulp:lib",
     "build:demo": "vite build",
     "test": "jest",
-    "prettier": "prettier --write {src,build,tests}/**/*.{js,jsx,ts,tsx,css,vue}",
+    "prettier": "prettier --write {src,build,docs,tests}/**/*.{js,jsx,ts,tsx,css,vue,md}",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx,.vue",
     "format": "yarn prettier && yarn lint",
     "prepublishOnly": "yarn format && yarn build"
@@ -39,6 +41,7 @@
     "vue": "^3.0.0-rc.4"
   },
   "devDependencies": {
+    "@em2046/vitepress": "^0.5.1",
     "@microsoft/api-extractor": "^7.9.2",
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/autoprefixer": "^9.7.2",
