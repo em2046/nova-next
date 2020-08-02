@@ -1,10 +1,8 @@
 import theme from '@em2046/vitepress/dist/client/theme-default';
-import { NovaButton, NovaInput, NovaColorPicker } from '/@nova/';
-import demoButtonBasic from '../components/demo/button/basic.vue';
-import demoInputBasic from '../components/demo/input/basic.vue';
-import demoColorPickerBasic from '../components/demo/color-picker/basic.vue';
+import { NovaButton, NovaColorPicker, NovaInput } from '/@nova/';
 import '/@nova/styles/index.css';
 import './index.css';
+import { registerComponents } from './register-components';
 
 export default {
   ...theme,
@@ -15,9 +13,6 @@ export default {
     app.component(NovaButton.name, NovaButton);
     app.component(NovaInput.name, NovaInput);
     app.component(NovaColorPicker.name, NovaColorPicker);
-
-    app.component('demo-button-basic', demoButtonBasic);
-    app.component('demo-input-basic', demoInputBasic);
-    app.component('demo-color-picker-basic', demoColorPickerBasic);
+    registerComponents(app);
   },
 };

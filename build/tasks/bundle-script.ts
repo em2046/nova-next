@@ -23,7 +23,7 @@ export function bundleScript(cb: () => void) {
     sourcemap: 'external',
     bundle: true,
     target: 'es6',
-    external: ['vue'],
+    external: ['vue', '@em2046/material-design-icons-vue-next'],
     jsxFactory: 'vueJsxCompat',
   })
     .then(() => {

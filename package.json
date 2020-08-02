@@ -1,7 +1,7 @@
 {
   "name": "@em2046/nova-next",
   "description": "Experimental Vue components",
-  "version": "2.0.0-alpha.23",
+  "version": "2.0.0-alpha.24",
   "author": {
     "name": "em2046",
     "email": "em2046@qq.com"
@@ -21,6 +21,7 @@
     "gulp:clean": "gulp --require ts-node/register/transpile-only clean",
     "gulp:style": "gulp --require ts-node/register/transpile-only style",
     "gulp:lib": "gulp --require ts-node/register/transpile-only lib",
+    "gulp:doc": "gulp --require ts-node/register/transpile-only doc",
     "build": "yarn gulp:clean && yarn gulp:style && yarn gulp:lib",
     "build:demo": "vite build",
     "test": "jest",
@@ -49,6 +50,7 @@
     "@types/gulp-postcss": "^8.0.0",
     "@types/gulp-rename": "^0.0.33",
     "@types/jest": "^26.0.5",
+    "@types/lodash": "^4.14.158",
     "@types/postcss-import": "^12.0.0",
     "@types/prettier": "^2.0.2",
     "@types/through2": "^2.0.36",
@@ -62,11 +64,12 @@
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-vue": "^7.0.0-beta.0",
-    "glob": "^7.1.6",
+    "globby": "^11.0.1",
     "gulp": "^4.0.2",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^2.0.0",
     "jest": "^26.1.0",
+    "lodash": "^4.17.19",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.2.3",
     "prettier": "^2.0.5",
