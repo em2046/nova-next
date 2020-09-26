@@ -1,33 +1,52 @@
-import { build } from 'esbuild';
+import { build, BuildOptions } from 'esbuild';
 
-export function bundleScript(cb: () => void) {
-  build({
-    entryPoints: ['./src/index.ts'],
-    format: 'esm',
-    outfile: './dist/index.esm.js',
-    sourcemap: 'external',
-    bundle: true,
-    target: 'es6',
-    external: ['vue', '@em2046/material-design-icons-vue-next'],
-    jsxFactory: 'vueJsxCompat',
-  })
-    .then(() => {
-      cb();
-    })
-    .catch(() => process.exit(1));
+let config: BuildOptions = {
+  entryPoints: ['./src/index.ts'],
+  sourcemap: 'external',
+  bundle: true,
+  target: 'es6',
+  external: ['vue', '@em2046/material-design-icons-vue-next'],
+  jsxFactory: 'vueJsxCompat',
+};
 
-  build({
-    entryPoints: ['./src/index.ts'],
-    format: 'cjs',
-    outfile: './dist/index.js',
-    sourcemap: 'external',
-    bundle: true,
-    target: 'es6',
-    external: ['vue', '@em2046/material-design-icons-vue-next'],
-    jsxFactory: 'vueJsxCompat',
-  })
-    .then(() => {
-      cb();
+function bundleEsm() {
+  return new Promise((resolve, reject) => {
+    build({
+      format: 'esm',
+      outfile: './dist/index.esm.js',
+      ...config,
     })
-    .catch(() => process.exit(1));
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+function bundleCjs() {
+  return new Promise((resolve, reject) => {
+    build({
+      format: 'cjs',
+      outfile: './dist/index.js',
+      ...config,
+    })
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+export async function bundleScript() {
+  try {
+    await Promise.all([bundleEsm(), bundleCjs()]);
+    console.log('FF');
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 }
