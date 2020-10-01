@@ -292,31 +292,6 @@
   dependencies:
     vue "^3.0.0-rc.7"
 
-"@em2046/vitepress@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@em2046/vitepress/-/vitepress-0.5.1.tgz#021f65f2fd74cab3a41de9206527a09071e3cdbf"
-  integrity sha512-yIZOOWRAcOUekIKsd/SbXmvilN3QsApyAKwz6gpex/0xid2F+fZZ7DjNO3zHZ8IddyH1lQQhzXh3kdm2zLF9Fg==
-  dependencies:
-    "@vue/compiler-sfc" "^3.0.0-rc.4"
-    "@vue/server-renderer" "^3.0.0-rc.4"
-    debug "^4.1.1"
-    diacritics "^1.3.0"
-    escape-html "^1.0.3"
-    fs-extra "^9.0.0"
-    globby "^11.0.0"
-    gray-matter "^4.0.2"
-    lru-cache "^5.1.1"
-    markdown-it "^10.0.0"
-    markdown-it-anchor "^5.2.7"
-    markdown-it-container "^2.0.0"
-    markdown-it-emoji "^1.4.0"
-    markdown-it-table-of-contents "^0.4.4"
-    minimist "^1.2.5"
-    prismjs "^1.20.0"
-    slash "^3.0.0"
-    vite "^1.0.0-rc.3"
-    vue "^3.0.0-rc.4"
-
 "@eslint/eslintrc@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.1.3.tgz#7d1a2b2358552cc04834c0979bd4275362e37085"
@@ -1179,7 +1154,7 @@
     "@vue/compiler-core" "3.0.0-rc.7"
     "@vue/shared" "3.0.0-rc.7"
 
-"@vue/compiler-sfc@^3.0.0":
+"@vue/compiler-sfc@^3.0.0", "@vue/compiler-sfc@^3.0.0-rc.11":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.0.0.tgz#efa38037984bd64aae315828aa5c1248c6eadca9"
   integrity sha512-1Bn4L5jNRm6tlb79YwqYUGGe+Yc9PRoRSJi67NJX6icdhf84+tRMtESbx1zCLL9QixQXu2+7aLkXHxvh4RpqAA==
@@ -1201,7 +1176,7 @@
     postcss-selector-parser "^6.0.2"
     source-map "^0.6.1"
 
-"@vue/compiler-sfc@^3.0.0-rc.4", "@vue/compiler-sfc@^3.0.0-rc.5":
+"@vue/compiler-sfc@^3.0.0-rc.5":
   version "3.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.0.0-rc.5.tgz#374e52a6fbf8fb9aee1213026050a0f1c496fecf"
   integrity sha512-huoIFEfFCJxHcpoByAUQti7CIwJdHPLJXKuy2HG7J1B+IEKugtBdF50CLH35ZD8dWM0nyOMFFqTbO7i6CCjL3Q==
@@ -1311,13 +1286,13 @@
     "@vue/shared" "3.0.0-rc.7"
     csstype "^2.6.8"
 
-"@vue/server-renderer@^3.0.0-rc.4":
-  version "3.0.0-rc.5"
-  resolved "https://registry.yarnpkg.com/@vue/server-renderer/-/server-renderer-3.0.0-rc.5.tgz#524d3827c1352f7b6dbe178bd36902a26a0316cb"
-  integrity sha512-lWxs6uSvpw3UsqVxatdtEQBUTEdPTsM5JTqM1haAhaIWI2dhWEhmF3Z3iXnO12e8KUUp7Q4SjriEarzEa6YXtg==
+"@vue/server-renderer@^3.0.0-rc.11":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@vue/server-renderer/-/server-renderer-3.0.0.tgz#d531f62f64b67481aae32034eb003a16941b1a52"
+  integrity sha512-Ft4kiymPdI8BOYMTVSwB2bUeVH/PsnuEc6s7i9SzQxbz5JZpzzK8ugzICxtSYc8WkNaqi0J1xqdXz2df/YXAqQ==
   dependencies:
-    "@vue/compiler-ssr" "3.0.0-rc.5"
-    "@vue/shared" "3.0.0-rc.5"
+    "@vue/compiler-ssr" "3.0.0"
+    "@vue/shared" "3.0.0"
 
 "@vue/shared@3.0.0":
   version "3.0.0"
@@ -4979,6 +4954,13 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+lru-cache@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
+  integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
+  dependencies:
+    yallist "^4.0.0"
+
 magic-string@^0.25.2, magic-string@^0.25.7:
   version "0.25.7"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
@@ -7391,7 +7373,7 @@ vinyl@^2.0.0:
     remove-trailing-separator "^1.0.1"
     replace-ext "^1.0.0"
 
-vite@^1.0.0-rc.3, vite@^1.0.0-rc.4:
+vite@^1.0.0-rc.4:
   version "1.0.0-rc.4"
   resolved "https://registry.yarnpkg.com/vite/-/vite-1.0.0-rc.4.tgz#210106136861b231704e6381ac9eb1bcd655d4f0"
   integrity sha512-D9gpKKaE2U0YpIxNrSn+nlFPBT0sfg68Y1EReYW8YHMhbNFcxwS7RZIa1W/8Pq6yDfVRAhbOZNijv1mLG5pCEg==
@@ -7447,6 +7429,31 @@ vite@^1.0.0-rc.3, vite@^1.0.0-rc.4:
     vue "^3.0.0-rc.5"
     ws "^7.2.3"
 
+vitepress@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-0.6.0.tgz#805bd529a21ceccc2b43da5a7be0c4e526512a91"
+  integrity sha512-+bkHmRx5QjbdU0rBxbJtBffESQk9CwPoRjtlqcYX1jozurCX/09oAik6tHP5+Hzoz4DMPCVgTG9jnjFjGi1wug==
+  dependencies:
+    "@vue/compiler-sfc" "^3.0.0-rc.11"
+    "@vue/server-renderer" "^3.0.0-rc.11"
+    debug "^4.1.1"
+    diacritics "^1.3.0"
+    escape-html "^1.0.3"
+    fs-extra "^9.0.0"
+    globby "^11.0.1"
+    gray-matter "^4.0.2"
+    lru-cache "^6.0.0"
+    markdown-it "^10.0.0"
+    markdown-it-anchor "^5.2.7"
+    markdown-it-container "^2.0.0"
+    markdown-it-emoji "^1.4.0"
+    markdown-it-table-of-contents "^0.4.4"
+    minimist "^1.2.5"
+    prismjs "^1.20.0"
+    slash "^3.0.0"
+    vite "^1.0.0-rc.4"
+    vue "^3.0.0-rc.11"
+
 vue-eslint-parser@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.1.0.tgz#9cdbcc823e656b087507a1911732b867ac101e83"
@@ -7464,7 +7471,7 @@ vue-router@^4.0.0-beta.12:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.0-beta.12.tgz#873d1bbd16882ab2ae35973e3e691412104f3914"
   integrity sha512-prbqAs2hSlKGt3U/Iyq8G62q/oprwmEd//a6x5M1uqP1aZxwjq0s27ZG8hfUSOOPB7SYg4NOydwy6zi/b3S2Ww==
 
-vue@^3.0.0:
+vue@^3.0.0, vue@^3.0.0-rc.11:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.0.tgz#cfb5df5c34efce319b113a1667d12b74dcfd9c90"
   integrity sha512-ZMrAARZ32sGIaYKr7Fk2GZEBh/VhulSrGxcGBiAvbN4fhjl3tuJyNFbbbLFqGjndbLoBW66I2ECq8ICdvkKdJw==
@@ -7473,7 +7480,7 @@ vue@^3.0.0:
     "@vue/runtime-dom" "3.0.0"
     "@vue/shared" "3.0.0"
 
-vue@^3.0.0-rc.4, vue@^3.0.0-rc.5:
+vue@^3.0.0-rc.5:
   version "3.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.0-rc.5.tgz#973175d45a892b3bd23ef5de7faa4add9c66275f"
   integrity sha512-8t8Y4sHMBGD5iLZ7JfBGmKBJlzesPoL+/nW9EV8s+4LwnKC4rGlRp+Lj2rcign4iQaj0GFaL7DrQ8IoOfVX6+w==
@@ -7652,6 +7659,11 @@ yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
+
+yallist@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
+  integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
 yargs-parser@20.x:
   version "20.2.0"
