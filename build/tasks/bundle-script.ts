@@ -44,7 +44,7 @@ function bundleCjs() {
 export async function bundleScript() {
   try {
     await Promise.all([bundleEsm(), bundleCjs()]);
-    console.log('FF');
+    console.log(`Bundle script completed successfully`);
   } catch (err) {
     console.error(err);
     process.exit(1);
