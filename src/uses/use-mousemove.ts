@@ -1,24 +1,39 @@
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted, reactive } from 'vue';
 import { MoveParams } from './use-move';
 import { getPaddingLeft, getPaddingTop } from '../utils/dom';
 
-export function useMousemove(params: MoveParams): void {
+export interface MouseState {
+  moving: boolean;
+  holding: boolean;
+}
+
+interface MouseReturn {
+  mouse: MouseState;
+}
+
+export function useMousemove(params: MoveParams): MouseReturn {
   const { ref, start, move, finish } = params;
 
   let rect = {} as DOMRect;
   const border = { top: 0, left: 0 };
-  let moving = false;
+
+  const state = reactive({
+    mouse: {
+      moving: false,
+      holding: false,
+    },
+  });
 
   function onMousemove(e: MouseEvent): void {
     e.preventDefault();
 
-    if (moving) {
+    if (state.mouse.moving) {
       return;
     }
 
-    moving = true;
+    state.mouse.moving = true;
     requestAnimationFrame(() => {
-      moving = false;
+      state.mouse.moving = false;
     });
 
     const x = e.pageX - rect.x - window.pageXOffset - border.left;
@@ -28,6 +43,8 @@ export function useMousemove(params: MoveParams): void {
   }
 
   function onMouseup(): void {
+    state.mouse.holding = false;
+
     document.removeEventListener('mousemove', onMousemove);
     document.removeEventListener('mouseup', onMouseup);
 
@@ -36,6 +53,8 @@ export function useMousemove(params: MoveParams): void {
 
   function onMousedown(e: MouseEvent): void {
     e.preventDefault();
+
+    state.mouse.holding = true;
 
     const target: HTMLElement = ref.value as HTMLElement;
     rect = target.getBoundingClientRect();
@@ -65,4 +84,8 @@ export function useMousemove(params: MoveParams): void {
     document.removeEventListener('mousemove', onMousemove);
     document.removeEventListener('mouseup', onMouseup);
   });
+
+  return {
+    mouse: state.mouse,
+  };
 }

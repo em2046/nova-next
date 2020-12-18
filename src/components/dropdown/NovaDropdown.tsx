@@ -22,9 +22,9 @@ import { getFocusable } from '../../utils/dom';
 
 export interface DropdownProps extends EnvironmentProps {
   disabled?: boolean;
-  dropdownClass?: VueClass;
-  dropdownStyle?: VueStyle;
-  dropdownProps?: VueProps;
+  panelClass?: VueClass;
+  panelStyle?: VueStyle;
+  panelProps?: VueProps;
   teleportToBody?: boolean;
   environment?: Environment;
   placement?: Placement;
@@ -38,6 +38,11 @@ export interface DropdownInstance {
 export interface DropdownTriggerScoped {
   disabled: boolean;
   dropdownInstance: DropdownInstance;
+  triggerAutoFocusRef: Ref<HTMLElement | null>;
+}
+
+export interface DropdownPanelScoped {
+  panelAutoFocusRef: Ref<HTMLElement | null>;
 }
 
 export const dropdownProps = {
@@ -45,15 +50,15 @@ export const dropdownProps = {
     type: Boolean,
     default: false,
   },
-  dropdownClass: {
+  panelClass: {
     type: [String, Array, Object],
     default: null,
   },
-  dropdownStyle: {
+  panelStyle: {
     type: Object,
     default: null,
   },
-  dropdownProps: {
+  panelProps: {
     type: Object,
     default: null,
   },
@@ -83,17 +88,19 @@ const NovaDropdownImpl = {
       props.environment ?? useEnvironment(props as EnvironmentProps);
 
     const triggerRef: Ref<HTMLElement | null> = ref(null);
-    const dropdownRef: Ref<HTMLElement | null> = ref(null);
+    const triggerAutoFocusRef: Ref<HTMLElement | null> = ref(null);
+    const panelRef: Ref<HTMLElement | null> = ref(null);
+    const panelAutoFocusRef: Ref<HTMLElement | null> = ref(null);
     const trapHeaderRef: Ref<HTMLElement | null> = ref(null);
     const trapTrailerRef: Ref<HTMLElement | null> = ref(null);
 
     function trapHeaderFocus() {
-      const focusable = getFocusable(dropdownRef.value);
+      const focusable = getFocusable(panelRef.value);
       nextFocus(focusable?.[focusable.length - 1]);
     }
 
     function trapTrailerFocus() {
-      const focusable = getFocusable(dropdownRef.value);
+      const focusable = getFocusable(panelRef.value);
       nextFocus(focusable?.[0]);
     }
 
@@ -120,7 +127,7 @@ const NovaDropdownImpl = {
       ];
     });
     const panelClassList = computed(() => {
-      return ['nova-dropdown-panel', props.dropdownClass];
+      return ['nova-dropdown-panel', props.panelClass];
     });
 
     const {
@@ -133,7 +140,9 @@ const NovaDropdownImpl = {
       onLeaveCancelled,
     } = useDropdown({
       triggerRef,
-      dropdownRef,
+      panelRef,
+      panelAutoFocusRef,
+      triggerAutoFocusRef,
       props,
       onOpen: () => {
         emit('openChange', true);
@@ -159,13 +168,14 @@ const NovaDropdownImpl = {
     );
 
     return () => {
-      const children = slots.default?.();
+      const slotDefault = slots.default;
       const slotTrigger = slots.trigger;
 
       let slotTriggerNode: VNode[] | null = null;
       if (slotTrigger) {
         slotTriggerNode = slotTrigger({
           dropdownInstance,
+          triggerAutoFocusRef,
         });
       }
 
@@ -177,7 +187,7 @@ const NovaDropdownImpl = {
         );
       }
 
-      function createDropdown() {
+      function createPanel() {
         if (!dropdown.loaded || props.disabled) {
           return null;
         }
@@ -185,14 +195,17 @@ const NovaDropdownImpl = {
         let beforeAppearFlag = false;
         let afterAppearFlag = false;
 
-        const dropdownCoreNode = (
+        const children = slotDefault?.({
+          panelAutoFocusRef,
+        });
+        const panelCoreNode = (
           <div
             class={panelClassList.value}
             role="dialog"
             data-nova-theme={environment.themeRef.value}
-            ref={dropdownRef}
-            style={props.dropdownStyle}
-            {...props.dropdownProps}
+            ref={panelRef}
+            style={props.panelStyle}
+            {...props.panelProps}
           >
             <div
               class="nova-trap"
@@ -246,7 +259,7 @@ const NovaDropdownImpl = {
               onLeaveCancelled={onLeaveCancelled}
             >
               {() =>
-                withDirectives(dropdownCoreNode as VNode, [
+                withDirectives(panelCoreNode as VNode, [
                   [vShow, dropdown.opened],
                 ])
               }
@@ -255,7 +268,7 @@ const NovaDropdownImpl = {
         );
       }
 
-      const dropdownNode = createDropdown();
+      const panelNode = createPanel();
       const triggerNode = createTrigger();
 
       return (
@@ -264,7 +277,7 @@ const NovaDropdownImpl = {
           data-nova-theme={environment.themeRef.value}
         >
           {triggerNode}
-          {dropdownNode}
+          {panelNode}
         </div>
       );
     };

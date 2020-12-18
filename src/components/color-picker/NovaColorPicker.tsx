@@ -3,6 +3,7 @@ import {
   HTMLAttributes,
   onMounted,
   reactive,
+  Ref,
   ref,
   SetupContext,
   VNodeProps,
@@ -25,6 +26,7 @@ import { MDIClose } from '@em2046/material-design-icons-vue-next';
 import { NovaDropdown } from '../dropdown';
 import {
   DropdownInstance,
+  DropdownPanelScoped,
   dropdownProps,
   DropdownProps,
   DropdownTriggerScoped,
@@ -100,6 +102,8 @@ const NovaColorPickerImpl = {
 
     const environment = useEnvironment(props as EnvironmentProps);
     const dropdownInstanceRef = ref<DropdownInstance | null>(null);
+    const colorPickerTriggerAutoFocusRef = ref<HTMLElement | null>(null);
+    const colorPickerPanelAutoFocusRef = ref<HTMLElement | null>(null);
 
     const mode = props.format === 'hsl' ? modeHsla : modeRgba;
     const state = reactive({
@@ -141,9 +145,9 @@ const NovaColorPickerImpl = {
       ];
     });
 
-    const dropdownClassList = computed(() => {
+    const panelClassList = computed(() => {
       return [
-        props.dropdownClass,
+        props.panelClass,
         {
           ['nova-color-picker-panel-has-alpha']: props.alpha,
         },
@@ -269,7 +273,17 @@ const NovaColorPickerImpl = {
             });
         }
 
-        return <Trigger {...triggerProps}>{triggerNode}</Trigger>;
+        function onAssignRef(ref: Ref<HTMLElement | null>) {
+          if (ref.value) {
+            colorPickerTriggerAutoFocusRef.value = ref.value;
+          }
+        }
+
+        return (
+          <Trigger onAssignRef={onAssignRef} {...triggerProps}>
+            {triggerNode}
+          </Trigger>
+        );
       }
 
       function createHsvPanel() {
@@ -281,6 +295,7 @@ const NovaColorPickerImpl = {
 
         return (
           <HsvPanel
+            color={state.color}
             hueReg={hueDegrees.value}
             saturation={state.position.saturation}
             value={state.position.value}
@@ -443,8 +458,17 @@ const NovaColorPickerImpl = {
           </div>
         );
 
+        const autoFocusNode = (
+          <div
+            class="nova-trap"
+            ref={colorPickerPanelAutoFocusRef}
+            tabindex={0}
+          />
+        );
+
         return (
           <div class="nova-color-picker-panel-inner">
+            {autoFocusNode}
             {closeNode}
             {hsvPanelNode}
             {slidesNode}
@@ -459,11 +483,16 @@ const NovaColorPickerImpl = {
       const dropdownNode = createDropdown();
 
       const slots = {
-        trigger: ({ dropdownInstance }: DropdownTriggerScoped) => {
+        trigger: ({
+          dropdownInstance,
+          triggerAutoFocusRef,
+        }: DropdownTriggerScoped) => {
           dropdownInstanceRef.value = dropdownInstance;
+          triggerAutoFocusRef.value = colorPickerTriggerAutoFocusRef.value;
           return triggerNode;
         },
-        default: () => {
+        default: ({ panelAutoFocusRef }: DropdownPanelScoped) => {
+          panelAutoFocusRef.value = colorPickerPanelAutoFocusRef.value;
           return dropdownNode;
         },
       };
@@ -472,9 +501,9 @@ const NovaColorPickerImpl = {
         <NovaDropdown
           class={classList.value}
           disabled={props.disabled}
-          dropdownClass={dropdownClassList.value}
-          dropdownStyle={props.dropdownStyle}
-          dropdownProps={props.dropdownProps}
+          panelClass={panelClassList.value}
+          panelStyle={props.panelStyle}
+          panelProps={props.panelProps}
           teleportToBody={props.teleportToBody}
           placement={props.placement}
           environment={environment}

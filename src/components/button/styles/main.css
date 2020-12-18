@@ -7,6 +7,7 @@
   line-height: var(--nova-line-height);
   min-height: 30px;
   padding: 4px 14px;
+  margin: 0;
   font-size: var(--nova-font-size);
   border-radius: var(--nova-radius);
   border: var(--nova-border);
@@ -16,6 +17,7 @@
 
   &:not([disabled]) {
     &:focus {
+      position: relative;
       outline: none;
       border: var(--nova-border-primary);
       box-shadow: var(--nova-shadow-primary);
@@ -49,7 +51,9 @@
   }
 
   + span {
-    margin-left: 5px;
+    display: inline-block;
+    vertical-align: top;
+    text-indent: 5px;
   }
 }
 

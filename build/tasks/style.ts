@@ -5,7 +5,7 @@ import postcss from 'gulp-postcss';
 import atImport from 'postcss-import';
 import rename from 'gulp-rename';
 import postcssNested from 'postcss-nested';
-import glob from 'glob';
+import globby from 'globby';
 import prettierFormat from './prettier-format';
 
 const cssPath = './dist/css';
@@ -22,17 +22,10 @@ async function component(inputPath: string, outputPath: string): Promise<void> {
 }
 
 async function components() {
-  let list: Promise<void>[] = [];
-
-  glob('src/components/*/styles/index.css', (er, files) => {
-    files.forEach((file) => {
-      const componentName = file.replace(
-        /^.+components\/(.+)\/styles.+$/,
-        '$1'
-      );
-      const promise = component(file, `./dist/css/${componentName}.css`);
-      list.push(promise);
-    });
+  const files = await globby('src/components/*/styles/index.css');
+  const list = files.map((file) => {
+    const componentName = file.replace(/^.+components\/(.+)\/styles.+$/, '$1');
+    return component(file, `./dist/css/${componentName}.css`);
   });
 
   return await Promise.all(list);

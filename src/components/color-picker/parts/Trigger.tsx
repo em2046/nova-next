@@ -1,4 +1,4 @@
-import { computed, SetupContext, VNodeProps } from 'vue';
+import { computed, onMounted, ref, Ref, SetupContext, VNodeProps } from 'vue';
 import { vueJsxCompat } from '../../../vue-jsx-compat';
 import { Color } from '../color';
 import { Environment } from '../../../uses/use-environment';
@@ -7,6 +7,7 @@ export interface TriggerProps {
   color: Color;
   disabled: boolean;
   environment: Environment;
+  onAssignRef: (ref: Ref<HTMLElement | null>) => void;
 }
 
 const TriggerImpl = {
@@ -26,7 +27,9 @@ const TriggerImpl = {
     },
   },
   setup(props: TriggerProps, context: SetupContext) {
-    const slots = context.slots;
+    const { slots, emit } = context;
+
+    const triggerRef: Ref<HTMLElement | null> = ref(null);
 
     const triggerInnerStyle = computed(() => {
       return {
@@ -34,11 +37,16 @@ const TriggerImpl = {
       };
     });
 
+    onMounted(() => {
+      emit('assignRef', triggerRef);
+    });
+
     return (): JSX.Element => {
       const language = props.environment.languageRef.value.colorPicker;
 
       let triggerNode = (
         <div
+          ref={triggerRef}
           class="nova-color-picker-trigger"
           role="button"
           aria-label={language.aria.trigger}

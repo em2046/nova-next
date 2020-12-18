@@ -1,10 +1,15 @@
 import { Ref } from 'vue';
-import { useMousemove } from './use-mousemove';
-import { useTouchmove } from './use-touchmove';
+import { MouseState, useMousemove } from './use-mousemove';
+import { TouchState, useTouchmove } from './use-touchmove';
 
 export interface MovePosition {
   x: number;
   y: number;
+}
+
+interface MoveReturn {
+  mouse: MouseState;
+  touch: TouchState;
 }
 
 export interface MoveParams {
@@ -14,7 +19,12 @@ export interface MoveParams {
   finish?: () => void;
 }
 
-export function useMove(params: MoveParams): void {
-  useMousemove(params);
-  useTouchmove(params);
+export function useMove(params: MoveParams): MoveReturn {
+  const mouseReturn = useMousemove(params);
+  const touchReturn = useTouchmove(params);
+
+  return {
+    mouse: mouseReturn.mouse,
+    touch: touchReturn.touch,
+  };
 }

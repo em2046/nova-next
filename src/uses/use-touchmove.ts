@@ -1,28 +1,43 @@
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted, reactive } from 'vue';
 import { MoveParams } from './use-move';
 import { getPaddingLeft, getPaddingTop } from '../utils/dom';
 
-export function useTouchmove(params: MoveParams): void {
+export interface TouchState {
+  moving: boolean;
+  holding: boolean;
+}
+
+interface TouchReturn {
+  touch: TouchState;
+}
+
+export function useTouchmove(params: MoveParams): TouchReturn {
   const { ref, start, move, finish } = params;
 
   let rect = {} as DOMRect;
   const border = { top: 0, left: 0 };
-  let moving = false;
+
+  const state = reactive({
+    touch: {
+      moving: false,
+      holding: false,
+    },
+  });
 
   function onTouchmove(e: TouchEvent): void {
     if (e.cancelable) {
       e.preventDefault();
     }
 
-    if (moving) {
+    if (state.touch.moving) {
       return;
     }
 
     const firstFinger = e.changedTouches[0];
 
-    moving = true;
+    state.touch.moving = true;
     requestAnimationFrame(() => {
-      moving = false;
+      state.touch.moving = false;
     });
 
     const x = firstFinger.pageX - rect.x - window.pageXOffset - border.left;
@@ -32,6 +47,8 @@ export function useTouchmove(params: MoveParams): void {
   }
 
   function onTouchend(e: TouchEvent): void {
+    state.touch.holding = false;
+
     if (e.cancelable) {
       e.preventDefault();
     }
@@ -45,6 +62,8 @@ export function useTouchmove(params: MoveParams): void {
   }
 
   function onTouchstart(e: TouchEvent): void {
+    state.touch.holding = true;
+
     if (e.cancelable) {
       e.preventDefault();
     }
@@ -81,4 +100,8 @@ export function useTouchmove(params: MoveParams): void {
     target.removeEventListener('touchend', onTouchend);
     target.removeEventListener('touchcancel', onTouchend);
   });
+
+  return {
+    touch: state.touch,
+  };
 }

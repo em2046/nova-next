@@ -49,18 +49,28 @@
   box-shadow: var(--nova-shadow-cursor);
   transform: translate(100px, 100px);
   will-change: transform;
+  transition: width var(--nova-duration-short) linear,
+    height var(--nova-duration-short) linear,
+    margin var(--nova-duration-short) linear;
+}
+
+.nova-color-picker-cursor-holding {
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  margin-left: -20px;
 }
 
 .nova-color-picker-slides {
   display: flex;
+  justify-content: space-around;
+  width: 80px;
 }
 
 .nova-color-picker-hue-slide {
-  margin-left: 5px;
 }
 
 .nova-color-picker-alpha-slide {
-  margin-left: 10px;
 }
 
 .nova-color-picker-hue-slide,

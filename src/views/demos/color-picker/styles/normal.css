@@ -55,6 +55,7 @@
   border: var(--nova-border);
   border-radius: var(--nova-radius);
   transition: var(--nova-transition-component);
+  background-color: var(--nova-color-bg-component);
 
   &:focus {
     outline: none;
