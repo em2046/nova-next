@@ -10,7 +10,7 @@ let config: BuildOptions = {
 };
 
 function bundleEsm() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     build({
       format: 'esm',
       outfile: './dist/index.esm.js',
@@ -26,7 +26,7 @@ function bundleEsm() {
 }
 
 function bundleCjs() {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     build({
       format: 'cjs',
       outfile: './dist/index.js',
