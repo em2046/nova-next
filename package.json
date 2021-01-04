@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@em2046/material-design-icons-vue-next": "^1.0.0-alpha.6",
-    "vue": "^3.0.4"
+    "vue": "^3.0.5"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.12.1",
@@ -55,7 +55,7 @@
     "@types/through2": "^2.0.36",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
-    "@vue/compiler-sfc": "^3.0.4",
+    "@vue/compiler-sfc": "^3.0.5",
     "@vue/test-utils": "2.0.0-beta.5",
     "autoprefixer": "^9.8.5",
     "del": "^6.0.0",
