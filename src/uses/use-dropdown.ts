@@ -352,8 +352,13 @@ export function useDropdown(params: UseDropdownParams): UseDropdownReturn {
   }
 
   function onBeforeLeave(el: Element) {
-    const style = Object.assign({}, collapseStyleCache, getTransitionStyle());
-    setStyles(el as HTMLElement, style);
+    requestAnimationFrame(() => {
+      // Firefox need force render
+      getVisualViewport();
+
+      const style = Object.assign({}, collapseStyleCache, getTransitionStyle());
+      setStyles(el as HTMLElement, style);
+    });
   }
 
   function onAfterLeave(el: Element) {
