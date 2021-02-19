@@ -1,5 +1,5 @@
 declare module '*.vue' {
-  import { FunctionalComponent } from 'vue';
-  const component: FunctionalComponent;
+  import { DefineComponent } from 'vue';
+  const component: DefineComponent<{}, {}, any>;
   export default component;
 }

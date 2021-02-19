@@ -10,3 +10,5 @@ gulpfile.ts
 src/vue-jsx-compat.ts
 # don't lint temporary files
 temp
+# don't lint vue shims
+src/shims/vue.d.ts
