@@ -10,6 +10,7 @@ interface PresetValuesProps {
 
 const PresetValuesImpl = {
   name: 'PresetValues',
+  emits: ['select'],
   props: {
     color: {
       type: Object,

@@ -12,6 +12,7 @@ interface AlphaSlideProps {
 
 const AlphaSlideImpl = {
   name: 'AlphaSlide',
+  emits: ['move'],
   props: {
     alpha: {
       type: Number,

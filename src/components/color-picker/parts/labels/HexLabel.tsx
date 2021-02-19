@@ -60,6 +60,7 @@ function calcTuned(
 
 const HexLabelImpl = {
   name: 'HexLabel',
+  emits: ['colorInput', 'colorBlur'],
   props: {
     color: {
       type: Object,

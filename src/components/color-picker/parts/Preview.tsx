@@ -10,6 +10,7 @@ interface PreviewProps {
 
 const PreviewImpl = {
   name: 'Preview',
+  emits: ['reset'],
   props: {
     color: {
       type: Object,

@@ -24,6 +24,7 @@ interface HslaLabelsProps {
 
 const HslaLabelsImpl = {
   name: 'HslaLabels',
+  emits: ['colorInput', 'colorBlur'],
   props: {
     alpha: {
       type: Boolean,

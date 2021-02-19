@@ -14,6 +14,7 @@ interface HsvPanelProps {
 
 const HsvPanelImpl = {
   name: 'HsvPanel',
+  emits: ['move'],
   props: {
     color: {
       type: Object,

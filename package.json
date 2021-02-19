@@ -17,7 +17,7 @@
   "scripts": {
     "doc:dev": "vitepress dev docs",
     "doc:dist": "vitepress build docs",
-    "dev": "vite --https",
+    "dev": "vite",
     "gulp:clean": "gulp --require ts-node/register/transpile-only clean",
     "gulp:style": "gulp --require ts-node/register/transpile-only style",
     "gulp:lib": "gulp --require ts-node/register/transpile-only lib",
@@ -56,7 +56,7 @@
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
     "@vue/compiler-sfc": "^3.0.5",
-    "@vue/test-utils": "2.0.0-beta.5",
+    "@vue/test-utils": "^2.0.0-rc.1",
     "autoprefixer": "^9.8.5",
     "del": "^6.0.0",
     "esbuild": "^0.8.26",
