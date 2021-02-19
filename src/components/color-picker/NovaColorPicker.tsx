@@ -97,6 +97,7 @@ export interface ColorPickerTriggerScoped extends DropdownTriggerScoped {
 const NovaColorPickerImpl = {
   name: 'NovaColorPicker',
   props: colorPickerProps,
+  emits: ['update', 'update:value'],
   setup(props: ColorPickerProps, context: SetupContext) {
     const emit = context.emit;
 

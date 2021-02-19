@@ -79,6 +79,7 @@ export const dropdownProps = {
 const NovaDropdownImpl = {
   name: 'NovaDropdown',
   props: dropdownProps,
+  emits: ['openChange'],
   setup(props: DropdownProps, context: SetupContext) {
     const { emit, slots } = context;
 

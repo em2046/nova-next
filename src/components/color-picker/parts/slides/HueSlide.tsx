@@ -10,6 +10,7 @@ interface HueSlideProps {
 
 const HueSlideImpl = {
   name: 'HueSlide',
+  emits: ['move'],
   props: {
     hue: {
       type: Number,

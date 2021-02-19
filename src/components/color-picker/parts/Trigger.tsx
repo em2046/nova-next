@@ -12,6 +12,7 @@ export interface TriggerProps {
 
 const TriggerImpl = {
   name: 'Trigger',
+  emits: ['assignRef'],
   props: {
     color: {
       type: Object,

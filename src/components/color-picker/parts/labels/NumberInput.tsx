@@ -21,6 +21,7 @@ interface NumberInputProps {
 
 const NumberInputImpl = {
   name: 'NumberInput',
+  emits: ['update'],
   props: {
     value: {
       type: String,

@@ -24,6 +24,7 @@ interface RgbaLabelsProps {
 
 const RgbaLabelsImpl = {
   name: 'RgbaLabels',
+  emits: ['colorInput', 'colorBlur'],
   props: {
     alpha: {
       type: Boolean,
