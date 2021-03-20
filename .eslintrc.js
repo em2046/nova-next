@@ -7,7 +7,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
     'prettier',
-    'prettier/vue',
   ],
   overrides: [
     {

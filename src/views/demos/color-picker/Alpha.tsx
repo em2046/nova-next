@@ -82,8 +82,10 @@ export default defineComponent({
     }
 
     function onClick(): void {
-      state.colorCustomValue = getRandomNumber();
-      state.colorPanelClass = 'custom-panel-class-name-' + getRandomNumber();
+      setTimeout(() => {
+        state.colorCustomValue = getRandomNumber();
+        state.colorPanelClass = 'custom-panel-class-name-' + getRandomNumber();
+      }, 300);
     }
 
     function onOpenChange(open: boolean): void {
